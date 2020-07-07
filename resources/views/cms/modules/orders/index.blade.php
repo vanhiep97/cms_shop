@@ -12,9 +12,9 @@
                 <div class="col-md-6">
                     <div class="right-action text-right">
                         <div class="btn-groups">
-                            <button type="button" class="btn btn-primary"><i
+                        <a href="{{ route('pos.index') }}" type="button" class="btn btn-primary"><i
                                     class="fa fa-desktop"></i> Bán hàng
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -38,11 +38,11 @@
                         </select>
                     </div>
                     <div class="col-md-5 padd-0" style="padding-left: 5px;">
-                        <div class="input-daterange input-group" id="datepicker">
-                            <input type="text" class="input-sm form-control" id="search-date-from" placeholder="Từ ngày"
+                        <div class="input-daterange input-group">
+                            <input id="datepicker1" type="text" class="input-sm form-control" id="search-date-from" placeholder="Từ ngày"
                                    name="start"/>
                             <span class="input-group-addon">to</span>
-                            <input type="text" class="input-sm form-control" id="search-date-to" placeholder="Đến ngày"
+                            <input id="datepicker2" type="text" class="input-sm form-control" id="search-date-to" placeholder="Đến ngày"
                                    name="end"/>
                         </div>
                     </div>

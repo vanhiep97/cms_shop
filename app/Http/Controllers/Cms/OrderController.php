@@ -13,13 +13,21 @@ class OrderController extends Controller
 {
     public function index()
     {
+        $date = Carbon::now();
+        $year = Carbon::now()->year;
+        $dateOfYear = Carbon::now()->weekOfYear;
+        $date->setISODate($year, $dateOfYear);
+        $startDayOfWeek = $date->startOfWeek();
+        $endDayOfWeek = $date->endOfWeek();
+
+        $lastDayofPreviousMonth = Carbon::now()->endOfMonth()->subMonth()->toDateString();;
+        dd($lastDayofPreviousMonth);
         $orders = Order::with('customer')->paginate(5);
         return view('cms.modules.orders.index', compact('orders'));
     }
 
     public function saveOrder(Request  $request)
     {
-        dd($request->all());
         $min = 0000000001;
         $max = 9999999999;
         $orderCode = 'DH-'.random_int ($min , $max);
@@ -40,7 +48,7 @@ class OrderController extends Controller
             'total_price' => $request->total_price,
             'coupon' => $request->coupon,
             'total_money' => $request->total_money,
-            'cutomer_pay' => $request->customer_pay,
+            'customer_pay' => $request->customer_pay,
             'lack' => $request->lack,
             'order_status' => $request->status,
             'order_detail' => $orderDetail,

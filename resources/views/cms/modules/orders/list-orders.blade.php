@@ -39,9 +39,9 @@
                 <td class="text-center">{{ $value->customer_id ? $value->customer->customer_name : '' }}</td>
                 <td class="text-center">{{ $value->order_status == 0 ? 'Đã thanh toán' : 'Chưa thanh toán'}}</td>
                 <td class="text-center"
-                    style="background-color: #F2F2F2;">{{ $value->total_money? $value->total_money : '' }}</td>
+                    style="background-color: #F2F2F2;">{{ $value->total_money? number_format($value->total_money) : 0 }}</td>
                 <td class="text-center"
-                    style="background: #fff;">{{ $value->lack ? $value->lack : '' }}</td>
+                    style="background: #fff;">{{ $value->lack ? number_format($value->lack) : 0 }}</td>
                 <td class="text-center" style="background: #fff;">
                     <i title="In"
                        class="fa fa-print blue"
@@ -69,8 +69,15 @@
                                     <div>
                                         <i class="fa fa-cart-arrow-down">
                                         </i>
+                                        @php
+                                            $orderDetail = json_decode($value->order_detail ? $value->order_detail : []);
+                                            $countProduct = 0;
+                                            foreach ($orderDetail as $key => $prd) {
+                                                $countProduct += $prd->product_sell_amount;
+                                            }
+                                        @endphp
                                         <span
-                                            class="hidden-768">Số lượng SP: 10
+                                            class="hidden-768">Số lượng SP: {{ $countProduct ? $countProduct : 0}}
                                         </span>
                                         <label>
                                         </label>
@@ -79,7 +86,7 @@
                                         <i class="fa fa-dollar">
                                         </i>
                                         <span
-                                            class="hidden-768">Tiền hàng: {{ $value->total_price ? $value->total_price : 0 }}
+                                            class="hidden-768">Tiền hàng: {{ $value->total_price ? number_format($value->total_price) : 0 }}
                                         </span>
                                         <label>
                                         </label>
@@ -88,7 +95,7 @@
                                         <i class="fa fa-dollar">
                                         </i>
                                         <span
-                                            class="hidden-768">Giảm giá: {{ $value->coupon ? $value->coupon : 0 }}
+                                            class="hidden-768">Giảm giá: {{ $value->coupon ? number_format($value->coupon) : 0 }}
                                         </span>
                                         <label>
                                         </label>
@@ -97,14 +104,14 @@
                                         <i class="fa fa-dollar">
                                         </i>
                                         <span
-                                            class="hidden-768">Tổng tiền: {{ $value->total_money ? $value->total_money : 0 }}
+                                            class="hidden-768">Tổng tiền: {{ $value->total_money ? number_format($value->total_money) : 0 }}
                                         </span>
                                         <label>
                                         </label>
                                     </div>
                                     <div class="padding-left-10">
                                         <i class="fa fa-clock-o"></i>
-                                        <span class="hidden-768">Còn nợ: </span>{{ $value->lack ? $value->lack : 0 }}
+                                        <span class="hidden-768">Hoàn trả khách: </span>{{ $value->lack ? number_format($value->lack) : 0 }}
                                         <label
                                         >
                                         </label>
@@ -138,13 +145,13 @@
                                                     {{ $value->product_name ? $value->product_name : '' }}
                                                 </td>
                                                 <td class="text-center ">
-                                                    {{ $value->product_amount ? $value->product_amount : 0 }}
+                                                    {{ $value->product_sell_amount ? $value->product_sell_amount : 0 }}
                                                 </td>
                                                 <td class="text-center">
-                                                    {{ $value->product_sell_price ? $value->product_sell_price : '' }}
+                                                    {{ $value->product_sell_price ? number_format($value->product_sell_price) : 0 }}
                                                 </td>
                                                 <td class="text-center">
-                                                    {{ $value->product_sell_price * $value->product_amount }}
+                                                    {{ number_format($value->product_sell_price * $value->product_sell_amount) }}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -161,12 +168,22 @@
     </tbody>
 </table>
 <div class="alert alert-info summany-info clearfix" role="alert">
+    @php
+       if(!empty($orders) && count($orders) > 0) {
+           $totalMoney = 0;
+           $totalLack = 0;
+           foreach ($orders as $key => $value) {
+               $totalMoney += $value->total_money;
+               $totalLack += $value->lack;
+           }
+       }
+    @endphp
     <div class="sm-info pull-left padd-0">
-        Tổng số hóa đơn: <span></span>
+        Tổng số hóa đơn: <span>{{ count($orders) }}</span>
         Tổng tiền:
-        <span></span>
+        <span>{{ $totalMoney ? number_format($totalMoney) : 0 }}</span>
         Tổng nợ:
-        <span></span>
+        <span>{{ $totalLack ? number_format($totalLack) : 0 }}</span>
     </div>
     <div class="pull-right ajax-pagination">
         {{ $orders->links() }}

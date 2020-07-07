@@ -15,8 +15,8 @@ class CustomerRepository extends BaseRepository
 
     public function createOrUpdateCustomer(array $data, int $id = null)
     {
-        $min = 0000000001;
-        $max = 9999999999;
+        $min = 000001;
+        $max = 999999;
         $customerCode = 'KH-' . random_int($min, $max);
         return parent::save([
             'customer_name' => $data['customer_name'],

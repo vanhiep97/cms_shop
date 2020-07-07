@@ -34,6 +34,10 @@
                 border: 2px solid #ccc;
                 margin: 4px;
             }
+
+            .btn-groups {
+                margin-right: 15px;
+            }
         </style>
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     </head>
@@ -80,6 +84,12 @@
         $(document).ready(function () {
             $('#lfm').filemanager('image');
         })
+    </script>
+    <script>
+        $(function () {
+            $('#datepicker1').datetimepicker();
+            $('#datepicker2').datetimepicker();
+        });
     </script>
     <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-messaging.js"></script>

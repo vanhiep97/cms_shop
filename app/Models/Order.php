@@ -22,6 +22,7 @@ class Order extends Model
         'coupon',
         'total_money',
         'total_quantity',
+        'customer_pay',
         'lack',
         'order_detail',
         'order_status'

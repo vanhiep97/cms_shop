@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+         body { font-family: DejaVu Sans, sans-serif; }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -23,11 +26,11 @@
                 <span>Email: </span>nguyentranhiep96@gmail.com
             </div>
             <div class="address">
-                <span>Địa chỉ: </span>Cao Tho - Van Ninh - Gia Binh - Bac Ninh
+                <span>Địa chỉ: </span>Cao Tho - Van Ninh - Gia Binh - Bắc Ninh
             </div>
         </div>
-        <div class="header-top1">
-            <h1>HÓA ĐƠN BÁN HÀNG</h1>
+        <div class="header-top1" style="display: flex; justify-content: center;">
+            <h1 style="font-weight: 600;"><p>HÓA ĐƠN BÁN HÀNG</p></h1>
             <span>Mã hóa đơn: </span>{{ $orders->order_code }}
         </div>
         <div class="header-main">
@@ -35,7 +38,7 @@
                 <span>Ngày bán: </span>{{ $orders->created_at }}
             </div>
             <div class="customer">
-                <span>Khách hàng: </span>Nguyen Van Hiep
+                <span>Khách hàng: </span>Nguyễn Văn Hiệp
             </div>
             <div class="customer-email">
                 <span>Email: </span>customer@gmail.com
@@ -54,28 +57,51 @@
                 <th>Đơn giá</th>
                 <th>Số lượng</th>
                 <th>Thành tiền</th>
+                <th>Tổng tiền</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>{{ $orders->order_code }}</td>
-                <td>john@example.com</td>
-            </tr>
+                @php
+                   $orderDetail = json_decode($orders->order_detail);
+                @endphp
+               @if(!empty($orderDetail) && count($orderDetail) > 0)
+                    @foreach($orderDetail as $key => $value)
+                        <tr>
+                            <td class="text-center width-5 hidden-320 ">
+                                {{ $key + 1 }}
+                            </td>
+                            <td class="text-left hidden-768">
+                                {{ $value->product_code ? $value->product_code : '' }}
+                            </td>
+                            <td class="text-left ">
+                                {{ $value->product_name ? $value->product_name : '' }}
+                            </td>
+                            <td class="text-center ">
+                                {{ $value->product_sell_amount ? $value->product_sell_amount : 0 }}
+                            </td>
+                            <td class="text-center">
+                                {{ $value->product_sell_price ? number_format($value->product_sell_price) : 0 }}
+                            </td>
+                            <td class="text-center">
+                                {{ number_format($value->product_sell_price * $value->product_sell_amount) }}
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
             </tbody>
         </table>
     </div>
 
     <div class="footer">
         <div class="total">
-            <p><span>Tổng tiền hàng: </span>{{ $orders->total_price }}</p>
-            <p><span>Giảm giá: </span>{{ $orders->coupon }}</p>
-            <p><span>Tổng thanh toán: </span>{{ $orders->total_money }}</p>
-            <p><span>Khách hàng đã thanh toán: </span>{{ $orders->customer_pay }}</p>
-            <p><span>Tiền trả lại khách: </span>{{ $orders->lack }}</p>
+            <p><span>Tổng tiền hàng: </span>{{ $orders->total_price ? number_format($orders->total_price) : 0 }}</p>
+            <p><span>Giảm giá: </span>{{ $orders->coupon ? number_format($orders->coupon) : 0 }}</p>
+            <p><span>Tổng thanh toán: </span>{{ $orders->total_money ? number_format($orders->total_money) : 0 }}</p>
+            <p><span>Khách hàng đã thanh toán: </span>{{ $orders->customer_pay ? number_format($orders->customer_pay) : 0 }}</p>
+            <p><span>Tiền trả lại khách: </span>{{ $orders->lack ? number_format($orders->lack) : 0 }}</p>
         </div>
         <div class="sell-user">
-            <h3>NGƯỜI BÁN HÀNG</h3>
+            <h3><p>NGƯỜI BÁN HÀNG</p></h3>
             <p>
                 {{ $orders->user_practise }}
             </p>

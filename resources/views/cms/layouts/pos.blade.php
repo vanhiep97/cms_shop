@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -186,7 +186,7 @@
                                                 </div>
                                                 <div class="form-group marg-bot-10 clearfix">
                                                     <div class="col-md-4">
-                                                        <label class="debt">Còn nợ</label>
+                                                        <label class="debt">Hoàn trả khách</label>
                                                     </div>
                                                     <div class="col-md-8">
                                                         <div class="debt" id="lack">0</div>

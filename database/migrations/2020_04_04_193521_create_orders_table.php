@@ -21,10 +21,11 @@ class CreateOrdersTable extends Migration
             $table->integer('customer_id');
             $table->bigInteger('total_origin_price')->default(0);
             $table->bigInteger('total_price')->default(0);
-            $table->string('notes');
+            $table->string('notes')->nullable();
             $table->bigInteger('coupon')->default(0);
             $table->bigInteger('total_money')->default(0);
             $table->bigInteger('total_quantity')->default(0);
+            $table->bigInteger('customer_pay')->default(0);
             $table->bigInteger('lack')->default(0);
             $table->longText('order_detail');
             $table->tinyInteger('order_status')->default(0);
