@@ -31,6 +31,7 @@
         </div>
         <div class="header-top1" style="display: flex; justify-content: center;">
             <h1 style="font-weight: 600;"><p>HÓA ĐƠN BÁN HÀNG</p></h1>
+            <br>
             <span>Mã hóa đơn: </span>{{ $orders->order_code }}
         </div>
         <div class="header-main">

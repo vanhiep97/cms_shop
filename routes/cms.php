@@ -36,8 +36,6 @@ Route::namespace('Cms')->group(function () {
             Route::get('/search/products', 'PosController@searchProductOnPos')->name('pos.searchProductOnPos');
             Route::get('/search/customers', 'PosController@searchCustomerOnPos')->name('pos.searchCustomerOnPos');
             Route::get('/buy/{id}/products', 'PosController@buyProductOnPos')->name('pos.buyProductOnPos');
-            Route::post('/save-cart', 'PosController@saveCart')->name('pos.saveCart');
-            Route::get('/carts', 'PosController@getCart')->name('pos.getCart');
         });
 
         Route::prefix('group-products')->group(function () {
@@ -117,6 +115,10 @@ Route::namespace('Cms')->group(function () {
         Route::prefix('imports')->group(function () {
             Route::get('/', 'ImportController@index')->name('imports.index');
             Route::get('/create', 'ImportController@create')->name('imports.create');
+            Route::get('/search/products', 'ImportController@searchProductOnImport')->name('imports.searchProductOnImport');
+            Route::get('/search/suppliers', 'ImportController@searchSupplierOnImport')->name('imports.searchCustomerOnImport');
+            Route::get('/buy/{id}/products', 'ImportController@buyProductOnImport')->name('imports.buyProductOnPos');
+            Route::post('/create-receipt', 'ImportController@createReceipt')->name('imports.createReceipt');
         });
 
         Route::prefix('barcode')->group(function () {

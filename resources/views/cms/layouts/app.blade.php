@@ -58,6 +58,16 @@
                     </div>
                 </div>
             </div>
+            <div id="alert-cms-success" style="width: 300px; display: none; position: absolute; bottom: 10px; right: 10px;">
+                <div class="alert alert-success" role="alert" style="background: #5a821c; color: #fff; font-size: 16px">
+                    <i class="fa fa-check fa-fw"></i> <span id="text-alert-success"></span>
+                </div>
+            </div>
+            <div id="alert-cms-error" style="width: 300px;display: none; position: absolute; bottom: 10px; right: 10px;">
+                <div class="alert alert-danger" role="alert" style="background: #d21212; color: #fff; font-size: 16px">
+                    <i class="fa fa-exclamation-circle fa-fw"></i> <span id="text-alert-error"></span>
+                </div>
+            </div>
         </div>
     </section>
     @include('cms.includes.lib_custom_tinycme')
@@ -80,6 +90,7 @@
     <script src="backend/builds/modules/users/userajax.js"></script>
     <script src="backend/builds/modules/orders/orderajax.js"></script>
     <script src="backend/builds/modules/suppliers/supplierajax.js"></script>
+    <script src="backend/builds/modules/input/inputajax.js"></script>
     <script>
         $(document).ready(function () {
             $('#lfm').filemanager('image');

@@ -23,7 +23,9 @@ class CreateInputsTable extends Migration
             $table->bigInteger('total_quantity')->default(0);
             $table->bigInteger('discount')->default(0);
             $table->bigInteger('total_money')->default(0);
+            $table->bigInteger('pair_pay')->default(0);
             $table->bigInteger('lack')->default(0);
+            $table->text('import_detail');
             $table->string('user_practise');
             $table->tinyInteger('input_status')->default(0);
             $table->timestamps();

@@ -14,7 +14,7 @@
                         <button type="button" class="btn btn-primary hidden"">
                             <i class="fa fa-floppy-o"></i> Lưu tạm
                         </button>
-                        <button type="button" class="btn btn-primary"><i
+                        <button type="button" id="btn-save-import" class="btn btn-primary"><i
                                 class="fa fa-check"></i> Lưu
                         </button>
                         <button type="button" class="btn btn-primary"><i
@@ -37,7 +37,8 @@
         <div class="col-md-8">
             <div class="order-search" style="margin: 10px 0px; position: relative;">
                 <input type="text" class="form-control" placeholder="Nhập mã sản phẩm hoặc tên sản phẩm"
-                       id="search-pro-box">
+                       id="search-pro-box" autocomplete="off">
+                       <div id="search-result-product"></div>
             </div>
             <div class="product-results">
                 <table class="table table-bordered table-striped">
@@ -70,24 +71,15 @@
                                     <label>Nhà cung cấp</label>
                                 </div>
                                 <div class="col-md-8">
-                                    <div class="col-md-10 padd-0" style="position: relative;">
+                                    <div class="col-md-12 padd-0" style="position: relative;">
                                         <input id="search-box-mas" class="form-control" type="text"
                                                placeholder="Tìm nhà cung cấp"
+                                               autocomplete="off"
                                                style="border-radius: 3px 0 0 3px !important;"><span
-                                            style="color: red; position: absolute; right: 5px; top:5px; "
-                                            class="del-mas"></span>
+                                               style="color: red; position: absolute; right: 5px; top:5px;cursor: pointer; "
+                                                                id="close-form-supplier" class="del-mas">x</span>
 
-                                        <div id="mas-suggestion-box"
-                                             style="border: 1px solid #444; display: none; overflow-y: auto;background-color: #fff; z-index: 2 !important; position: absolute; left: 0; width: 100%; padding: 5px 0px; max-height: 400px !important;">
-                                            <div class="search-mas-inner"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 padd-0">
-                                        <button type="button" data-toggle="modal" data-target="#create-sup"
-                                                class="btn btn-primary"
-                                                style="border-radius: 0 3px 3px 0; box-shadow: none; padding: 7px 11px;">
-                                            +
-                                        </button>
+                                        <div id="mas-suggestion-box"></div>
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +88,7 @@
                                     <label>Ngày nhập</label>
                                 </div>
                                 <div class="col-md-8">
-                                    <input id="date-order" class="form-control datepk" type="text" placeholder="Hôm nay"
+                                    <input id="input-date"" class="form-control datepk" type="text" placeholder="YYYY/MM/DD"
                                            style="border-radius: 0 !important;">
                                 </div>
                             </div>
@@ -107,7 +99,7 @@
                                 <div class="col-md-8">
                                     <select disabled="disabled" id="" class="form-control">
                                         <option
-                                            value="1"></option>
+                                            value="1">{{ auth()->user()->name }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -116,7 +108,7 @@
                                     <label>Ghi chú</label>
                                 </div>
                                 <div class="col-md-8">
- <textarea id="note-order" cols="" class="form-control" rows="3"
+ <textarea id="note-import" cols="" class="form-control" rows="3"
            style="border-radius: 0;"></textarea>
                                 </div>
                             </div>
@@ -137,9 +129,9 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="input-group">
-                                        <input type="radio" class="payment-method" name="method-pay" value="1" checked>
+                                        <input type="radio" class="payment-method" name="method-pay" id="sell_type" value="1" checked>
                                         Tiền mặt &nbsp;
-                                        <input type="radio" class="payment-method" name="method-pay" value="2"> Thẻ&nbsp;
+                                        <input type="radio" class="payment-method" name="method-pay" id="sell_type" value="2"> Thẻ&nbsp;
                                     </div>
                                 </div>
                             </div>
@@ -148,7 +140,7 @@
                                     <label>Tiền hàng</label>
                                 </div>
                                 <div class="col-md-8">
-                                    <div class="total-money">
+                                    <div class="total-money" id="money">
                                         0
                                     </div>
                                 </div>
@@ -159,7 +151,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <input type="text"
-                                           class="form-control text-right txtMoney discount-import"
+                                           class="form-control text-right txtMoney discount-import" id="discount-order"
                                            placeholder="0" style="border-radius: 0 !important;">
                                 </div>
                             </div>
@@ -188,7 +180,7 @@
                                     <label>Còn nợ</label>
                                 </div>
                                 <div class="col-md-8">
-                                    <div class="debt">0</div>
+                                    <div class="debt" id="lack">0</div>
                                 </div>
                             </div>
                         </div>

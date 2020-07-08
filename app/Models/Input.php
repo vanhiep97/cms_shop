@@ -15,6 +15,7 @@ class Input extends Model
         'input_date', 'notes',
         'total_price', 'total_quantity',
         'discount', 'total_money', 'lack',
+        'import_detail', 'pair_pay',
         'user_practise', 'input_status'
     ];
 
