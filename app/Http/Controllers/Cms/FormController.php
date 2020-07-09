@@ -7,26 +7,27 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\Input;
+use App\Models\PurchaseOrder;
 
-class ImportController extends Controller
+class FormController extends Controller
 {
-    public function index()
+    public function listReceipts()
     {
-        return view('cms.modules.imports.index');
+        return view('cms.modules.forms.receipts.index');
     }
 
-    public function create()
+    public function createReceipt()
     {
-        return view('cms.modules.imports.import_bill');
+        return view('cms.modules.forms.receipts.import_bill');
     }
 
-    public function searchProductOnImport(Request $request)
+    public function searchProductOnForm(Request $request)
     {
         $products = Product::where('product_code', 'LIKE', $request->param.'%')->orWhere('product_name', 'LIKE', $request->param.'%')->get();
-        return view('cms.modules.pos.list-product', compact('products'));
+        return view('cms.modules.forms.list-product', compact('products'));
     }
 
-    public function buyProductOnImport(Request $request, $id)
+    public function buyProductOnForm(Request $request, $id)
     {
         $product = Product::find($id);
         return response()->json([
@@ -34,16 +35,53 @@ class ImportController extends Controller
         ]);
     }
 
-    public function searchSupplierOnImport(Request $request)
+    public function searchSupplierOnForm(Request $request)
     {
         $suppliers = Supplier::where('supplier_code', 'LIKE', $request->param.'%')
         ->orWhere('supplier_name', 'LIKE', $request->param.'%')
         ->orWhere('supplier_phone', 'LIKE', $request->param.'%')
         ->get();
-        return view('cms.modules.pos.list-supplier', compact('suppliers'));
+        return view('cms.modules.forms.list-supplier', compact('suppliers'));
     }
 
-    public function createReceipt(Request $request)
+    public function listPurchaseOrders()
+    {
+        return view('cms.modules..forms.purchase-orders.index');
+    }
+
+    public function createPurchaseOrder()
+    {
+        return view('cms.modules.forms.purchase-orders.create-purorder');
+    }
+
+    public function storePurchaseOrder(Request $request)
+    {
+        $min = 0000000001;
+        $max = 9999999999;
+        $purOrderCode = 'PYC-'.random_int ($min , $max);
+        $purOrderDetails = $request->pur_order_detail;
+        $totalOriginPrice = 0;
+        $purOrderDetail = json_encode($request->pur_order_detail);
+        $purOrders = PurchaseOrder::create([
+            'pur_order_code' => $purOrderCode,
+            'pur_order_date' => $request->input_date,
+            'user_practise' => auth()->user()->name,
+            'supplier_id' => $request->supplier_id,
+            'notes' => $request->notes,
+            'total_price' => $request->total_price,
+            'total_money' => $request->total_money,
+            'pur_order_status' => $request->pur_order_status,
+            'pur_order_detail' => $purOrderDetail,
+            'pur_order_status' => 0
+        ]);
+        return response()->json([
+            'isSuccess' => true,
+            'message' => 'Create Receipt',
+            'purOrder' => $purOrders
+        ], 200);
+    }
+
+    public function storeReceipt(Request $request)
     {
         $min = 0000000001;
         $max = 9999999999;

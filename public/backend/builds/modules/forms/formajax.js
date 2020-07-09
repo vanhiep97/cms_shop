@@ -12,7 +12,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         $('#mas-suggestion-box').css('display', 'block');
         const query = $(this).val().toLowerCase();
-        let urlResource = '/admin/imports/search/suppliers';
+        let urlResource = '/admin/forms/search/suppliers';
         if(query !== '') {
             callAjax(urlResource, 'GET', {
                 param: query
@@ -48,7 +48,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         $('#search-result-product').css('display', 'block');
         const query = $(this).val().toLowerCase();
-        let urlResource = '/admin/imports/search/products';
+        let urlResource = '/admin/forms/search/products';
         if(query !== '') {
             callAjax(urlResource, 'GET', {
                 param: query
@@ -71,7 +71,7 @@ jQuery(document).ready(function ($) {
     $(document).on('click', '#product-on-pos', function (e) {
         e.preventDefault();
         let id = $(this).data('id');
-        let urlResource = '/admin/imports/buy/' + id + '/products';
+        let urlResource = '/admin/forms/buy/' + id + '/products';
         let find = $('tbody#pro_search_append').find('tr').length;
         callAjax(urlResource, 'GET').done(response => {
             let valueOrder = 1;
@@ -85,8 +85,8 @@ jQuery(document).ready(function ($) {
                             <td>${response.data.product_name}</td>
                             <td><img width="50" height="50" src="${response.data.product_image_url}" alt="${response.data.product_name}"></td>
                             <td><input type="number" value="1" id="amount-order" style="width: 50px"/></td>
-                            <td id="sell-price" data-price="${response.data.product_sell_price}">${response.data.product_sell_price}</td>
-                            <td id="total-money">${parseInt(response.data.product_sell_price)}</td>
+                            <td id="sell-price" data-price="${response.data.product_origin_price}">${response.data.product_origin_price}</td>
+                            <td id="total-money">${parseInt(response.data.product_origin_price)}</td>
                             <td class="text-center">
                             <i class="fa fa-trash-o" style="color: darkred;" id="delete-product-pos" data-id="${response.data.id}" title="Xóa"></i>
                             </td>
@@ -116,8 +116,8 @@ jQuery(document).ready(function ($) {
                                     <td>${response.data.product_name}</td>
                                     <td><img width="50" height="50" src="${response.data.product_image_url}" alt="${response.data.product_name}"></td>
                                     <td><input type="number" value="1" id="amount-order" style="width: 50px"/></td>
-                                    <td id="sell-price" data-price="${response.data.product_sell_price}">${response.data.product_sell_price}</td>
-                                    <td id="total-money">${parseInt(response.data.product_sell_price)}</td>
+                                    <td id="sell-price" data-price="${response.data.product_origin_price}">${response.data.product_origin_price}</td>
+                                    <td id="total-money">${parseInt(response.data.product_origin_price)}</td>
                                     <td class="text-center">
                                     <i class="fa fa-trash-o" style="color: darkred;" id="delete-product-pos" data-id="${response.data.id}" title="Xóa"></i>
                                     </td>
@@ -282,7 +282,7 @@ jQuery(document).ready(function ($) {
 
         let carts = cart;
 
-        let urlResource = '/admin/imports/create-receipt';
+        let urlResource = '/admin/forms/create-receipt';
 
         if(supplier_value !== '' && cart.length > 0 && parseInt(pairPay) > parseInt(totalMoney)) {
             callAjax(urlResource, 'POST', {
@@ -358,7 +358,7 @@ jQuery(document).ready(function ($) {
 
         let carts = cart;
 
-        let urlResource = '/admin/orders/print-order';
+        let urlResource = '/admin/forms/print-order';
 
         if(customer_value !== '' && cart.length > 0 && parseInt(customerPay) > parseInt(totalMoney)) {
             var xhr = new XMLHttpRequest();
@@ -441,6 +441,68 @@ jQuery(document).ready(function ($) {
             } else if(parseInt(customerPay) < parseInt(totalMoney)) {
                 $('#alert-cms-error').css('display', 'block');
                 $('#text-alert-error').text("Khách đưa phải lớn hơn tổng tiền");
+                setTimeout(function() {
+                    $('#alert-cms-error').css('display', 'none');
+                }, 2000)
+            }
+        }
+    })
+
+    // create purchar orders
+    let amountProduct2 = [];
+    $(document).on('click', '#btn-save-purchase', function (e) {
+        e.preventDefault();
+        let supplier_value = $('#search-box-mas').val();
+        let supplier_id = $('#search-box-mas').data('id');
+        let input_date = $('#input-date').val();
+        let notes = $('#note-import').val();
+        let money = $('#money').attr('data-money');
+        $('tbody#pro_search_append tr').each(function (key, value) {
+            let amount = $(this).find('td input#amount-order').val();
+            amountProduct2.push(amount);
+            cart.forEach(function(value, key) {
+                amountProduct2.forEach(function(value, key) {
+                    cart[key]['product_sell_amount'] = value
+                })
+            })
+        });
+
+        let carts = cart;
+
+        let urlResource = '/admin/forms/store-purchase-order';
+
+        if(supplier_value !== '' && cart.length > 0) {
+            callAjax(urlResource, 'POST', {
+                supplier_id: supplier_id,
+                input_date: input_date,
+                notes: notes ? notes : '',
+                total_price: money,
+                import_detail: carts
+            }).done(response => {
+                // window.location.reload();
+                $('#alert-cms-success').css('display', 'block');
+                $('#text-alert-success').text("Tạo phiếu nhập thành công");
+                setTimeout(function() {
+                    $('#alert-cms-success').css('display', 'none');
+                }, 2000)
+                amountProduct2 = [];
+            }).fail(error => {
+                $('#alert-cms-error').css('display', 'block');
+                $('#text-alert-error').text("Tạo phiếu nhập kho thất bại");
+                setTimeout(function() {
+                    $('#alert-cms-error').css('display', 'none');
+                }, 2000)
+            })
+        } else {
+            if(supplier_value === '') {
+                $('#alert-cms-error').css('display', 'block');
+                $('#text-alert-error').text("Vui lòng nhập tên nhà cung cấp");
+                setTimeout(function() {
+                    $('#alert-cms-error').css('display', 'none');
+                }, 2000)
+            } else if(cart.length < 0) {
+                $('#alert-cms-error').css('display', 'block');
+                $('#text-alert-error').text("Sản phẩm cần nhập không được trống");
                 setTimeout(function() {
                     $('#alert-cms-error').css('display', 'none');
                 }, 2000)

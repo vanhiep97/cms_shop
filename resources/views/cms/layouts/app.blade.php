@@ -83,6 +83,7 @@
     <script src="templates/js/bootstrap-datepicker.min.js"></script>
     <script src="templates/js/bootstrap-datepicker.vi.min.js"></script>
     <script src="backend/builds/base/baseajax.js"></script>
+    @yield('ajax')
     <script src="backend/builds/modules/products/productajax.js"></script>
     <script src="backend/builds/modules/product-group/productgroupajax.js"></script>
     <script src="backend/builds/modules/manufactures/manufactureajax.js"></script>
@@ -90,7 +91,7 @@
     <script src="backend/builds/modules/users/userajax.js"></script>
     <script src="backend/builds/modules/orders/orderajax.js"></script>
     <script src="backend/builds/modules/suppliers/supplierajax.js"></script>
-    <script src="backend/builds/modules/input/inputajax.js"></script>
+    <script src="backend/builds/modules/forms/formajax.js"></script>
     <script>
         $(document).ready(function () {
             $('#lfm').filemanager('image');

@@ -12,7 +12,7 @@
                     <div class="col-md-6">
                         <div class="right-action text-right">
                             <div class="btn-groups">
-                                <a href="{{ route('imports.create') }}" class="btn btn-primary"><i
+                                <a href="{{ route('forms.createReceipt') }}" class="btn btn-primary"><i
                                         class="fa fa-plus"></i> Tạo phiếu nhập
                                 </a>
                             </div>
@@ -65,7 +65,7 @@
 
             </div>
             <div class="imports-main-body">
-                @include('cms.modules.imports.list_imports')
+                @include('cms.modules.forms.receipts.list_imports')
             </div>
         </div>
     </div>
