@@ -2,13 +2,14 @@
     <thead>
     <tr>
         <th></th>
-        <th class="text-center">Mã đơn mua hàng</th>
+        <th class="text-center">Mã phiếu nhập kho</th>
         <th class="text-center">Ngày lập</th>
         <th class="text-center">Người lập</th>
         <th class="text-center" style="padding: 0px;">
             <select style="text-align:center;" id="customer-id">
                 <option value="-1">Nhà cung cấp</option>
             </select></th>
+        <th class="text-center">Số lượng nhập</th>
         <th class="text-center">Tình trạng</th>
         <th class="text-center" style="background-color: #fff;">Tổng tiền</th>
         <th></th>
@@ -18,8 +19,8 @@
     </tr>
     </thead>
     <tbody>
-    @if(!empty($listPurchaseOrders) && count($listPurchaseOrders) > 0)
-        @foreach($listPurchaseOrders as $key => $value)
+    @if(!empty($listInputs) && count($listInputs) > 0)
+        @foreach($listInputs as $key => $value)
             <tr>
                 <td style="text-align: center;">
                     <i style="color: #478fca!important;" title="Chi tiết đơn hàng"
@@ -32,11 +33,11 @@
                     </i>
                 </td>
                 <td class="text-center"
-                    style="color: #2a6496; cursor: pointer;">{{ $value->pur_order_code ? $value->pur_order_code : '' }}</td>
-                <td class="text-center">{{ $value->pur_order_date ? $value->pur_order_date : '' }}</td>
+                    style="color: #2a6496; cursor: pointer;">{{ $value->input_code ? $value->input_code : '' }}</td>
+                <td class="text-center">{{ $value->input_date ? $value->input_date : '' }}</td>
                 <td class="text-center">{{ $value->user_practise ? $value->user_practise : '' }}</td>
                 <td class="text-center">{{ $value->supplier_id ? $value->supplier->supplier_name : '' }}</td>
-                <td class="text-center">{{ $value->pur_order_status == 0 ? 'Chưa gửi NCC' : 'Đã gửi NCC' }}</td>
+                <td class="text-center">{{ $value->input_status == 0 ? 'Chưa gửi NCC' : 'Đã gửi NCC' }}</td>
                 <td class="text-center"
                     style="background-color: #F2F2F2;">{{ $value->total_price ? number_format($value->total_price) : 0 }}</td>
                 <td class="text-center" style="background: #fff;">
@@ -67,9 +68,9 @@
                                         <i class="fa fa-cart-arrow-down">
                                         </i>
                                         @php
-                                            $purOrderDetail = json_decode($value->pur_order_detail ? $value->pur_order_detail : []);
+                                            $inputDetail = json_decode($value->import_detail ? $value->import_detail : []);
                                             $countProduct = 0;
-                                            foreach ($purOrderDetail as $key => $prd) {
+                                            foreach ($inputDetail as $key => $prd) {
                                                 $countProduct += $prd->product_sell_amount;
                                             }
                                         @endphp
@@ -92,7 +93,7 @@
                                         <i class="fa fa-dollar">
                                         </i>
                                         <span
-                                            class="hidden-768">Tổng tiền: {{ $value->total_money ? number_format($value->total_money) : 0 }}
+                                            class="hidden-768">Tổng tiền: {{ $value->total_price ? number_format($value->total_price) : 0 }}
                                         </span>
                                         <label>
                                         </label>
@@ -111,10 +112,10 @@
                                     </thead>
                                     <tbody>
                                     @php
-                                        $purOrderDetail = json_decode($value->pur_order_detail ? $value->pur_order_detail : []);
+                                        $inputDetail = json_decode($value->import_detail ? $value->import_detail : []);
                                     @endphp
-                                    @if(!empty($purOrderDetail) && count($purOrderDetail) > 0)
-                                        @foreach($purOrderDetail as $key => $value)
+                                    @if(!empty($inputDetail) && count($inputDetail) > 0)
+                                        @foreach($inputDetail as $key => $value)
                                             <tr>
                                                 <td class="text-center width-5 hidden-320 ">
                                                     {{ $key + 1 }}
@@ -129,10 +130,10 @@
                                                     {{ $value->product_sell_amount ? $value->product_sell_amount : 0 }}
                                                 </td>
                                                 <td class="text-center">
-                                                    {{ $value->product_origin_price ? number_format($value->product_origin_price) : 0 }}
+                                                    {{ $value->origin_price ? number_format($value->origin_price) : 0 }}
                                                 </td>
                                                 <td class="text-center">
-                                                    {{ number_format($value->product_origin_price * $value->product_sell_amount) }}
+                                                    {{ number_format($value->origin_price * $value->product_sell_amount) }}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -150,20 +151,20 @@
 </table>
 <div class="alert alert-info summany-info clearfix" role="alert">
     @php
-       if(!empty($listPurchaseOrders) && count($listPurchaseOrders) > 0) {
+       if(!empty($listInputs) && count($listInputs) > 0) {
            $totalMoney = 0;
-           foreach ($listPurchaseOrders as $key => $value) {
-               $totalMoney += $value->total_money;
+           foreach ($listInputs as $key => $value) {
+            //    $totalMoney += $value->total_price;
            }
        }
     @endphp
     <div class="sm-info pull-left padd-0">
-        Tổng số hóa đơn: <span>{{ count($listPurchaseOrders) }}</span>
+        Tổng số hóa đơn: <span>{{ count($listInputs) }}</span>
         Tổng tiền:
-        <span>{{ $totalMoney ? number_format($totalMoney) : 0 }}</span>
+        {{-- <span>{{ $totalMoney ? number_format($totalMoney) : 0 }}</span> --}}
     </div>
     <div class="pull-right ajax-pagination">
-        {{ $listPurchaseOrders->links() }}
+        {{ $listInputs->links() }}
     </div>
 </div>
 

@@ -6,14 +6,14 @@
                 <div class="orders-act">
                     <div class="col-md-4 col-md-offset-2">
                         <div class="left-action text-left clearfix">
-                            <h2>Danh sách phiếu nhập</h2>
+                            <h2>Danh sách phiếu yêu cầu mua hàng</h2>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="right-action text-right">
                             <div class="btn-groups">
-                                <a href="{{ route('forms.createReceipt') }}" class="btn btn-primary"><i
-                                        class="fa fa-plus"></i> Tạo phiếu nhập
+                                <a href="{{ route('forms.createInput') }}" class="btn btn-primary"><i
+                                        class="fa fa-plus"></i> Tạo phiếu yêu cầu mua hàng
                                 </a>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
 
             </div>
             <div class="imports-main-body">
-                @include('cms.modules.forms.receipts.list_imports')
+                @include('cms.modules.forms.inputs.list-input')
             </div>
         </div>
     </div>

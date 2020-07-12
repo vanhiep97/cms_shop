@@ -11,10 +11,7 @@
             <div class="col-md-6">
                 <div class="right-action text-right">
                     <div class="btn-groups">
-                        <button type="button" class="btn btn-primary hidden"">
-                            <i class="fa fa-floppy-o"></i> Lưu tạm
-                        </button>
-                        <button type="button" id="btn-save-import" class="btn btn-primary"><i
+                        <button type="button" id="btn-save-bill" class="btn btn-primary"><i
                                 class="fa fa-check"></i> Lưu
                         </button>
                         <button type="button" class="btn btn-primary"><i
@@ -32,14 +29,24 @@
 
 <div class="main-space orders-space"></div>
 
-<div class="orders-content check-order">
+<div class="order-search" style="margin: 20px 20px 20px 0; padding-top: 30px">
+    <div class="row">
+        <div class="col-md-12">
+            <select id="search-input-war" class="form-control">
+                <option value="0">-- Theo phiếu nhập kho số</option>
+                    @if(!empty($listInputs) && count($listInputs) > 0)
+                        @foreach ($listInputs as $item)
+                             <option value="{{ $item->id }}">{{ $item->input_code }}</option>
+                        @endforeach
+                    @endif
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="orders-content check-order" id="input">
     <div class="row">
         <div class="col-md-8">
-            <div class="order-search" style="margin: 10px 0px; position: relative;">
-                <input type="text" class="form-control" placeholder="Nhập mã sản phẩm hoặc tên sản phẩm"
-                       id="search-pro-box" autocomplete="off">
-                       <div id="search-result-product"></div>
-            </div>
             <div class="product-results">
                 <table class="table table-bordered table-striped">
                     <thead>

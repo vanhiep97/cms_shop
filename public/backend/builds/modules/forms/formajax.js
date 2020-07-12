@@ -454,7 +454,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         let supplier_value = $('#search-box-mas').val();
         let supplier_id = $('#search-box-mas').data('id');
-        let input_date = $('#input-date').val();
+        let pur_order_date = $('#input-date').val();
         let notes = $('#note-import').val();
         let money = $('#money').attr('data-money');
         $('tbody#pro_search_append tr').each(function (key, value) {
@@ -474,10 +474,238 @@ jQuery(document).ready(function ($) {
         if(supplier_value !== '' && cart.length > 0) {
             callAjax(urlResource, 'POST', {
                 supplier_id: supplier_id,
-                input_date: input_date,
+                pur_order_date: pur_order_date,
                 notes: notes ? notes : '',
                 total_price: money,
-                import_detail: carts
+                pur_order_detail: carts
+            }).done(response => {
+                // window.location.reload();
+                $('#alert-cms-success').css('display', 'block');
+                $('#text-alert-success').text("Tạo đơn mua hàng thành công");
+                setTimeout(function() {
+                    $('#alert-cms-success').css('display', 'none');
+                }, 2000)
+                amountProduct2 = [];
+            }).fail(error => {
+                $('#alert-cms-error').css('display', 'block');
+                $('#text-alert-error').text("Tạo đơn mua hàng thất bại");
+                setTimeout(function() {
+                    $('#alert-cms-error').css('display', 'none');
+                }, 2000)
+            })
+        } else {
+            if(supplier_value === '') {
+                $('#alert-cms-error').css('display', 'block');
+                $('#text-alert-error').text("Vui lòng nhập tên nhà cung cấp");
+                setTimeout(function() {
+                    $('#alert-cms-error').css('display', 'none');
+                }, 2000)
+            } else if(cart.length < 0) {
+                $('#alert-cms-error').css('display', 'block');
+                $('#text-alert-error').text("Sản phẩm cần nhập không được trống");
+                setTimeout(function() {
+                    $('#alert-cms-error').css('display', 'none');
+                }, 2000)
+            }
+        }
+    })
+
+    $(document).on('change', '#search-pur-order', function(e) {
+        e.preventDefault();
+        let purOrderId = $(this).val();
+
+        let urlResource = '/admin/forms/show-product-by-purchase-order/' + purOrderId;
+        callAjax(urlResource, 'GET').done(response => {
+            $('#input').html(response);
+        }).fail(error => {
+            console.log(error);
+        })
+    })
+
+    $(document).on('change', '#amount-input', function (e) {
+        $('tbody#pro_on_pur_order tr').each(function (key, value) {
+            let amount_ship = $('#amount-ship').val();
+            let amount = $(this).find('td input#amount-input').val();
+            let price = $(this).find('td#origin-price').attr('data-price');
+            let result = 0;
+            if (amount < 1) {
+                $(this).find('td input#amount-input').val(1);
+                result = price;
+            } else {
+                result = parseInt(amount) * parseInt(price);
+            }
+            $(this).find('td#total-money-input').html(result);
+        });
+
+        let total_money = 0;
+        $('tbody#pro_on_pur_order tr').each(function () {
+            let quantity_product = $(this).find('input#amount-input').val();
+            let price = $(this).find('td#origin-price').attr('data-price');
+            total = parseInt(price) * parseInt(quantity_product);
+            total_money += total;
+            $('#money').attr('data-money', total_money);
+            $('#money').html(total_money);
+            $('.total-after-discount').html(total_money);
+            $('.total-after-discount').attr('data-total-money', total_money);
+        });
+    });
+
+      // save Cart to Order
+      let amountProduct3 = [];
+      $(document).on('click', '#btn-save-input', function (e) {
+          e.preventDefault();
+          $('tbody#pro_on_pur_order tr').each(function () {
+            let id = $(this).attr('data-id');
+            let product_code = $(this).find('td#product-code').attr('data-code');
+            let product_name = $(this).find('td#product-name').attr('data-name');
+            let amount_get = $(this).find('input#amount-get').attr('data-amount-get');
+            let amount_ship = $(this).find('input#amount-ship').val();
+            let amount_input = $(this).find('input#amount-input').val();
+            let origin_price = $(this).find('td#origin-price').attr('data-price');
+            let total_money_input = $(this).find('td#total-money-input').text();
+
+            let objCart = {
+                id: id,
+                product_code: product_code,
+                product_name: product_name,
+                amount_get: amount_get,
+                amount_ship: amount_ship,
+                amount_input: amount_input,
+                origin_price: origin_price,
+                total_money_input: total_money_input
+            }
+
+            cart.push(objCart)
+        });
+
+          let supplier_id = $('#search-box-mas').data('id');
+          let input_date = $('#input-date').val();
+          let notes = $('#note-import').val();
+          let money = $('#money').attr('data-money');
+          let pur_order_id = $('#search-pur-order').val();
+          $('tbody#pro_on_pur_order tr').each(function (key, value) {
+              let amount = $(this).find('td input#amount-input').val();
+              amountProduct3.push(amount);
+              cart.forEach(function(value, key) {
+                  amountProduct3.forEach(function(value, key) {
+                      cart[key]['product_sell_amount'] = value
+                  })
+              })
+          });
+
+          let carts = cart;
+
+          let urlResource = '/admin/forms/store-input';
+
+          if(cart.length > 0) {
+              callAjax(urlResource, 'POST', {
+                  pur_order_id: pur_order_id,
+                  supplier_id: supplier_id,
+                  input_date: input_date,
+                  notes: notes ? notes : '',
+                  total_price: money,
+                  import_detail: carts
+              }).done(response => {
+                  // window.location.reload();
+                  $('#alert-cms-success').css('display', 'block');
+                  $('#text-alert-success').text("Tạo phiếu nhập thành công");
+                  setTimeout(function() {
+                      $('#alert-cms-success').css('display', 'none');
+                  }, 2000)
+                  amountProduct = [];
+              }).fail(error => {
+                  $('#alert-cms-error').css('display', 'block');
+                  $('#text-alert-error').text("Tạo phiếu nhập kho thất bại");
+                  setTimeout(function() {
+                      $('#alert-cms-error').css('display', 'none');
+                  }, 2000)
+              })
+          } else {
+              if(supplier_value === '') {
+                  $('#alert-cms-error').css('display', 'block');
+                  $('#text-alert-error').text("Vui lòng nhập tên nhà cung cấp");
+                  setTimeout(function() {
+                      $('#alert-cms-error').css('display', 'none');
+                  }, 2000)
+              } else if(cart.length < 0) {
+                  $('#alert-cms-error').css('display', 'block');
+                  $('#text-alert-error').text("Sản phẩm cần nhập không được trống");
+                  setTimeout(function() {
+                      $('#alert-cms-error').css('display', 'none');
+                  }, 2000)
+              } else if(parseInt(pairPay) < parseInt(totalMoney)) {
+                  $('#alert-cms-error').css('display', 'block');
+                  $('#text-alert-error').text("Khách đưa phải lớn hơn tổng tiền");
+                  setTimeout(function() {
+                      $('#alert-cms-error').css('display', 'none');
+                  }, 2000)
+              }
+          }
+      })
+
+      $(document).on('change', '#search-input-war', function(e) {
+        e.preventDefault();
+        let inputId = $(this).val();
+
+        let urlResource = '/admin/forms/show-product-by-input/' + inputId;
+        callAjax(urlResource, 'GET').done(response => {
+            $('#input').html(response);
+        }).fail(error => {
+            console.log(error);
+        })
+    })
+
+    // save Cart to Order
+    let amountProduct4 = [];
+    $(document).on('click', '#btn-save-bill', function (e) {
+        e.preventDefault();
+        $('tbody#pro_on_input tr').each(function () {
+          let id = $(this).attr('data-id');
+          let product_code = $(this).find('td#product-code').attr('data-code');
+          let product_name = $(this).find('td#product-name').attr('data-name');
+          let amount_bill = $(this).find('input#amount-bill').val();
+          let product_origin_price = $(this).find('td#origin-price').attr('data-price');
+          let total_money_bill = $(this).find('td#total-money-bill').text();
+
+          let objCart = {
+              id: id,
+              product_code: product_code,
+              product_name: product_name,
+              amount_bill: amount_bill,
+              product_origin_price: product_origin_price,
+              total_money_bill: total_money_bill
+          }
+
+          cart.push(objCart)
+      });
+
+        let supplier_id = $('#search-box-mas').data('id');
+        let bill_date = $('#bill-date').val();
+        let notes = $('#note-bill').val();
+        let money = $('#money').attr('data-money');
+        let input_id = $('#search-input-war').val();
+        $('tbody#pro_on_input tr').each(function (key, value) {
+            let amount = $(this).find('td input#amount-bill').val();
+            amountProduct4.push(amount);
+            cart.forEach(function(value, key) {
+                amountProduct4.forEach(function(value, key) {
+                    cart[key]['product_sell_amount'] = value
+                })
+            })
+        });
+
+        let carts = cart;
+
+        let urlResource = '/admin/forms/store-bill-order';
+
+        if(cart.length > 0) {
+            callAjax(urlResource, 'POST', {
+                input_id: input_id,
+                supplier_id: supplier_id,
+                bill_date: bill_date,
+                notes: notes ? notes : '',
+                total_price: money,
+                bill_detail: carts
             }).done(response => {
                 // window.location.reload();
                 $('#alert-cms-success').css('display', 'block');
@@ -485,7 +713,7 @@ jQuery(document).ready(function ($) {
                 setTimeout(function() {
                     $('#alert-cms-success').css('display', 'none');
                 }, 2000)
-                amountProduct2 = [];
+                amountProduct = [];
             }).fail(error => {
                 $('#alert-cms-error').css('display', 'block');
                 $('#text-alert-error').text("Tạo phiếu nhập kho thất bại");
@@ -503,6 +731,12 @@ jQuery(document).ready(function ($) {
             } else if(cart.length < 0) {
                 $('#alert-cms-error').css('display', 'block');
                 $('#text-alert-error').text("Sản phẩm cần nhập không được trống");
+                setTimeout(function() {
+                    $('#alert-cms-error').css('display', 'none');
+                }, 2000)
+            } else if(parseInt(pairPay) < parseInt(totalMoney)) {
+                $('#alert-cms-error').css('display', 'block');
+                $('#text-alert-error').text("Khách đưa phải lớn hơn tổng tiền");
                 setTimeout(function() {
                     $('#alert-cms-error').css('display', 'none');
                 }, 2000)

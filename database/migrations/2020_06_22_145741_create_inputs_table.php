@@ -16,15 +16,12 @@ class CreateInputsTable extends Migration
         Schema::create('inputs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('input_code')->index()->unique();
+            $table->unsignedBigInteger('pur_order_id');
             $table->unsignedBigInteger('supplier_id');
             $table->dateTime('input_date');
             $table->text('notes')->nullable();
             $table->bigInteger('total_price')->default(0);
             $table->bigInteger('total_quantity')->default(0);
-            $table->bigInteger('discount')->default(0);
-            $table->bigInteger('total_money')->default(0);
-            $table->bigInteger('pair_pay')->default(0);
-            $table->bigInteger('lack')->default(0);
             $table->text('import_detail');
             $table->string('user_practise');
             $table->tinyInteger('input_status')->default(0);

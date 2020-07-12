@@ -14,9 +14,8 @@ class Input extends Model
         'input_code', 'supplier_id',
         'input_date', 'notes',
         'total_price', 'total_quantity',
-        'discount', 'total_money', 'lack',
-        'import_detail', 'pair_pay',
-        'user_practise', 'input_status'
+        'discount', 'pur_order_id',
+        'import_detail','user_practise', 'input_status'
     ];
 
     public function supplier()

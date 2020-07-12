@@ -116,12 +116,17 @@ Route::namespace('Cms')->group(function () {
             Route::get('/search/products', 'FormController@searchProductOnForm')->name('forms.searchProductOnImport');
             Route::get('/search/suppliers', 'FormController@searchSupplierOnForm')->name('forms.searchCustomerOnImport');
             Route::get('/buy/{id}/products', 'FormController@buyProductOnForm')->name('forms.buyProductOnPos');
-            Route::get('/reciepts', 'FormController@listReceipts')->name('forms.listReceipts');
-            Route::get('/create-receipt', 'FormController@createReceipt')->name('forms.createReceipt');
-            Route::post('/store-receipt', 'FormController@storeReceipt')->name('forms.storeReceipt');
             Route::get('/purchase-orders', 'FormController@listPurchaseOrders')->name('forms.listPurchaseOrders');
             Route::get('/create-purchase-order', 'FormController@createPurchaseOrder')->name('forms.createPurchaseOrder');
             Route::post('/store-purchase-order', 'FormController@storePurchaseOrder')->name('forms.storePurchaseOrder');
+            Route::get('/inputs', 'FormController@listInputs')->name('forms.listInputs');
+            Route::get('/create-input', 'FormController@createInput')->name('forms.createInput');
+            Route::post('/store-input', 'FormController@storeInput')->name('forms.storeInput');
+            Route::get('/show-product-by-purchase-order/{id}', 'FormController@showProductOnPurOrder')->name('forms.showProductOnPurOrder');
+            Route::get('/bill-orders', 'FormController@listBillOrders')->name('forms.listBillOrders');
+            Route::get('/create-bill-order', 'FormController@createBillOrder')->name('forms.createBillOrder');
+            Route::post('/store-receipt', 'FormController@storeBillOrder')->name('forms.storeBillOrder');
+            Route::get('/show-product-by-input/{id}', 'FormController@showProductOnInput')->name('forms.showProductOnInput');
         });
 
         Route::prefix('barcode')->group(function () {
