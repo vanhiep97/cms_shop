@@ -12,11 +12,13 @@ class BillOrder extends Model
 
     protected $fillable = [
         'bill_code',
+        'input_id',
         'bill_date',
         'user_practise',
         'supplier_id',
         'total_price',
         'notes',
+        'sell_type',
         'coupon',
         'total_money',
         'total_quantity',
@@ -26,7 +28,7 @@ class BillOrder extends Model
         'bill_status'
     ];
 
-    public function supplier()
+    public function sup()
     {
         return $this->belongsTo(Supllier::class, 'supplier_id');
     }

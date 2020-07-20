@@ -27,4 +27,8 @@ class Supplier extends Model
     {
         return $this->hasMany(PurchaseOrder::class, 'supplier_id');
     }
+
+    public function BillOrders() {
+        return $this->hasMany(BillOrder::class, 'supplier_id');
+    }
 }

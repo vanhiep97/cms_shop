@@ -89,6 +89,7 @@
                 </div>
             </div>
             <div class="revenue-main-body">
+                @include('cms.modules.revenue.all')
             </div>
         </div>
     </div>

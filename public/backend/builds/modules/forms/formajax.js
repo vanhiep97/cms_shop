@@ -684,6 +684,12 @@ jQuery(document).ready(function ($) {
         let notes = $('#note-bill').val();
         let money = $('#money').attr('data-money');
         let input_id = $('#search-input-war').val();
+        let sell_type = $('#sell_type:checked').val();
+        let coupon = $('#discount-order').val();
+        let totalMoney = $('.total-after-discount').attr('data-total-money');
+        let pairPay = $('.customer-pay').val() > 0 ? $('.customer-pay').val() : 0;
+        let lack = $('#lack').attr('data-lack');
+
         $('tbody#pro_on_input tr').each(function (key, value) {
             let amount = $(this).find('td input#amount-bill').val();
             amountProduct4.push(amount);
@@ -704,7 +710,12 @@ jQuery(document).ready(function ($) {
                 supplier_id: supplier_id,
                 bill_date: bill_date,
                 notes: notes ? notes : '',
+                sell_type: sell_type,
                 total_price: money,
+                coupon: coupon,
+                total_money: totalMoney,
+                pair_pay: pairPay,
+                lack: lack,
                 bill_detail: carts
             }).done(response => {
                 // window.location.reload();

@@ -9,6 +9,7 @@ class RevenueController extends Controller
 {
     public function index()
     {
+        $orders = Order::all();
         return view('cms.modules.revenue.index');
     }
 }

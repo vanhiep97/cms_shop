@@ -20,8 +20,7 @@ class OrderController extends Controller
         $startDayOfWeek = $date->startOfWeek();
         $endDayOfWeek = $date->endOfWeek();
 
-        $lastDayofPreviousMonth = Carbon::now()->endOfMonth()->subMonth()->toDateString();;
-        dd($lastDayofPreviousMonth);
+        $lastDayofPreviousMonth = Carbon::now()->endOfMonth()->subMonth()->toDateString();
         $orders = Order::with('customer')->paginate(5);
         return view('cms.modules.orders.index', compact('orders'));
     }

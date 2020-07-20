@@ -22,4 +22,9 @@ class Input extends Model
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
+
+    public function billOrder()
+    {
+        return $this->hasOne(BillOrder::class, 'input_id');
+    }
 }

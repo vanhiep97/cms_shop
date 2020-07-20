@@ -41,10 +41,13 @@
                 <td class="text-center"
                     style="background-color: #F2F2F2;">{{ $value->total_price ? number_format($value->total_price) : 0 }}</td>
                 <td class="text-center" style="background: #fff;">
-                    <i title="In"
-                       class="fa fa-print blue"
-                       style="margin-right: 5px;"></i>
-                    <i class="fa fa-trash-o" style="color: darkred;"></i></td>
+                    <a href="{{ route('form.printInput', ['id' => $value->id]) }}">
+                        <i title="In"
+                        class="fa fa-print blue"
+                        style="margin-right: 5px;"></i>
+                        <i class="fa fa-trash-o" style="color: darkred;"></i>
+                    </a>
+                </td>
                 <td class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
                                                                                           value=""
                                                                                           class="checkbox chk"><span
@@ -154,14 +157,14 @@
        if(!empty($listInputs) && count($listInputs) > 0) {
            $totalMoney = 0;
            foreach ($listInputs as $key => $value) {
-            //    $totalMoney += $value->total_price;
+               $totalMoney += $value->total_price;
            }
        }
     @endphp
     <div class="sm-info pull-left padd-0">
         Tổng số hóa đơn: <span>{{ count($listInputs) }}</span>
         Tổng tiền:
-        {{-- <span>{{ $totalMoney ? number_format($totalMoney) : 0 }}</span> --}}
+        <span>{{ $totalMoney ? number_format($totalMoney) : 0 }}</span>
     </div>
     <div class="pull-right ajax-pagination">
         {{ $listInputs->links() }}

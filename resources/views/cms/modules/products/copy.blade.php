@@ -43,23 +43,35 @@
                             <div class="col-md-8">
                                 <div class="row">
                                     <div class="form-group clearfix">
-                                        <div class="col-md-12 padd-left-0 padd-right-0">
-                                            <label>Tên sản phẩm</label>
-                                            <input type="text" name="product_name" value="{{ old('product_name', $product->product_name.'(copy)') }}" id="product_name"
-                                                   class="form-control"
-                                                   placeholder="Nhập tên sản phẩm"/>
+                                            <div class="col-md-12 padd-left-0 padd-right-0">
+                                                <label>Tên sản phẩm</label>
+                                                <input type="text" name="product_name" value="{{ old('product_name', $product->product_name.'(copy)') }}" id="product_name"
+                                                    class="form-control"
+                                                    placeholder="Nhập tên sản phẩm"/>
+                                            </div>
                                         </div>
-                                    </div>
                                     <div class="form-group clearfix">
                                         <div class="col-md-6 padd-left-0">
-                                            <label>Mã sản phẩm</label>
-                                            <input type="text" name="product_code" value="{{ old('product_code', $product->product_code.'(copy)') }}" id="product_code" class="form-control "
-                                                   placeholder="Nếu không nhập, hệ thống sẽ tự sinh."/>
+                                            <label class="checkbox" style="display: block;"><input type="checkbox"
+                                                                                                id="prd_inventory"
+                                                                                                class="checkbox"
+                                                                                                name="product_inventory"
+                                                                                                value="1"
+                                                                                                {{ $product->product_inventory == 1 ? 'checked' : ''}}
+                                                                                                ><span></span> Cho phép tồn kho?</label>
+                                            <label class="checkbox"><input type="checkbox"
+                                                                        id="product_allow_negative"
+                                                                        class="checkbox"
+                                                                        name="product_allow_negative"
+                                                                        value="1"
+                                                                        {{ $product->product_allow_negative == 1 ? 'checked' : ''}}
+                                                                        >
+                                                <span></span> Cho phép bán hàng tồn kho?</label>
                                         </div>
                                         <div class="col-md-6 padd-right-0">
-                                            <label>Số lượng</label>
-                                            <input type="text" name="product_amount" value="{{ old('product_amount', $product->product_amount) }}" id="product_amount" placeholder="0"
-                                                   class="form-control text-right txtNumber"/>
+                                            <label>Số lượng tồn kho</label>
+                                            <input type="text" name="product_amount" value="{{ old('product_amount', $product->product_amount_inventory) }}" id="product_amount" placeholder="0"
+                                                   class="form-control text-right txtNumber" {{ $product->product_inventory == 1 ? '' : 'disabled'}}/>
                                         </div>
                                     </div>
                                     <div class="form-group clearfix">

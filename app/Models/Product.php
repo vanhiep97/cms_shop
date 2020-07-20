@@ -19,8 +19,11 @@ class Product extends Model
         'product_code',
         'product_name',
         'product_amount',
+        'product_amount_inventory',
         'product_origin_price',
         'product_sell_price',
+        'product_inventory',
+        'product_allow_negative',
         'product_manufacture_id',
         'product_group_id',
         'product_image_url',
@@ -42,5 +45,10 @@ class Product extends Model
     public function store()
     {
         return $this->belongsToMany('App\Models\Store::class', 'product_store', 'product_id', 'store_id');
+    }
+
+    public function inventories()
+    {
+        return $this->hasMany(Inventory::class, 'product_id');
     }
 }

@@ -9,6 +9,15 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    $(document).on('change', '#prd_inventory', function(e) {
+        e.preventDefault();
+        if ($('input#prd_inventory:checked').length > 0) {
+            $('#product_amount').removeAttr('disabled');
+        } else {
+            $('#product_amount').attr('disabled', 'disabled');
+        }
+    });
+
     // create or update product
     $(document).on("click", "#btn-save-continue", function () {
         formProduct.validate({
@@ -17,12 +26,6 @@ jQuery(document).ready(function ($) {
                     required: true,
                     minlength: 10,
                     maxlength: 255,
-                },
-                product_amount: {
-                    required: true,
-                    number: true,
-                    min: 1,
-                    max: 10000
                 },
                 product_origin_price: {
                     required: true,
@@ -43,11 +46,6 @@ jQuery(document).ready(function ($) {
                     minlength: 'Nhập tối thiểu 10 kí tự',
                     maxlength: 'Nhập tối đa 255 kí tự',
                 },
-                product_amount: {
-                    required: 'Vui lòng nhập số lượng sản phẩm',
-                    min: 'Nhập tối thiểu 1 sản phẩm',
-                    max: 'Nhập tối đa 10000 sản phẩm',
-                },
                 product_origin_price: {
                     required: 'Vui lòng nhập giá vốn',
                     min: 'Giá sản phẩm tối thiểu 1 VNĐ',
@@ -64,33 +62,65 @@ jQuery(document).ready(function ($) {
                 let actionType = $('#btn-save-continue').val();
                 if (actionType === 'update-product') {
                     let id = $('#btn-save-continue').data('id');
-                    let dataResource = formProduct.serialize();
-                    let urlResource = "/admin/products/" + id;
-                    callAjax(urlResource, 'PATCH', dataResource)
-                        .done(response => {
-                            formProduct.trigger("reset");
-                            loadSwalAlert('success', 'OK', 'Cập nhật sản phẩm thành công');
-                            window.location.reload();
-                        })
-                        .fail(error => {
-                            // if (error.responseJSON.errors.category_name) {
-                            //     loadSwalAlert('error', '!OK','Tên danh mục đã tồn tại');
-                            // }
-                        });
+                    let originPrice = $('#product_origin_price').val();
+                    let sellPrice = $('#product_sell_price').val();
+
+                    if(sellPrice < originPrice) {
+                        $('#alert-cms-error').css('display', 'block');
+                        $('#text-alert-error').text("Giá bán phải lớn hơn giá nhập");
+                        setTimeout(function () {
+                            $('#alert-cms-error').css('display', 'none');
+                        }, 2000)
+                    } else {
+                        let dataResource = formProduct.serialize();
+                        let urlResource = "/admin/products/" + id;
+                        callAjax(urlResource, 'PATCH', dataResource)
+                            .done(response => {
+                                formProduct.trigger("reset");
+                                window.location.reload();
+                                $('#alert-cms-success').css('display', 'block');
+                                $('#text-alert-success').text("Cập nhật sản phẩm thành công");
+                                setTimeout(function () {
+                                    $('#alert-cms-success').css('display', 'none');
+                                }, 2000)
+                            })
+                            .fail(error => {
+                                console.log(error);
+                            });
+                    }
                 } else {
-                    let dataResource = formProduct.serialize();
-                    let urlResource = "/admin/products/";
-                    callAjax(urlResource, 'POST', dataResource)
-                        .done(response => {
-                            formProduct.trigger("reset");
-                            loadSwalAlert('success', 'OK', 'Thêm sản phẩm thành công');
-                            window.location.reload();
-                        })
-                        .fail(error => {
-                            // if (error.responseJSON.errors.category_name) {
-                            //     loadSwalAlert('error', '!OK','Tên danh mục đã tồn tại');
-                            // }
-                        });
+                    let originPrice = $('#product_origin_price').val();
+                    let sellPrice = $('#product_sell_price').val();
+
+                    if (sellPrice < originPrice) {
+                        $('#alert-cms-error').css('display', 'block');
+                        $('#text-alert-error').text("Giá bán phải lớn hơn giá nhập");
+                        setTimeout(function () {
+                            $('#alert-cms-error').css('display', 'none');
+                        }, 2000)
+                    } else {
+                        let dataResource = formProduct.serialize();
+                        let urlResource = "/admin/products/";
+                        callAjax(urlResource, 'POST', dataResource)
+                            .done(response => {
+                                formProduct.trigger("reset");
+                                window.location.reload();
+                                $('#alert-cms-success').css('display', 'block');
+                                $('#text-alert-success').text("Thêm sản phẩm thành công");
+                                setTimeout(function () {
+                                    $('#alert-cms-success').css('display', 'none');
+                                }, 2000)
+                            })
+                            .fail(error => {
+                                if (error.responseJSON.errors.product_name) {
+                                    $('#alert-cms-error').css('display', 'block');
+                                    $('#text-alert-error').text("Sản phẩm đã tồn tại");
+                                    setTimeout(function () {
+                                        $('#alert-cms-error').css('display', 'none');
+                                    }, 2000)
+                                }
+                            });
+                    }
                 }
             }
         });
@@ -104,12 +134,6 @@ jQuery(document).ready(function ($) {
                     minlength: 10,
                     maxlength: 255,
                 },
-                product_amount: {
-                    required: true,
-                    number: true,
-                    min: 1,
-                    max: 10000
-                },
                 product_origin_price: {
                     required: true,
                     number: true,
@@ -129,11 +153,6 @@ jQuery(document).ready(function ($) {
                     minlength: 'Nhập tối thiểu 10 kí tự',
                     maxlength: 'Nhập tối đa 255 kí tự',
                 },
-                product_amount: {
-                    required: 'Vui lòng nhập số lượng sản phẩm',
-                    min: 'Nhập tối thiểu 1 sản phẩm',
-                    max: 'Nhập tối đa 10000 sản phẩm',
-                },
                 product_origin_price: {
                     required: 'Vui lòng nhập giá vốn',
                     min: 'Giá sản phẩm tối thiểu 1 VNĐ',
@@ -147,36 +166,68 @@ jQuery(document).ready(function ($) {
             },
             submitHandler: function (form) {
                 tinyMCE.triggerSave();
-                let actionType = $('#btn-save-continue').val();
+                let actionType = $('#btn-save').val();
                 if (actionType === 'update-product') {
-                    let id = $('#btn-save-continue').data('id');
-                    let dataResource = formProduct.serialize();
-                    let urlResource = "/admin/products/" + id;
-                    callAjax(urlResource, 'PATCH', dataResource)
-                        .done(response => {
-                            formProduct.trigger("reset");
-                            loadSwalAlert('success', 'OK', 'Cập nhật sản phẩm thành công');
-                            window.location.href = '/admin/products';
-                        })
-                        .fail(error => {
-                            // if (error.responseJSON.errors.category_name) {
-                            //     loadSwalAlert('error', '!OK','Tên danh mục đã tồn tại');
-                            // }
-                        });
+                    let id = $('#btn-save').data('id');
+                    let originPrice = $('#product_origin_price').val();
+                    let sellPrice = $('#product_sell_price').val();
+
+                    if (sellPrice < originPrice) {
+                        $('#alert-cms-error').css('display', 'block');
+                        $('#text-alert-error').text("Giá bán phải lớn hơn giá nhập");
+                        setTimeout(function () {
+                            $('#alert-cms-error').css('display', 'none');
+                        }, 2000)
+                    } else {
+                        let dataResource = formProduct.serialize();
+                        let urlResource = "/admin/products/" + id;
+                        callAjax(urlResource, 'PATCH', dataResource)
+                            .done(response => {
+                                formProduct.trigger("reset");
+                                window.location.href = '/admin/products';
+                                $('#alert-cms-success').css('display', 'block');
+                                $('#text-alert-success').text("Cập nhật sản phẩm thành công");
+                                setTimeout(function () {
+                                    $('#alert-cms-success').css('display', 'none');
+                                }, 2000)
+                            })
+                            .fail(error => {
+                                console.log(error);
+                            });
+                    }
                 } else {
-                    let dataResource = formProduct.serialize();
-                    let urlResource = "/admin/products/";
-                    callAjax(urlResource, 'POST', dataResource)
-                        .done(response => {
-                            formProduct.trigger("reset");
-                            loadSwalAlert('success', 'OK', 'Thêm sản phẩm thành công');
-                            window.location.href = '/admin/products';
-                        })
-                        .fail(error => {
-                            // if (error.responseJSON.errors.category_name) {
-                            //     loadSwalAlert('error', '!OK','Tên danh mục đã tồn tại');
-                            // }
-                        });
+                    let originPrice = $('#product_origin_price').val();
+                    let sellPrice = $('#product_sell_price').val();
+
+                    if (sellPrice < originPrice) {
+                        $('#alert-cms-error').css('display', 'block');
+                        $('#text-alert-error').text("Giá bán phải lớn hơn giá nhập");
+                        setTimeout(function () {
+                            $('#alert-cms-error').css('display', 'none');
+                        }, 2000)
+                    } else {
+                        let dataResource = formProduct.serialize();
+                        let urlResource = "/admin/products/";
+                        callAjax(urlResource, 'POST', dataResource)
+                            .done(response => {
+                                formProduct.trigger("reset");
+                                window.location.href = '/admin/products';
+                                $('#alert-cms-success').css('display', 'block');
+                                $('#text-alert-success').text("Thêm sản phẩm thành công");
+                                setTimeout(function () {
+                                    $('#alert-cms-success').css('display', 'none');
+                                }, 2000)
+                            })
+                            .fail(error => {
+                                if (error.responseJSON.errors.product_name) {
+                                    $('#alert-cms-error').css('display', 'block');
+                                    $('#text-alert-error').text("Sản phẩm đã tồn tại");
+                                    setTimeout(function () {
+                                        $('#alert-cms-error').css('display', 'none');
+                                    }, 2000)
+                                }
+                            });
+                    }
                 }
             }
         });
@@ -199,13 +250,13 @@ jQuery(document).ready(function ($) {
                     confirmButtonText: 'Yes, delete it!',
                 }).then((result) => {
                     if (result.value) {
-                        Swal.fire(
-                            'Deleted!',
-                            'Your file has been deleted.',
-                            'success'
-                        );
                         $("#product_" + id).remove();
                         window.location.reload();
+                        $('#alert-cms-success').css('display', 'block');
+                        $('#text-alert-success').text("Xóa sản phẩm thành công");
+                        setTimeout(function () {
+                            $('#alert-cms-success').css('display', 'none');
+                        }, 2000)
                     }
                 })
             })
@@ -241,15 +292,15 @@ jQuery(document).ready(function ($) {
                         confirmButtonText: 'Yes, delete it!',
                     }).then((result) => {
                         if (result.value) {
-                            Swal.fire(
-                                'Deleted!',
-                                'Your file has been deleted.',
-                                'success'
-                            );
                             $.each(ids, function (key, value) {
                                 $("#product_" + value).remove();
                             });
                             window.location.reload();
+                            $('#alert-cms-success').css('display', 'block');
+                            $('#text-alert-success').text("Xóa sản phẩm thành công");
+                            setTimeout(function () {
+                                $('#alert-cms-success').css('display', 'none');
+                            }, 2000)
                         }
                     })
                 })
@@ -267,7 +318,11 @@ jQuery(document).ready(function ($) {
         callAjax(urlResouce, 'PATCH')
             .done(response => {
                 window.location.reload();
-                loadSwalAlert('success', 'OK', 'Cập nhật trạng thái thành công');
+                $('#alert-cms-success').css('display', 'block');
+                $('#text-alert-success').text("Cập nhật trạng thái thành công");
+                setTimeout(function () {
+                    $('#alert-cms-success').css('display', 'none');
+                }, 2000)
             })
             .fail(error => {
                 console.log(error);
@@ -296,6 +351,11 @@ jQuery(document).ready(function ($) {
         callAjax(urlResource, 'POST')
             .done(response => {
                 window.location.reload();
+                $('#alert-cms-success').css('display', 'block');
+                $('#text-alert-success').text("Khôi phục sản phẩm thành công");
+                setTimeout(function () {
+                    $('#alert-cms-success').css('display', 'none');
+                }, 2000)
             })
             .fail(error => {
                 console.log(error);

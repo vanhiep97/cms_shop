@@ -20,6 +20,7 @@ class CreateBillOrdersTable extends Migration
             $table->unsignedBigInteger('supplier_id');
             $table->dateTime('bill_date');
             $table->string('notes')->nullable();
+            $table->tinyInteger('sell_type')->default(0);
             $table->bigInteger('total_price')->default(0);
             $table->integer('coupon')->default(0);
             $table->bigInteger('total_money')->default(0);

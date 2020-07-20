@@ -42,26 +42,36 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="row">
-                                    <div class="form-group clearfix">
-                                        <div class="col-md-12 padd-left-0 padd-right-0">
-                                            <label>Tên sản phẩm</label>
-                                            <input type="text" name="product_name" id="product_name"
-                                                   class="form-control"
-                                                   placeholder="Nhập tên sản phẩm"/>
+                                    <div class="col-md-12">
+                                        <div class="form-group clearfix">
+                                            <div class="col-md-12 padd-left-0 padd-right-0">
+                                                <label>Tên sản phẩm</label>
+                                                <input type="text" name="product_name" id="product_name"
+                                                    class="form-control"
+                                                    placeholder="Nhập tên sản phẩm"/>
+                                            </div>
                                         </div>
-                                    </div>
                                     <div class="form-group clearfix">
-                                    <div class="col-md-6 padd-left-0">
-                                            <label>Mã sản phẩm</label>
-                                            <input type="text" name="product_code" id="product_code" class="form-control "
-                                                   placeholder="Nếu không nhập, hệ thống sẽ tự sinh."/>
+                                        <div class="col-md-6 padd-left-0">
+                                            <label class="checkbox" style="display: block;"><input type="checkbox"
+                                                                                                id="prd_inventory"
+                                                                                                class="checkbox"
+                                                                                                name="product_inventory"
+                                                                                                value="1"><span></span> Cho phép tồn kho?</label>
+                                            <label class="checkbox"><input type="checkbox"
+                                                                        id="product_allow_negative"
+                                                                        class="checkbox"
+                                                                        name="product_allow_negative"
+                                                                        value="1">
+                                                <span></span> Cho phép bán hàng tồn kho?</label>
                                         </div>
-                                        <div class="col-md-6 padd-rigth-0">
-                                            <label>Số lượng</label>
+                                        <div class="col-md-6 padd-right-0">
+                                            <label>Số lượng tồn kho</label>
                                             <input type="text" name="product_amount" id="product_amount" placeholder="0"
-                                                   class="form-control text-right txtNumber"/>
+                                                   class="form-control text-right txtNumber" disabled/>
                                         </div>
                                     </div>
+
                                     <div class="form-group clearfix">
                                         <div class="col-md-6 padd-left-0">
                                             <label>Giá vốn</label>
@@ -74,6 +84,7 @@
                                                    class="form-control text-right" placeholder="Nhập giá bán"/>
                                         </div>
                                     </div>
+
                                     <div class="form-group clearfix">
                                         <div class="col-md-6 padd-left-0">
                                             <label>Danh mục</label>
@@ -113,6 +124,7 @@
                                                 </button>
                                             </div>
                                         </div>
+                                    </div>
                                     </div>
                                 </div>
                             </div>

@@ -56,7 +56,9 @@
             </div>
 
             <div class="tonkho hien-thi-bang-ajax">
-                <div class="inventory-main-body-public_templates_js_ajax_js"></div>
+                <div class="inventory-main-body-public_templates_js_ajax_js">
+                    @include('cms.modules.inventory.list-inventory');
+                </div>
             </div><!-- end .tonkho -->
 
         </div>

@@ -4,7 +4,6 @@
         <ul class="nav nav-tabs tab-setting" role="tablist">
             <li role="presentation" class="active"><a href="#user" aria-controls="home" role="tab" data-toggle="tab"><i
                         class="fa fa-user"></i> Nhân viên</a></li>
-            <li role="presentation"><a href="#stores" aria-controls="stores" role="tab" data-toggle="tab">Kho</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -146,40 +145,6 @@
                         <p><span style="font-weight: bold;">[Nhân viên bán hàng]</span> chỉ được bán hàng, nhập trả hàng
                             và
                             xem báo cáo cuối ngày</p>
-                    </div>
-                </div>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="stores">
-                <div class="panel panel-primary" style="margin-top: 20px">
-                    <div class="panel-heading">
-                        <i class="fa fa-users"></i> Danh sách kho
-                        <div class="action pull-right">
-                            <button class="btn btn-default btn-sm create-group btn-in-panel blue" data-toggle="modal"
-                                    data-target="#create-store"><i class="fa fa-pencil blue"></i> Thêm kho
-                            </button>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table-responsive ">
-                            <table class="table table-store table-hover">
-                                <thead>
-                                <th class="text-center ind">#</th>
-                                <th>Tên Kho</th>
-                                <th>Ngày tạo</th>
-                                </thead>
-                                <tbody>
-                                @if(!empty($stores) && count($stores))
-                                    @foreach($stores as $key => $value)
-                                        <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $value->store_name }}</td>
-                                            <td>{{ $value->created_at }}</td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -20,7 +20,7 @@
                         <label for="name">Tên nhân viên</label>
                     </div>
                     <div class="col-md-8">
-                        <span class="">fsfddfs</span>
+                        <span class="">{{ auth()->user()->name }}</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -28,7 +28,7 @@
                         <label for="name">Mã Nhân Viên</label>
                     </div>
                     <div class="col-md-8">
-                        <strong><span class="">dfsdfs</span></strong>
+                        <strong><span class="">{{ auth()->user()->user_code }}</span></strong>
                     </div>
                 </div>
                 <div class="form-group">
@@ -80,7 +80,7 @@
                         <label for="name">Email</label>
                     </div>
                     <div class="col-md-8">
-                        <span class="">dfggf</span>
+                        <span class="">{{ auth()->user()->email }}</span>
                     </div>
                 </div>
                 <div class="form-group">

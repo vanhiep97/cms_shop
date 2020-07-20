@@ -9,6 +9,8 @@ use App\Models\Supplier;
 use App\Models\Input;
 use App\Models\PurchaseOrder;
 use App\Models\Receipt;
+use App\Models\BillOrder;
+use PDF;
 
 class FormController extends Controller
 {
@@ -71,6 +73,14 @@ class FormController extends Controller
         ], 200);
     }
 
+    public function printPurchaseOrder($id)
+    {
+        $purchaseOrder = PurchaseOrder::with('supplier')->find($id);
+        PDF::setOptions(['dpi' => 150, 'defaultFont' => 'DejaVu Sans']);
+        $pdf = PDF::loadView('cms.modules.forms.purchase-orders.invoice', compact('purchaseOrder'))->setPaper('a4', 'portrait');
+        return $pdf->stream('invoice.pdf', array("Attachment" => false));
+    }
+
     public function listInputs()
     {
         $listInputs = Input::with('supplier')->paginate(5);
@@ -118,9 +128,18 @@ class FormController extends Controller
         ], 200);
     }
 
+    public function printInput($id)
+    {
+        $input = Input::with('supplier')->find($id);
+        PDF::setOptions(['dpi' => 150, 'defaultFont' => 'DejaVu Sans']);
+        $pdf = PDF::loadView('cms.modules.forms.inputs.invoice', compact('input'))->setPaper('a4', 'portrait');
+        return $pdf->stream('invoice.pdf', array("Attachment" => false));
+    }
+
     public function listBillOrders()
     {
-        return view('cms.modules.forms.bill-orders.index');
+        $listBillOrders = BillOrder::with('input')->paginate(5);
+        return view('cms.modules.forms.bill-orders.index', compact('listBillOrders'));
     }
 
     public function createBillOrder()
@@ -139,32 +158,33 @@ class FormController extends Controller
     {
         $min = 0000000001;
         $max = 9999999999;
-        $inputCode = 'PNK-'.random_int ($min , $max);
-        $importDetails = $request->import_detail;
+        $billCode = 'HDM-'.random_int ($min , $max);
+        $billOrderDetails = $request->bill_detail;
         $totalOriginPrice = 0;
-        foreach ($importDetails as $value) {
+        foreach ($billOrderDetails as $value) {
             $totalOriginPrice += $value['product_origin_price'];
         }
-        $importDetail = json_encode($request->import_detail);
-        $receipts = Input::create([
-            'input_code' => $inputCode,
-            'input_date' => $request->input_date,
+        $billOrderDetail = json_encode($billOrderDetails);
+        $billOrders = BillOrder::create([
+            'bill_code' => $billCode,
+            'input_id' => $request->input_id,
+            'bill_date' => $request->bill_date,
             'user_practise' => auth()->user()->name,
             'supplier_id' => $request->supplier_id,
             'notes' => $request->notes,
-            'total_origin_price' => $totalOriginPrice,
+            'sell_type' => $request->sell_type,
             'total_price' => $request->total_price,
-            'discount' => $request->discount,
+            'counpon' => $request->discount,
             'total_money' => $request->total_money,
             'pair_pay' => $request->pair_pay,
             'lack' => $request->lack,
-            'input_status' => $request->input_status,
-            'import_detail' => $importDetail,
+            'bill_status' => 0,
+            'bill_detail' => $billOrderDetail,
         ]);
         return response()->json([
             'isSuccess' => true,
-            'message' => 'Create Receipt',
-            'receipt' => $receipts
+            'message' => 'Create Bill Order',
+            'receipt' => $billOrders
         ], 200);
     }
 }

@@ -11,6 +11,9 @@ use App\Repositories\Cms\ProductGroup\ProductGroupRepository;
 use App\Services\StatusResponse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Requests\products\CreateProductRequest;
+use App\Http\Requests\products\UpdateProductRequest;
+use App\Models\Inventory;
 
 class ProductController extends Controller
 {
@@ -69,12 +72,23 @@ class ProductController extends Controller
         return view('cms.modules.products.create', compact('prodGroup', 'manufactures'));
     }
 
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
         $products = $this->productRepository->createOrUpdateProduct($request->all());
+        if($products->product_inventory == 1) {
+                $dataInventory = [
+                'product_id' => $products->id,
+                'quantity' => $products->product_amount_inventory,
+                'user_practise' => $products->user_practise
+            ];
+
+            $inventory = Inventory::create($dataInventory);
+        }
+
         return response()->json([
             'code' => 201,
             'products' => $products,
+            'inventory' => $inventory
         ], 201);
     }
 
@@ -94,9 +108,21 @@ class ProductController extends Controller
         return view('cms.modules.products.copy', compact('product', 'prodGroup', 'manufactures'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateProductRequest $request, $id)
     {
         $product = $this->productRepository->createOrUpdateProduct($request->all(), $id);
+        if($product->product_inventory == 1) {
+            $dataInventory = [
+                'quantity' => $product->product_amount_inventory,
+                'user_practise' => $product->user_practise
+            ];
+
+            Inventory::updateOrCreate(['product_id' => $product->id], $dataInventory);
+        } else {
+            if($product->id) {
+                Inventory::where('product_id', $product->id)->delete();
+            }
+        }
         return response()->json([
             'code' => 200,
             'product' => $product,
