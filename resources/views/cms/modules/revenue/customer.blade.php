@@ -6,8 +6,22 @@
                     <i class="fa fa-clock-o cgreen" style="font-size: 45px;" aria-hidden="true"></i>
                 </div>
                 <div class="infobox-data">
+                     @php
+                        if(!empty($orders) && count($orders) > 0) {
+                            $totalProductOnOrder = 0;
+                            $totalCoupon = 0;
+                            $totalMoney = 0;
+                            $totalLack = 0;
+                            foreach ($orders as $key => $value) {
+                                $totalProductOnOrder += $value->total_quantity;
+                                $totalCoupon += $value->coupon;
+                                $totalMoney += $value->total_money;
+                                $totalLack += $value->lack;
+                            }
+                        }
+                    @endphp
                     <h3 class="infobox-title cgreen"
-                        style="font-size: 25px;"></h3>
+                        style="font-size: 25px;">{{ ($customers ? count($customers) : 0). '/' .($totalProductOnOrder ? $totalProductOnOrder : 0)}}</h3>
                     <span class="infobox-data-number text-center" style="font-size: 14px; color: #555;">Khách hàng / Số lượng SP</span>
                 </div>
             </div>
@@ -19,7 +33,7 @@
                 </div>
                 <div class="infobox-data">
                     <h3 class="infobox-title blue"
-                        style="font-size: 25px;"></h3>
+                        style="font-size: 25px;">{{ $totalCoupon ? number_format($totalCoupon) : 0 }}</h3>
                     <span class="infobox-data-number text-center"
                           style="font-size: 14px; color: #555;">Chiếc khấu</span>
                 </div>
@@ -32,7 +46,7 @@
                 </div>
                 <div class="infobox-data">
                     <h3 class="infobox-title orange"
-                        style="font-size: 25px;"></h3>
+                        style="font-size: 25px;">{{ $totalMoney ? number_format($totalMoney) : 0 }}</h3>
                     <span class="infobox-data-number text-center"
                           style="font-size: 14px; color: #555;">Doanh số</span>
                 </div>
@@ -45,8 +59,8 @@
                 </div>
                 <div class="infobox-data">
                     <h3 class="infobox-title cred"
-                        style="font-size: 25px;"></h3>
-                    <span class="infobox-data-number text-center" style="font-size: 14px; color: #555;">Khách nợ</span>
+                        style="font-size: 25px;">{{ $totalLack ? number_format($totalLack) : 0 }}</h3>
+                    <span class="infobox-data-number text-center" style="font-size: 14px; color: #555;">Hoàn trả khách</span>
                 </div>
             </div>
         </div>
@@ -66,24 +80,42 @@
     </tr>
     </thead>
     <tbody>
+         @php
+            if(!empty($customers) && count($customers) > 0) {
+                foreach($customers as $key => $value) {
+                    $orderCustomer = $value->orders;
+                }
+                $couponCustomer = 0;
+                $totalMoneyCustomer = 0;
+                $totalMoneyLack = 0;
+                foreach($orderCustomer as $item) {
+                    $couponCustomer += $item->coupon;
+                    $totalMoneyCustomer += $item->total_money;
+                    $totalMoneyLack += $item->lack;
+                }
+            }
+        @endphp
+        @if(!empty($customers) && count($customers) > 0)
+        @foreach($customers as $key => $value)
             <tr>
                 <td style="text-align: center;">
                     <i style="color: #478fca!important;" title="Chi tiết đơn hàng"
-                                                   class="fa fa-plus-circle i-list-order">
-
+                       class="fa fa-plus-circle i-detail-order-{{ $value->id }}"
+                       onclick="cms_show_detail_order({{ $value->id }})">
                     </i>
                     <i style="color: #478fca!important;" title="Chi tiết đơn hàng"
-                       class="fa fa-minus-circle i-hide i-list-order">
+                       class="fa fa-minus-circle i-hide i-detail-order-{{ $value->id }}"
+                       onclick="cms_show_detail_order({{ $value->id }})">
                     </i>
                 </td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
+                <td class="text-center">{{ $value->customer_name }}</td>
+                <td class="text-center">{{ $value->orders ? count($value->orders) : 0 }}</td>
+                <td class="text-center">{{ $couponCustomer ? $couponCustomer : 0 }}</td>
+                <td class="text-center">{{ $couponCustomer ? number_format($couponCustomer) : 0 }}</td>
+                <td class="text-center">{{ $totalMoneyCustomer ? number_format($totalMoneyCustomer) : 0 }}</td>
+                <td class="text-center">{{ $totalMoneyLack ? number_format($totalMoneyLack) : 0 }}</td>
             </tr>
-            <tr class="tr-hide" id="tr-list-order">
+            <tr class="tr-hide" id="tr-detail-order-{{ $value->id }}">
                 <td colspan="15">
                     <div class="tabbable">
                         <ul class="nav nav-tabs">
@@ -101,29 +133,31 @@
                                     <tr role="row">
                                         <th class="text-center">STT</th>
                                         <th class="text-left hidden-768">Mã đơn hàng</th>
-                                        <th class="text-left">Kho xuất</th>
                                         <th class="text-center">Ngày bán</th>
                                         <th class="text-center">Thu ngân</th>
                                         <th class="text-center ">Số lượng</th>
                                         <th class="text-center ">Chiếc khấu</th>
                                         <th class="text-center ">Tổng tiền</th>
-                                        <th class="text-center ">Nợ</th>
+                                        <th class="text-center ">Hoàn trả khách</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                        @if(!empty($value->orders) && count($value->orders) > 0)
+                                        @foreach($value->orders as $key => $value)
                                         <tr>
-                                            <td class="text-center width-5 hidden-320 "></td>
-                                            <td class="text-center" style="color: #2a6496; cursor: pointer;"></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
+                                            <td class="text-center width-5 hidden-320 ">{{ $key + 1 }}</td>
+                                            <td class="text-center" style="color: #2a6496; cursor: pointer;">{{ $value->order_code }}</td>
+                                            <td class="text-center">{{ $value->sell_date ? $value->sell_date : '' }}</td>
+                                            <td class="text-center">{{ $value->user_practise ? $value->user_practise : '' }}</td>
+                                            <td class="text-center">{{ $value->total_quantity ? $value->total_quantity : 0 }}</td>
+                                            <td class="text-center">{{ $value->coupon ? number_format($value->coupon) : 0 }}</td>
                                             <td class="text-center"
-                                                style="background-color: #F2F2F2;"></td>
+                                                style="background-color: #F2F2F2;">{{ $value->total_money? number_format($value->total_money) : 0 }}</td>
                                             <td class="text-center"
-                                                style="background: #fff;"></td>
+                                                style="background: #fff;">{{ $value->lack ? number_format($value->lack) : 0 }}</td>
                                         </tr>
+                                        @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -131,10 +165,12 @@
                     </div>
                 </td>
             </tr>
+            @endforeach
+            @endif
     </tbody>
 </table>
 <div class="alert alert-info summany-info clearfix" role="alert">
     <div class="pull-right ajax-pagination">
-        pagination
+        {{ $customers->links() }}
     </div>
 </div>

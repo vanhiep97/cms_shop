@@ -33,8 +33,10 @@ class OrderController extends Controller
         $sellDate = Carbon::now()->toDateTimeString();
         $orderDetails = $request->order_detail;
         $totalOriginPrice = 0;
+        $totalQuantity = 0;
         foreach ($orderDetails as $value) {
             $totalOriginPrice += $value['product_origin_price'];
+            $totalQuantity += $value['product_sell_amount'];
         }
         $orderDetail = json_encode($request->order_detail);
         $orders = Order::create([
@@ -47,6 +49,7 @@ class OrderController extends Controller
             'total_price' => $request->total_price,
             'coupon' => $request->coupon,
             'total_money' => $request->total_money,
+            'total_quantity' => $totalQuantity,
             'customer_pay' => $request->customer_pay,
             'lack' => $request->lack,
             'order_status' => $request->status,
