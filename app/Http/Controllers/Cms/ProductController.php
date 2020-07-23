@@ -33,9 +33,11 @@ class ProductController extends Controller
 
     public function index()
     {
+        $groups = $this->productGroupRepository->all();
+        $manufactures = $this->manufactureRepository->all();
         $products = $this->productRepository->paginateBy('*', 'product_status', 1, 10, 'DESC');
         $totalProducts = $this->productRepository->all();
-        return view('cms.modules.products.index', compact('products', 'totalProducts'));
+        return view('cms.modules.products.index', compact('products', 'totalProducts', 'groups', 'manufactures'));
     }
 
     public function showProductByRes(Request $request)
@@ -158,5 +160,22 @@ class ProductController extends Controller
             ], $id);
         }
         return $this->responseStatus(200, 'Cập nhật trạng thái thành công');
+    }
+
+    public function searchProduct(Request $request)
+    {
+        $products = $this->productRepository->query();
+        if($request->has('product_name')) {
+            $products->where('product_code', 'LIKE', $request->product_name.'%');
+        }
+        if($request->has('pro_group_id') && $request->pro_group_id) {
+            $products->where('product_group_id', $request->pro_group_id);
+        }
+        if($request->has('manufacture_id') && $request->manufacture_id) {
+            $products->where('product_manufacture_id', $request->manufacture_id);
+        }
+        $products = $products->where('product_status', 1)->orderBy('id', 'DESC')->paginate(10);
+        $totalProducts = $this->productRepository->all();
+        return view('cms.modules.products.list-product', compact('products', 'totalProducts'));
     }
 }

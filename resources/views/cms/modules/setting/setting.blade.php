@@ -194,8 +194,9 @@
                                             <select name="level" id="level" class="form-control">
                                                 <option value="0">-- Nhóm người dùng</option>
                                                 <option value="1">Quản lý cửa hàng</option>
-                                                <option value="2">Nhân viên kho</option>
-                                                <option value="3">Nhân viên bán hàng</option>
+                                                <option value="2">Quản lý BP hàng hóa</option>
+                                                <option value="3">Quản lý BP thu chi</option>
+                                                <option value="4">Nhân viên bán hàng</option>
                                             </select>
                                         </div>
                                         <span style="color: red; font-style: italic;" class="error error-group"></span>

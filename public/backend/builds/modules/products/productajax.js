@@ -361,4 +361,21 @@ jQuery(document).ready(function ($) {
                 console.log(error);
             })
     });
+
+    $(document).on('click', '#btn-search-product', function(e) {
+        e.preventDefault();
+        let product_name = $('#product_name').val();
+        let pro_group_id = $('#pro_group_id').val();
+        let manufacture_id = $('#manufacture_id').val();
+        let urlResource = '/admin/products/search';
+        callAjax(urlResource, 'GET', {
+            product_name: product_name,
+            pro_group_id: pro_group_id,
+            manufacture_id: manufacture_id
+        }).done(response => {
+            $('#product-list').html(response);
+        }).fail(error => {
+            console.log(error);
+        })
+    })
 });

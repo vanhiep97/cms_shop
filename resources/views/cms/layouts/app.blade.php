@@ -92,6 +92,7 @@
     <script src="backend/builds/modules/orders/orderajax.js"></script>
     <script src="backend/builds/modules/suppliers/supplierajax.js"></script>
     <script src="backend/builds/modules/forms/formajax.js"></script>
+    <script src="backend/builds/modules/revenue/revenueajax.js"></script>
     <script>
         $(document).ready(function () {
             $('#lfm').filemanager('image');

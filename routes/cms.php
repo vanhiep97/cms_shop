@@ -66,6 +66,7 @@ Route::namespace('Cms')->group(function () {
             Route::patch('/{id}/update-status', 'ProductController@updateStatus')->name('products.update-status');
             Route::get('/show-product-by-res', 'ProductController@showProductByRes')->name('products.show-product-by-res');
             Route::post('restore-product-soft-delete/{id}', 'ProductController@restoreSoftDeleteProduct')->name('products.restore-product-soft-delete');
+            Route::get('/search', 'ProductController@searchProduct')->name('products.search');
         });
 
         Route::prefix('orders')->group(function () {

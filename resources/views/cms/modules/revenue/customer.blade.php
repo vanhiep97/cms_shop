@@ -74,29 +74,26 @@
         <th class="text-center">Tên khách hàng</th>
         <th class="text-center">Tổng số đơn</th>
         <th class="text-center">Tổng chiếc khấu</th>
-        <th class="text-center">Tổng tiền</th>
         <th class="text-center">Tổng SP</th>
+        <th class="text-center">Tổng tiền</th>
         <th class="text-center">Tổng nợ</th>
     </tr>
     </thead>
     <tbody>
-         @php
-            if(!empty($customers) && count($customers) > 0) {
-                foreach($customers as $key => $value) {
-                    $orderCustomer = $value->orders;
-                }
+        @if(!empty($customers) && count($customers) > 0)
+        @foreach($customers as $key => $value)
+            @php
                 $couponCustomer = 0;
                 $totalMoneyCustomer = 0;
                 $totalMoneyLack = 0;
-                foreach($orderCustomer as $item) {
+                $totalQuantity = 0;
+                foreach($value->orders as $item) {
                     $couponCustomer += $item->coupon;
                     $totalMoneyCustomer += $item->total_money;
+                    $totalQuantity += $item->total_quantity;
                     $totalMoneyLack += $item->lack;
                 }
-            }
-        @endphp
-        @if(!empty($customers) && count($customers) > 0)
-        @foreach($customers as $key => $value)
+            @endphp
             <tr>
                 <td style="text-align: center;">
                     <i style="color: #478fca!important;" title="Chi tiết đơn hàng"
@@ -111,7 +108,7 @@
                 <td class="text-center">{{ $value->customer_name }}</td>
                 <td class="text-center">{{ $value->orders ? count($value->orders) : 0 }}</td>
                 <td class="text-center">{{ $couponCustomer ? $couponCustomer : 0 }}</td>
-                <td class="text-center">{{ $couponCustomer ? number_format($couponCustomer) : 0 }}</td>
+                <td class="text-center">{{ $totalQuantity ? $totalQuantity : 0 }}</td>
                 <td class="text-center">{{ $totalMoneyCustomer ? number_format($totalMoneyCustomer) : 0 }}</td>
                 <td class="text-center">{{ $totalMoneyLack ? number_format($totalMoneyLack) : 0 }}</td>
             </tr>

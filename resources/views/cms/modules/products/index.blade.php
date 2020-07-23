@@ -30,38 +30,32 @@
         <div class="products-content">
             <div class="product-sear panel-sear">
                 <div class="">
-                    <div class="form-group col-md-5 padd-0">
-                        <input type="text" class="form-control" placeholder="Nhập mã sản phẩm hoặc tên sản phẩm"
-                               id="product-search">
+                    <div class="form-group col-md-6 padd-0">
+                        <input type="text" name="product_name" class="form-control" placeholder="Nhập mã sản phẩm hoặc tên sản phẩm"
+                               id="product_name">
                     </div>
-                    <div class="form-group col-md-7 ">
-                        <div class="col-md-3 padd-0" style="margin-right: 10px;">
-                            <select class="form-control" id="search-option-1">
-                                <option value="1">Đang kinh doanh</option>
-                                <option value="2">Đã ngừng kinh doanh</option>
-                                <option value="3">Đã xóa</option>
+                    <div class="form-group col-md-6 ">
+                        <div class="col-md-5 padd-0" style="margin-right: 10px;">
+                            <select class="form-control search-option-2" name="pro_group_id" id="pro_group_id">
+                                <option value="0" selected="selected">--Danh mục--</option>
+                                @if(!empty($groups) && count($groups))
+                                    @foreach($groups as $item)
+                                        <option value="{{ $item->id }}">{{ $item->pro_group_name }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
-                        <div class="col-md-3 padd-0" style="margin-right: 10px;">
-                            <select class="form-control search-option-2" id="prd_group_id">
-                                <option value="-1" selected="selected">--Danh mục--</option>
+                        <div class="col-md-5 padd-0" style="margin-right: 10px;">
+                            <select class="form-control search-option-3" name="manufacture_id" id="manufacture_id">
+                                <option value="0" selected="selected">--Nhà sản xuất--</option>
+                                @if(!empty($manufactures) && count($manufactures))
+                                    @foreach($manufactures as $item)
+                                        <option value="{{ $item->id }}">{{ $item->manufacture_name }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
-                        <div class="col-md-3 padd-0" style="margin-right: 10px;">
-                            <select class="form-control search-option-3" id="prd_manufacture_id">
-                                <option value="-1" selected="selected">--Nhà sản xuất--</option>
-                                <optgroup label="Chọn nhà sản xuất">
-
-                                </optgroup>
-                                <optgroup label="------------------------">
-                                    <option value="product_manufacture" data-toggle="modal"
-                                            data-target="#list-prd-manufacture">Tạo mới
-                                        Nhà sản xuất
-                                    </option>
-                                </optgroup>
-                            </select>
-                        </div>
-                        <button type="button" class="btn btn-primary btn-large btn-ssup"><i
+                        <button type="button" class="btn btn-primary btn-large btn-ssup" id="btn-search-product"><i
                                 class="fa fa-search"></i> Tìm kiếm
                         </button>
                     </div>
@@ -71,6 +65,13 @@
                 <button type="button" id="delete-multi" class="btn btn-danger btn-large btn-ssup"><i
                         class="fa fa-trash-o"></i> Xóa nhiều
                 </button>
+                <div class="col-md-3 padd-0" style="margin-right: 10px;">
+                    <select class="form-control" id="search-option-1">
+                        <option value="1">Đang kinh doanh</option>
+                        <option value="2">Đã ngừng kinh doanh</option>
+                        <option value="3">Đã xóa</option>
+                    </select>
+                </div>
             </div>
             <div class="product-main-body" id="product-list">
                 @include('cms.modules.products.list-product')

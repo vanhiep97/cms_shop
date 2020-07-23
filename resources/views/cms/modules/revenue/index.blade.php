@@ -5,27 +5,27 @@
             <h5 style="float: left;">
                 <label style="color: #428bca;font-size: 23px;">Báo cáo doanh thu</label>
                 <label style="color: #307ecc; padding-left: 10px;">
-                    <input type="radio" name="revenue" value="1" checked>
+                    <input type="radio" name="revenue" id="revenue" value="1" checked>
                     <span class="lbl">Báo cáo tổng hợp</span>
                 </label>
                 <label style="color: #307ecc;">
-                    <input type="radio" name="revenue" value="2">
+                    <input type="radio" name="revenue" id="revenue" value="2">
                     <span class="lbl">Theo khách hàng</span>
                 </label>
                 <label style="color: #307ecc;">
-                    <input type="radio" name="revenue" value="3">
+                    <input type="radio" name="revenue" id="revenue" value="3">
                     <span class="lbl">Theo thu ngân</span>
                 </label>
                 <label style="color: #307ecc;">
-                    <input type="radio" name="revenue" value="4">
+                    <input type="radio" name="revenue" id="revenue" value="4">
                     <span class="lbl">Theo NV bán hàng</span>
                 </label>
                 <label style="color: #307ecc;">
-                    <input type="radio" name="revenue" value="5">
+                    <input type="radio" name="revenue" id="revenue" value="5">
                     <span class="lbl">Theo cửa hàng</span>
                 </label>
                 <label style="color: #307ecc;">
-                    <input type="radio" name="revenue" value="6">
+                    <input type="radio" name="revenue" id="revenue" value="6">
                     <span class="lbl">Theo hàng hóa</span>
                 </label>
             </h5>
@@ -89,7 +89,8 @@
                 </div>
             </div>
             <div class="revenue-main-body">
-                @include('cms.modules.revenue.customer')
+                {{ 'aaa' .$revenueOption }}
+                @include('cms.modules.revenue.all')
             </div>
         </div>
     </div>
