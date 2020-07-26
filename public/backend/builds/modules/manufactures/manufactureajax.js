@@ -137,7 +137,6 @@ jQuery(document).ready(function ($) {
         $('#manufacture:checked').each(function (i) {
             ids.push($(this).attr('data-ids'));
         });
-        console.log(ids);
         if (ids.length === 0) {
             Swal.fire(
                 'Cant Delete!',

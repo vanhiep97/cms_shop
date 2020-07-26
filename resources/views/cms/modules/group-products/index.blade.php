@@ -9,18 +9,6 @@
                             <h2>Nhóm sản phẩm</h2>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="right-action text-right">
-                            <div class="btn-groups">
-                                <a href="{{ route('products.create') }}" class="btn btn-primary"><i
-                                        class="fa fa-plus"></i> Tạo nhóm sản phẩm
-                                </a>
-                                <button type="button" class="btn btn-success"><i class="fa fa-download"></i> Xuất
-                                    Excel
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -83,11 +71,11 @@
             <div class="product-main" style="width: 60%">
                 <div class="product-sear panel-sear">
                     <div class="">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <a href="javascript:void(0)" id="btn-delete-multi" class="btn btn-danger" style="margin-left: 0">Xóa nhiều</a>
                         </div>
-                        <div class="form-group col-md-4 padd-0">
-                            <input type="text" class="form-control" placeholder="Nhập mã sản phẩm hoặc tên sản phẩm"
+                        <div class="form-group col-md-6 padd-0">
+                            <input type="text" class="form-control" placeholder="Nhập vào tên danh mục"
                                    id="product-search">
                         </div>
                         <div class="form-group col-md-2 ">

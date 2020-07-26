@@ -19,6 +19,7 @@ class Order extends Model
         'total_origin_price',
         'total_price',
         'notes',
+        'sell_type',
         'coupon',
         'total_money',
         'total_quantity',

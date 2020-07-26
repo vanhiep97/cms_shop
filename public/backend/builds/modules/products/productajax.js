@@ -76,13 +76,13 @@ jQuery(document).ready(function ($) {
                         let urlResource = "/admin/products/" + id;
                         callAjax(urlResource, 'PATCH', dataResource)
                             .done(response => {
-                                formProduct.trigger("reset");
-                                window.location.reload();
-                                $('#alert-cms-success').css('display', 'block');
-                                $('#text-alert-success').text("Cập nhật sản phẩm thành công");
-                                setTimeout(function () {
-                                    $('#alert-cms-success').css('display', 'none');
-                                }, 2000)
+                                // formProduct.trigger("reset");
+                                // window.location.reload();
+                                // $('#alert-cms-success').css('display', 'block');
+                                // $('#text-alert-success').text("Cập nhật sản phẩm thành công");
+                                // setTimeout(function () {
+                                //     $('#alert-cms-success').css('display', 'none');
+                                // }, 2000)
                             })
                             .fail(error => {
                                 console.log(error);

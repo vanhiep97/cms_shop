@@ -17,10 +17,13 @@ class ProductRepository extends BaseRepository
         $min = 0000000001;
         $max = 9999999999;
         $productCode = 'SP-'.random_int($min, $max);
+        if($id) {
+            $productAmount = parent::findById($id)->product_amount;
+        }
         return parent::save([
             'product_name' => $data['product_name'],
             'product_code' => $productCode,
-            'product_amount' => 0,
+            'product_amount' => $id ? $productAmount : 0,
             'product_amount_inventory' => isset($data['product_amount']) ? $data['product_amount'] : 0,
             'product_origin_price' => $data['product_origin_price'],
             'product_sell_price' => $data['product_sell_price'],

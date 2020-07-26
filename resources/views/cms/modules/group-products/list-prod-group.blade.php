@@ -31,14 +31,10 @@
                 <td>{!! $value->pro_group_status == 1 ? '<span class="badge badge-success">Actived</span>' : '<span class="badge badge-danger">Locked</span>' !!}</td>
 
                 <td class="text-center">
-                    <i title="Copy" class="fa fa-files-o blue"
-                       style="margin-right: 5px;"></i>
                     <i title="Sửa" data-id="{{ $value->id }}" class="fa fa-edit" id="edit-pro-group"
                        style="margin-right: 5px; color: #C6699F; cursor: pointer;"></i>
                     <i class="fa fa-trash-o" data-id="{{ $value->id }}" id="btn-delete" style="color: darkred;"
                        title="Xóa"></i>
-                    <i title="Ngừng kinh doanh" class="fa fa-pause"
-                       style="margin-right: 5px; color: #C6699F; cursor: pointer;"></i>
                 </td>
             </tr>
         @endforeach

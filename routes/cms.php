@@ -72,7 +72,8 @@ Route::namespace('Cms')->group(function () {
         Route::prefix('orders')->group(function () {
             Route::get('/', 'OrderController@index')->name('orders.index');
             Route::post('/save-order', 'OrderController@saveOrder')->name('orders.save-order');
-            Route::post('/print-order','OrderController@printOrder')->name('orders.print-order');
+            Route::get('/print-order/{id}','OrderController@printOrder')->name('orders.print-order');
+            Route::delete('/{id}', 'OrderController@destroy')->name('orders.destroy');
         });
 
         Route::prefix('customers')->group(function () {

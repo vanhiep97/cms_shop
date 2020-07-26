@@ -200,8 +200,7 @@
                                             <button type="button" class="btn btn-primary" id="btn-save-order"><i
                                                     class="fa fa-check"></i> Lưu (F9)
                                             </button>
-                                            <button type="button" class="btn btn-primary" id="btn-save-print-order"><i class="fa fa-print"></i> Lưu và
-                                                in (F10)
+                                            <button type="button" class="btn btn-primary" id="btn-save-print-order"><i class="fa fa-print"></i> In hóa đơn (F10)
                                             </button>
                                             <a href="{{ route('pos.index') }}" class="btn btn-default"><i
                                                     class="fa fa-arrow-left"></i> Hủy

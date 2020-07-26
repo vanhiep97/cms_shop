@@ -78,7 +78,7 @@
     'normal' => $rootDir . '/lib/fonts/DejaVuSerif',
   ),
   'raleway' => array(
-    '100' => $fontDir . '/raleway-100_691a37ecdf94f4d1b7b7862602579da2',
-    '600' => $fontDir . '/raleway-600_8264c5f1aba93e0031b8a11c854ade6d',
+    '100' => $fontDir . '/raleway-100_00daf628fe4a08b2dc573bd7c5fd218d',
+    '600' => $fontDir . '/raleway-600_68d71a5195b656afb91715b2608fe17a',
   ),
 ) ?>

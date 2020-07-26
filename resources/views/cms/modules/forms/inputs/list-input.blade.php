@@ -161,6 +161,7 @@
            }
        }
     @endphp
+    @if(!empty($listInputs) && count($listInputs) > 0)
     <div class="sm-info pull-left padd-0">
         Tổng số hóa đơn: <span>{{ count($listInputs) }}</span>
         Tổng tiền:
@@ -169,5 +170,6 @@
     <div class="pull-right ajax-pagination">
         {{ $listInputs->links() }}
     </div>
+    @endif
 </div>
 

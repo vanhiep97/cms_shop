@@ -22,6 +22,7 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('total_origin_price')->default(0);
             $table->bigInteger('total_price')->default(0);
             $table->string('notes')->nullable();
+            $table->tinyInteger('sell_type')->default(0);
             $table->bigInteger('coupon')->default(0);
             $table->bigInteger('total_money')->default(0);
             $table->bigInteger('total_quantity')->default(0);

@@ -160,6 +160,7 @@
            }
        }
     @endphp
+    @if(!empty($listPurchaseOrders) && count($listPurchaseOrders) > 0)
     <div class="sm-info pull-left padd-0">
         Tổng số hóa đơn: <span>{{ count($listPurchaseOrders) }}</span>
         Tổng tiền:
@@ -168,5 +169,6 @@
     <div class="pull-right ajax-pagination">
         {{ $listPurchaseOrders->links() }}
     </div>
+    @endif
 </div>
 

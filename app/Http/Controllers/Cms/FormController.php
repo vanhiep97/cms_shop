@@ -11,6 +11,7 @@ use App\Models\PurchaseOrder;
 use App\Models\Receipt;
 use App\Models\BillOrder;
 use PDF;
+use Illuminate\Support\Facades\DB;
 
 class FormController extends Controller
 {
@@ -106,26 +107,45 @@ class FormController extends Controller
         $inputCode = 'PNK-'.random_int ($min , $max);
         $importDetails = $request->import_detail;
         $totalOriginPrice = 0;
+        $totalQuantity = 0;
         foreach ($importDetails as $value) {
             $totalOriginPrice += $value['origin_price'];
+            $totalQuantity += $value['product_sell_amount'];
         }
         $importDetail = json_encode($request->import_detail);
-        $receipts = Input::create([
-            'input_code' => $inputCode,
-            'pur_order_id' => $request->pur_order_id,
-            'input_date' => $request->input_date,
-            'user_practise' => auth()->user()->name,
-            'supplier_id' => $request->supplier_id,
-            'notes' => $request->notes,
-            'total_price' => $request->total_price,
-            'input_status' => 0,
-            'import_detail' => $importDetail,
-        ]);
-        return response()->json([
-            'isSuccess' => true,
-            'message' => 'Create Receipt',
-            'receipt' => $receipts
-        ], 200);
+        DB::beginTransaction();
+            try {
+                $receipts = Input::create([
+                'input_code' => $inputCode,
+                'pur_order_id' => $request->pur_order_id,
+                'input_date' => $request->input_date,
+                'user_practise' => auth()->user()->name,
+                'supplier_id' => $request->supplier_id,
+                'notes' => $request->notes,
+                'total_price' => $request->total_price,
+                'total_quantity' => $totalQuantity,
+                'input_status' => 0,
+                'import_detail' => $importDetail,
+            ]);
+
+            $importProduct = json_decode($receipts->import_detail);
+            foreach($importProduct as $value) {
+                $productCode = $value->product_code;
+                $product = Product::where('product_code', $productCode)->first();
+                $product->update([
+                    'product_amount' => $product->product_amount + $value->amount_input
+                ]);
+            }
+            DB::commit();
+            return response()->json([
+                'isSuccess' => true,
+                'message' => 'Create Receipt',
+                'receipt' => $receipts
+            ], 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
+        }
     }
 
     public function printInput($id)

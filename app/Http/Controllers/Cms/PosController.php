@@ -17,7 +17,13 @@ class PosController extends Controller
 
     public function searchProductOnPos(Request $request)
     {
-        $products = Product::where('product_code', 'LIKE', $request->param.'%')->orWhere('product_name', 'LIKE', $request->param.'%')->get();
+        $param = $request->param;
+        $products = Product::where('product_amount', '>=', 1);
+        $products->where(function($query) use($param) {
+            return $query->where('product_code', 'LIKE', $param.'%')
+            ->orWhere('product_name', 'LIKE', $param.'%');
+        });
+        $products = $products->get();
         return view('cms.modules.pos.list-product', compact('products'));
     }
 
