@@ -6,14 +6,14 @@
                 <div class="orders-act">
                     <div class="col-md-4 col-md-offset-2">
                         <div class="left-action text-left clearfix">
-                            <h2>Danh sách phiếu yêu cầu mua hàng</h2>
+                            <h2>Danh sách phiếu nhập kho</h2>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="right-action text-right">
                             <div class="btn-groups">
                                 <a href="{{ route('forms.createInput') }}" class="btn btn-primary"><i
-                                        class="fa fa-plus"></i> Tạo phiếu yêu cầu mua hàng
+                                        class="fa fa-plus"></i> Tạo phiếu nhập kho
                                 </a>
                             </div>
                         </div>
@@ -25,31 +25,22 @@
         <div class="orders-content">
             <div class="product-sear panel-sear">
                 <div class="form-group col-md-3 padd-0">
-                    <input type="text" class="form-control" id="input-search"
+                    <input type="text" class="form-control" id="input-search-code"
                            placeholder="Nhập mã phiếu nhập để tìm kiếm">
                 </div>
                 <div class="form-group col-md-9 padd-0" style="padding-left: 5px;">
                     <div class="col-md-9 padd-0">
-                        <div class="col-md-4 padd-0">
-                            <select class="form-control" id="search-option-1">
-                                <option value="0">Phiếu nhập</option>
-                                <option value="1">Phiếu nhập đã xóa</option>
-                                <option value="2">Phiếu nhập còn nợ</option>
-                            </select>
-                        </div>
-                        <div class="col-md-5 padd-0" style="padding-left: 5px;">
+                        <div class="col-md-7 padd-0" style="padding-left: 5px;">
                             <div class="input-daterange input-group" id="datepicker">
-                                <input type="text" class="input-sm form-control" id="search-date-from"
-                                       placeholder="Từ ngày"
-                                       name="start"/>
+                                <input id="datepicker1" type="text" class="input-sm form-control" placeholder="Từ ngày"
+                                   name="start"/>
                                 <span class="input-group-addon">to</span>
-                                <input type="text" class="input-sm form-control" id="search-date-to"
-                                       placeholder="Đến ngày"
-                                       name="end"/>
+                                <input id="datepicker2" type="text" class="input-sm form-control" placeholder="Đến ngày"
+                                    name="end"/>
                             </div>
                         </div>
-                        <div class="col-md-3 padd-0" style="padding-left: 5px;">
-                            <button style="box-shadow: none;" type="button" class="btn btn-primary btn-large"><i
+                        <div class="col-md-5 padd-0" style="padding-left: 5px;">
+                            <button style="box-shadow: none;" id="btn-search-input" type="button" class="btn btn-primary btn-large"><i
                                     class="fa fa-search"></i> Tìm kiếm
                             </button>
                         </div>
@@ -62,9 +53,13 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-            <div class="imports-main-body">
+            <div class="delete-multi" style="margin-bottom: 10px">
+                <button type="button" id="delete-multi-input" class="btn btn-danger btn-large btn-ssup"><i
+                        class="fa fa-trash-o"></i> Xóa nhiều
+                </button>
+            </div>
+            <div class="imports-main-body" id="list-inputs">
                 @include('cms.modules.forms.inputs.list-input')
             </div>
         </div>

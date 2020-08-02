@@ -35,9 +35,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function device_token()
-    {
-        return $this->hasMany('App\Models\DeviceToken', 'user_id');
-    }
 }

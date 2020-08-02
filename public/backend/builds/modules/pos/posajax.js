@@ -300,11 +300,11 @@ jQuery(document).ready(function ($) {
         let value = $(this).val() > 0 ? $(this).val() : 0;
         let totalMoney = $('#money').attr('data-money');
         let totalValue = 0;
-        if(parseInt(value) > parseInt(totalMoney)) {
+        if(parseInt(value) > 100) {
             $('#alert-cms-error').css('display', 'block');
-            $('#text-alert-error').text("Giảm giá phải nhỏ hơn thành tiền");
+            $('#text-alert-error').text("Giảm giá tối đã 100%");
         } else {
-            totalValue = parseInt(totalMoney) - parseInt(value);
+            totalValue = parseInt(totalMoney) - (parseInt(totalMoney) * parseInt(value) / 100);
             $('.total-after-discount').attr('data-total-money', totalValue);
             $('.total-after-discount').html(totalValue);
             $('#alert-cms-error').css('display', 'none');
@@ -369,7 +369,7 @@ jQuery(document).ready(function ($) {
                 order_detail: carts
             }).done(response => {
                 localStorage.setItem('order_bill', response.orders.id);
-                // window.location.reload();
+                window.location.reload();
                 $('#alert-cms-success').css('display', 'block');
                 $('#text-alert-success').text("Tạo đơn hàng thành công");
                 setTimeout(function() {
@@ -446,6 +446,7 @@ jQuery(document).ready(function ($) {
                         var a = document.createElement("a");
                         // safari doesn't support this yet
                         if (typeof a.download === 'undefined') {
+                            window.location.reload();
                             window.open(downloadUrl, '_blank');
                         } else {
                             a.href = downloadUrl;
@@ -454,6 +455,7 @@ jQuery(document).ready(function ($) {
                             a.click();
                         }
                     } else {
+                        window.location.reload();
                         window.open(downloadUrl, '_blank');
                     }
 

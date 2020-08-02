@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDeviceTokensTable extends Migration
+class CreateExchangeBillsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateDeviceTokensTable extends Migration
      */
     public function up()
     {
-        Schema::create('device_tokens', function (Blueprint $table) {
+        Schema::create('exchange_bills', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('device_token')->nullable();
-            $table->string('ip_address')->nullable();
-            $table->string('browser_login')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('order_id');
+            $table->datetime('exchange_date');
+            $table->text('exchange_detail');
+            $table->bigInteger('exchange_ammount');
+            $table->bigInteger('exchange_price');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateDeviceTokensTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('device_tokens');
+        Schema::dropIfExists('exchange_bills');
     }
 }

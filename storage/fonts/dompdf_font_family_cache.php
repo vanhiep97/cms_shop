@@ -81,4 +81,7 @@
     '100' => $fontDir . '/raleway-100_00daf628fe4a08b2dc573bd7c5fd218d',
     '600' => $fontDir . '/raleway-600_68d71a5195b656afb91715b2608fe17a',
   ),
+  'glyphicons halflings' => array(
+    'normal' => $fontDir . '/glyphicons-halflings-normal_0dad126b231e76fda0a888d65bd5034f',
+  ),
 ) ?>

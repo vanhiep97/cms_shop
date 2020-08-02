@@ -78,7 +78,7 @@ class ProductController extends Controller
     {
         $products = $this->productRepository->createOrUpdateProduct($request->all());
         if($products->product_inventory == 1) {
-                $dataInventory = [
+            $dataInventory = [
                 'product_id' => $products->id,
                 'quantity' => $products->product_amount_inventory,
                 'user_practise' => $products->user_practise
@@ -87,6 +87,7 @@ class ProductController extends Controller
             $inventory = Inventory::create($dataInventory);
         }
 
+        $inventory = isset($inventory) ? $inventory : [];
         return response()->json([
             'code' => 201,
             'products' => $products,
@@ -166,7 +167,7 @@ class ProductController extends Controller
     {
         $products = $this->productRepository->query();
         if($request->has('product_name')) {
-            $products->where('product_code', 'LIKE', $request->product_name.'%');
+            $products->where('product_code', 'LIKE', $request->product_name.'%')->orWhere('product_name', 'LIKE', $request->product_name.'%');
         }
         if($request->has('pro_group_id') && $request->pro_group_id) {
             $products->where('product_group_id', $request->pro_group_id);

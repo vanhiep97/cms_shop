@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="delete-multi" style="margin-bottom: 10px">
-                <button type="button" id="delete-multi" class="btn btn-danger btn-large btn-ssup"><i
+                <button type="button" id="delete-multi-product" class="btn btn-danger btn-large btn-ssup"><i
                         class="fa fa-trash-o"></i> Xóa nhiều
                 </button>
                 <div class="col-md-3 padd-0" style="margin-right: 10px;">

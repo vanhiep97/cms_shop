@@ -76,13 +76,13 @@ jQuery(document).ready(function ($) {
                         let urlResource = "/admin/products/" + id;
                         callAjax(urlResource, 'PATCH', dataResource)
                             .done(response => {
-                                // formProduct.trigger("reset");
-                                // window.location.reload();
-                                // $('#alert-cms-success').css('display', 'block');
-                                // $('#text-alert-success').text("Cập nhật sản phẩm thành công");
-                                // setTimeout(function () {
-                                //     $('#alert-cms-success').css('display', 'none');
-                                // }, 2000)
+                                formProduct.trigger("reset");
+                                window.location.reload();
+                                $('#alert-cms-success').css('display', 'block');
+                                $('#text-alert-success').text("Cập nhật sản phẩm thành công");
+                                setTimeout(function () {
+                                    $('#alert-cms-success').css('display', 'none');
+                                }, 2000)
                             })
                             .fail(error => {
                                 console.log(error);
@@ -266,7 +266,7 @@ jQuery(document).ready(function ($) {
     });
 
     // delete Multi record
-    $(document).on("click", "#delete-multi", function (e) {
+    $(document).on("click", "#delete-multi-product", function (e) {
         e.preventDefault();
         let ids = [];
         $('#product_ids:checked').each(function (i) {
@@ -369,7 +369,7 @@ jQuery(document).ready(function ($) {
         let manufacture_id = $('#manufacture_id').val();
         let urlResource = '/admin/products/search';
         callAjax(urlResource, 'GET', {
-            product_name: product_name,
+            product_name: product_name.toLowerCase(),
             pro_group_id: pro_group_id,
             manufacture_id: manufacture_id
         }).done(response => {

@@ -2,14 +2,14 @@
     <thead>
     <tr>
         <th></th>
-        <th class="text-center">Mã phiếu nhập kho</th>
+        <th class="text-center">Mã đơn mua hàng</th>
         <th class="text-center">Ngày lập</th>
         <th class="text-center">Người lập</th>
         <th class="text-center" style="padding: 0px;">
             <select style="text-align:center;" id="customer-id">
                 <option value="-1">Nhà cung cấp</option>
             </select></th>
-        <th class="text-center">Số lượng nhập</th>
+        <th class="text-center">Tình trạng</th>
         <th class="text-center" style="background-color: #fff;">Tổng tiền</th>
         <th></th>
         <th class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
@@ -18,9 +18,9 @@
     </tr>
     </thead>
     <tbody>
-    @if(!empty($listInputs) && count($listInputs) > 0)
-        @foreach($listInputs as $key => $value)
-            <tr id="input_{{ $value->id }}">
+    @if(!empty($listPurchaseOrders) && count($listPurchaseOrders) > 0)
+        @foreach($listPurchaseOrders as $key => $value)
+            <tr>
                 <td style="text-align: center;">
                     <i style="color: #478fca!important;" title="Chi tiết đơn hàng"
                        class="fa fa-plus-circle i-detail-order-{{ $value->id }}"
@@ -32,26 +32,22 @@
                     </i>
                 </td>
                 <td class="text-center"
-                    style="color: #2a6496; cursor: pointer;">{{ $value->input_code ? $value->input_code : '' }}</td>
-                <td class="text-center">{{ $value->input_date ? $value->input_date : '' }}</td>
+                    style="color: #2a6496; cursor: pointer;">{{ $value->pur_order_code ? $value->pur_order_code : '' }}</td>
+                <td class="text-center">{{ $value->pur_order_date ? $value->pur_order_date : '' }}</td>
                 <td class="text-center">{{ $value->user_practise ? $value->user_practise : '' }}</td>
                 <td class="text-center">{{ $value->supplier_id ? $value->supplier->supplier_name : '' }}</td>
-                <td class="text-center">{{ $value->input_status == 0 ? 'Chưa gửi NCC' : 'Đã gửi NCC' }}</td>
+                <td class="text-center">{{ $value->pur_order_status == 0 ? 'Chưa gửi NCC' : 'Đã gửi NCC' }}</td>
                 <td class="text-center"
                     style="background-color: #F2F2F2;">{{ $value->total_price ? number_format($value->total_price) : 0 }}</td>
                 <td class="text-center" style="background: #fff;">
-                    <a href="{{ route('form.printInput', ['id' => $value->id]) }}">
+                    <a href="{{ route('form.printPurchaseOrder', ['id' => $value->id]) }}">
                         <i title="In"
                         class="fa fa-print blue"
                         style="margin-right: 5px;"></i>
-                    </a>
-                    <a href="javascript:void(0)" id="btn-delete-input" data-id="{{ $value->id }}">
                         <i class="fa fa-trash-o" style="color: darkred;"></i>
                     </a>
                 </td>
                 <td class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
-                                                                                          id="input_ids"
-                                                                                          data-ids="{{ $value->id }}"
                                                                                           value=""
                                                                                           class="checkbox chk"><span
                             style="width: 15px; height: 15px;"></span></label>
@@ -74,9 +70,9 @@
                                         <i class="fa fa-cart-arrow-down">
                                         </i>
                                         @php
-                                            $inputDetail = json_decode($value->import_detail ? $value->import_detail : []);
+                                            $purOrderDetail = json_decode($value->pur_order_detail ? $value->pur_order_detail : []);
                                             $countProduct = 0;
-                                            foreach ($inputDetail as $key => $prd) {
+                                            foreach ($purOrderDetail as $key => $prd) {
                                                 $countProduct += $prd->product_sell_amount;
                                             }
                                         @endphp
@@ -99,7 +95,7 @@
                                         <i class="fa fa-dollar">
                                         </i>
                                         <span
-                                            class="hidden-768">Tổng tiền: {{ $value->total_price ? number_format($value->total_price) : 0 }}
+                                            class="hidden-768">Tổng tiền: {{ $value->total_money ? number_format($value->total_money) : 0 }}
                                         </span>
                                         <label>
                                         </label>
@@ -118,10 +114,10 @@
                                     </thead>
                                     <tbody>
                                     @php
-                                        $inputDetail = json_decode($value->import_detail ? $value->import_detail : []);
+                                        $purOrderDetail = json_decode($value->pur_order_detail ? $value->pur_order_detail : []);
                                     @endphp
-                                    @if(!empty($inputDetail) && count($inputDetail) > 0)
-                                        @foreach($inputDetail as $key => $value)
+                                    @if(!empty($purOrderDetail) && count($purOrderDetail) > 0)
+                                        @foreach($purOrderDetail as $key => $value)
                                             <tr>
                                                 <td class="text-center width-5 hidden-320 ">
                                                     {{ $key + 1 }}
@@ -136,10 +132,10 @@
                                                     {{ $value->product_sell_amount ? $value->product_sell_amount : 0 }}
                                                 </td>
                                                 <td class="text-center">
-                                                    {{ $value->origin_price ? number_format($value->origin_price) : 0 }}
+                                                    {{ $value->product_origin_price ? number_format($value->product_origin_price) : 0 }}
                                                 </td>
                                                 <td class="text-center">
-                                                    {{ number_format($value->origin_price * $value->product_sell_amount) }}
+                                                    {{ number_format($value->product_origin_price * $value->product_sell_amount) }}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -157,21 +153,21 @@
 </table>
 <div class="alert alert-info summany-info clearfix" role="alert">
     @php
-       if(!empty($listInputs) && count($listInputs) > 0) {
+       if(!empty($listPurchaseOrders) && count($listPurchaseOrders) > 0) {
            $totalMoney = 0;
-           foreach ($listInputs as $key => $value) {
-               $totalMoney += $value->total_price;
+           foreach ($listPurchaseOrders as $key => $value) {
+               $totalMoney += $value->total_money;
            }
        }
     @endphp
-    @if(!empty($listInputs) && count($listInputs) > 0)
+    @if(!empty($listPurchaseOrders) && count($listPurchaseOrders) > 0)
     <div class="sm-info pull-left padd-0">
-        Tổng số hóa đơn: <span>{{ count($listInputs) }}</span>
+        Tổng số hóa đơn: <span>{{ count($listPurchaseOrders) }}</span>
         Tổng tiền:
         <span>{{ $totalMoney ? number_format($totalMoney) : 0 }}</span>
     </div>
     <div class="pull-right ajax-pagination">
-        {{ $listInputs->links() }}
+        {{ $listPurchaseOrders->links() }}
     </div>
     @endif
 </div>

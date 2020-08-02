@@ -39,7 +39,6 @@
                 margin-right: 15px;
             }
         </style>
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     </head>
     <body>
     <header>
@@ -102,48 +101,6 @@
         $(function () {
             $('#datepicker1').datetimepicker();
             $('#datepicker2').datetimepicker();
-        });
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-messaging.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-analytics.js"></script>
-    <script>
-        const config = {
-            apiKey: "AIzaSyCV2fxL-D9pqeTGLjFiSP2iq5F91lI9Imo",
-            authDomain: "send-verify-code.firebaseapp.com",
-            databaseURL: "https://send-verify-code.firebaseio.com",
-            projectId: "send-verify-code",
-            storageBucket: "send-verify-code.appspot.com",
-            messagingSenderId: "399055171985",
-            appId: "1:399055171985:web:8159bbd7e280b4cab5aa30",
-            measurementId: "G-Q3CNHQKM6Z"
-        };
-        firebase.initializeApp(config);
-
-        const messaging = firebase.messaging();
-        messaging
-            .requestPermission()
-            .then(function () {
-                return messaging.getToken()
-            })
-            .then(function(token) {
-                console.log(token)
-                let urlResource = '{{ route('save-device-token') }}';
-                callAjax(urlResource, 'POST', {
-                    fcm_token: token
-                })
-            })
-            .catch(function (err) {
-                console.log("Unable to get permission to notify.", err);
-            });
-
-        messaging.onMessage(function(payload) {
-            let amount = parseInt($('#bell_count').html()) + 1;
-            $('#bell_count').html(amount);
-            // const {title, ...options} = payload.data.notification;
-            // navigator.serviceWorker.ready.then(registration => {
-            //     registration.showNotification(title, options);
-            // });
         });
     </script>
     </body>

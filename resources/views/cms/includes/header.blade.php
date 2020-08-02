@@ -17,24 +17,7 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" style="height: 50px; width: 400px;">
-                <li style="margin-right: 15px; display: flex; align-items: center; height: 50px;">
-                    <select>
-                        <option value="0"><a href="{!! route('user.change-language', ['vi']) !!}">Vietnamese</a></option>
-                        <option value="0"><a href="{!! route('user.change-language', ['en']) !!}">English</a></option>
-                    </select>
-                </li>
-                <li class="notifications" style="height: 50px; display: flex;
-                        align-items: center;justify-content: center; color: #fff;">
-                    Thông báo <i class="fa fa-bell-o fa-fw" style="margin-left: 7px"></i> <span id="bell_count">1</span>
-                </li>
-                {{-- <li>
-                    <label style="margin: 13px 15px; color: white">
-                        {{ trans('message.welcome') }}
-                        Cửa hàng
-                    </label>
-                </li> --}}
-
-                <li class="dropdown user-profile" style="height: 50px; display: flex; align-items: center;justify-content: center; color: #fff; margin-left: 15px">
+                <li class="dropdown user-profile" style="height: 50px; display: flex; align-items: center; float: right; color: #fff; margin-right: 50px">
                     <div class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false" style="display: flex;align-items: center;justify-content: center">
                         <span style="border: 2px solid #fff; border-radius: 50%; width: 30px; height: 30px;

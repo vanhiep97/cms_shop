@@ -5,14 +5,17 @@
         <div class="orders-act">
             <div class="col-md-4 col-md-offset-2">
                 <div class="left-action text-left clearfix">
-                    <h2>Tạo phiếu nhập kho &raquo;</h2>
+                    <h2>Tạo phiếu yêu cầu nhập hàng &raquo;</h2>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="right-action text-right">
                     <div class="btn-groups">
-                        <button type="button" id="btn-save-input" class="btn btn-primary"><i
+                        <button type="button" id="btn-save-purchase" class="btn btn-primary"><i
                                 class="fa fa-check"></i> Lưu
+                        </button>
+                        <button type="button" class="btn btn-primary"><i
+                                class="fa fa-print"></i> Lưu và in
                         </button>
                         <button type="button" class="btn btn-default"><i
                                 class="fa fa-arrow-left"></i> Hủy
@@ -26,39 +29,29 @@
 
 <div class="main-space orders-space"></div>
 
-<div class="order-search" style="margin: 20px 20px 20px 0; padding-top: 30px">
-    <div class="row">
-        <div class="col-md-12">
-            <select id="search-pur-order" class="form-control">
-                <option value="0">-- Theo đơn mua hàng số</option>
-                    @if(!empty($listPurchaseOrders) && count($listPurchaseOrders) > 0)
-                        @foreach ($listPurchaseOrders as $item)
-                             <option value="{{ $item->id }}">{{ $item->pur_order_code }}</option>
-                        @endforeach
-                    @endif
-            </select>
-        </div>
-    </div>
-</div>
-<div class="orders-content check-order" id="input">
+<div class="orders-content check-order">
     <div class="row">
         <div class="col-md-8">
+            <div class="order-search" style="margin: 10px 0px; position: relative;">
+                <input type="text" class="form-control" placeholder="Nhập mã sản phẩm hoặc tên sản phẩm"
+                       id="search-pro-box" autocomplete="off">
+                       <div id="search-result-product"></div>
+            </div>
             <div class="product-results">
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th class="text-center">STT</th>
                         <th>Mã hàng</th>
-                        <th>Tên hàng</th>
-                        <th class="text-center">Số lượng giao</th>
-                        <th class="text-center">Số lượng nhận</th>
-                        <th class="text-center">Đơn giá</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Hình ảnh</th>
+                        <th class="text-center">Số lượng</th>
+                        <th class="text-center">Giá nhập</th>
                         <th class="text-center">Thành tiền</th>
                         <th></th>
                     </tr>
                     </thead>
-                    <tbody id="pro_on_pur_order">
-
+                    <tbody id="pro_search_append">
                     </tbody>
                 </table>
                 <div class="alert alert-success" style="margin-top: 30px;" role="alert">Gõ mã hoặc tên sản phẩm vào hộp
@@ -77,7 +70,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="col-md-12 padd-0" style="position: relative;">
-                                    <input id="search-box-mas" class="form-control" type="text"
+                                        <input id="search-box-mas" class="form-control" type="text"
                                                placeholder="Tìm nhà cung cấp"
                                                autocomplete="off"
                                                style="border-radius: 3px 0 0 3px !important;"><span
@@ -113,7 +106,7 @@
                                     <label>Ghi chú</label>
                                 </div>
                                 <div class="col-md-8">
-    <textarea id="note-import" cols="" class="form-control" rows="3"
+ <textarea id="note-import" cols="" class="form-control" rows="3"
            style="border-radius: 0;"></textarea>
                                 </div>
                             </div>
@@ -123,7 +116,7 @@
                 <div class="col-md-12">
                     <h4 class="lighter" style="margin-top: 0;">
                         <i class="fa fa-info-circle blue"></i>
-                        Thông tin phiếu nhập kho
+                        Thông tin phiếu yêu cầu
                     </h4>
 
                     <div class="morder-info" style="padding: 4px;">
@@ -153,8 +146,14 @@
                 </div>
                 <div class="col-md-12">
                     <div class="btn-groups pull-right" style="margin-bottom: 50px;">
-                        <button type="button" id="btn-save-input" class="btn btn-primary"><i
+                        <button type="button" class="btn btn-primary hidden">
+                            <i class="fa fa-floppy-o"></i> Lưu tạm
+                        </button>
+                        <button type="button" class="btn btn-primary"><i
                                 class="fa fa-check"></i> Lưu
+                        </button>
+                        <button type="button" class="btn btn-primary"><i
+                                class="fa fa-print"></i> Lưu và in
                         </button>
                         <button type="button" class="btn btn-default btn-back"><i
                                 class="fa fa-arrow-left"></i> Hủy

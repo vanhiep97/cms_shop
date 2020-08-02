@@ -18,7 +18,7 @@
     <tbody>
     @if(!empty($listBillOrders) && count($listBillOrders) > 0)
     @foreach ($listBillOrders as $key => $value)
-        <tr id="bill-order_{{ $value->id }}">
+        <tr>
             <td style="text-align: center;">
                 <i style="color: #478fca!important;" title="Chi tiết đơn hàng"
                     class="fa fa-plus-circle i-detail-order-{{ $value->id }}"
@@ -32,7 +32,7 @@
             <td class="text-center" style="color: #2a6496; cursor: pointer;">
                 {{ $value->bill_code }}
             </td>
-            <td class="text-center">{{ $value->input->input_code ? $value->input->input_code : '' }}</td>
+            <td class="text-center">{{ $value->input->input_code }}</td>
             <td class="text-center">{{ $value->bill_date }}</td>
             <td class="text-center">{{ $value->user_practise }}</td>
             @php
@@ -46,13 +46,8 @@
                 <i title="In"
                 class="fa fa-print blue"
                 style="margin-right: 5px;"></i>
-                <a href="javascript:void(0)">
-                    <i class="fa fa-trash-o" data-id="{{ $value->id }}" id="btn-delete-bill-order" style="color: darkred;" title=""></i>
-                </a>
-            </td>
+                <i class="fa fa-trash-o" style="color: darkred;" title=""></i></td>
             <td class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
-                                                                                    id="bill_order_ids"
-                                                                                    data-ids="{{ $value->id }}"
                                                                                     value=""
                                                                                     class="checkbox chk"><span
                         style="width: 15px; height: 15px;"></span></label>
@@ -181,7 +176,6 @@
            }
        }
     @endphp
-    @if(!empty($listBillOrders) && count($listBillOrders) > 0)
     <div class="sm-info pull-left padd-0">
         Tổng số phiếu nhập:
         <span>{{ count($listBillOrders) }}</span>
@@ -193,6 +187,5 @@
     <div class="pull-right ajax-pagination">
         {{ $listBillOrders->links() }}
     </div>
-    @endif
 </div>
 

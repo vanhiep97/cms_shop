@@ -14,9 +14,9 @@ class ProductRepository extends BaseRepository
 
     public function createOrUpdateProduct(array $data, int $id = null)
     {
-        $min = 0000000001;
-        $max = 9999999999;
-        $productCode = 'SP-'.random_int($min, $max);
+        $min = 0000000000001;
+        $max = 9999999999999;
+        $productCode = 'SKU-'.random_int($min, $max);
         if($id) {
             $productAmount = parent::findById($id)->product_amount;
         }

@@ -254,200 +254,6 @@ jQuery(document).ready(function ($) {
         }
     })
 
-    // save Cart to Order
-    let amountProduct = [];
-    let product_sell_amount = 0;
-    $(document).on('click', '#btn-save-import', function (e) {
-        e.preventDefault();
-        alert("aaa")
-        let supplier_value = $('#search-box-mas').val();
-        let supplier_id = $('#search-box-mas').data('id');
-        let input_date = $('#input-date').val();
-        let notes = $('#note-import').val();
-        let sell_type = $('#sell_type:checked').val();
-        let money = $('#money').attr('data-money');
-        let coupon = $('#discount-order').val();
-        let totalMoney = $('.total-after-discount').attr('data-total-money');
-        let pairPay = $('.customer-pay').val() > 0 ? $('.customer-pay').val() : 0 ;
-        let lack = $('#lack').attr('data-lack');
-        $('tbody#pro_search_append tr').each(function (key, value) {
-            let amount = $(this).find('td input#amount-order').val();
-            amountProduct.push(amount);
-            cart.forEach(function(value, key) {
-                amountProduct.forEach(function(value, key) {
-                    cart[key]['product_sell_amount'] = value
-                })
-            })
-        });
-
-        let carts = cart;
-
-        let urlResource = '/admin/forms/create-receipt';
-
-        if(supplier_value !== '' && cart.length > 0 && parseInt(pairPay) > parseInt(totalMoney)) {
-            callAjax(urlResource, 'POST', {
-                supplier_id: supplier_id,
-                input_date: input_date,
-                notes: notes ? notes : '',
-                total_price: money,
-                discount: coupon ? coupon : 0,
-                total_money: totalMoney,
-                pair_pay: pairPay ? pairPay : 0,
-                lack: lack,
-                input_status: sell_type,
-                import_detail: carts
-            }).done(response => {
-                // window.location.reload();
-                $('#alert-cms-success').css('display', 'block');
-                $('#text-alert-success').text("Tạo phiếu nhập thành công");
-                setTimeout(function() {
-                    $('#alert-cms-success').css('display', 'none');
-                }, 2000)
-                amountProduct = [];
-            }).fail(error => {
-                $('#alert-cms-error').css('display', 'block');
-                $('#text-alert-error').text("Tạo phiếu nhập kho thất bại");
-                setTimeout(function() {
-                    $('#alert-cms-error').css('display', 'none');
-                }, 2000)
-            })
-        } else {
-            if(supplier_value === '') {
-                $('#alert-cms-error').css('display', 'block');
-                $('#text-alert-error').text("Vui lòng nhập tên nhà cung cấp");
-                setTimeout(function() {
-                    $('#alert-cms-error').css('display', 'none');
-                }, 2000)
-            } else if(cart.length < 0) {
-                $('#alert-cms-error').css('display', 'block');
-                $('#text-alert-error').text("Sản phẩm cần nhập không được trống");
-                setTimeout(function() {
-                    $('#alert-cms-error').css('display', 'none');
-                }, 2000)
-            } else if(parseInt(pairPay) < parseInt(totalMoney)) {
-                $('#alert-cms-error').css('display', 'block');
-                $('#text-alert-error').text("Khách đưa phải lớn hơn tổng tiền");
-                setTimeout(function() {
-                    $('#alert-cms-error').css('display', 'none');
-                }, 2000)
-            }
-        }
-    })
-
-    let amountProduct1 = [];
-    $(document).on('click', '#btn-save-print-order', function (e) {
-        e.preventDefault()
-        let customer_value = $('#search-box-customer').val();
-        let customer_id = $('#search-box-customer').data('id');
-        let notes = $('#note-order').val();
-        let sell_type = $('#sell_type:checked').val();
-        let money = $('#money').attr('data-money');
-        let coupon = $('#discount-order').val();
-        let totalMoney = $('.total-after-discount').attr('data-total-money');
-        let customerPay = $('.customer-pay').val() > 0 ? $('.customer-pay').val() : 0 ;
-        let lack = $('#lack').attr('data-lack');
-        $('tbody#pro_search_append tr').each(function (key, value) {
-            let amount = $(this).find('td input#amount-order').val();
-            amountProduct1.push(amount);
-            cart.forEach(function(value, key) {
-                amountProduct1.forEach(function(value, key) {
-                    cart[key]['product_sell_amount'] = value
-                })
-            })
-        });
-
-        let carts = cart;
-
-        let urlResource = '/admin/forms/print-order';
-
-        if(customer_value !== '' && cart.length > 0 && parseInt(customerPay) > parseInt(totalMoney)) {
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', urlResource, true);
-            xhr.responseType = 'arraybuffer';
-            xhr.onload = function () {
-                if (this.status === 200) {
-                    var filename = "";
-                    var disposition = xhr.getResponseHeader('Content-Disposition');
-                    if (disposition && disposition.indexOf('attachment') !== -1) {
-                        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                        var matches = filenameRegex.exec(disposition);
-                        if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-                    }
-                    var type = xhr.getResponseHeader('Content-Type');
-
-                    var blob;
-                    if (typeof File === 'function') {
-                        try {
-                            blob = new File([this.response], filename, { type: type });
-                        } catch (e) { /* Edge */ }
-                    }
-                    if (typeof blob === 'undefined') {
-                        blob = new Blob([this.response], { type: type });
-                    }
-
-                    if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                        // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                        window.navigator.msSaveBlob(blob, filename);
-                    } else {
-                        var URL = window.URL || window.webkitURL;
-                        var downloadUrl = URL.createObjectURL(blob);
-
-                        if (filename) {
-                            // use HTML5 a[download] attribute to specify filename
-                            var a = document.createElement("a");
-                            // safari doesn't support this yet
-                            if (typeof a.download === 'undefined') {
-                                window.location.href = downloadUrl;
-                            } else {
-                                a.href = downloadUrl;
-                                a.download = filename;
-                                document.body.appendChild(a);
-                                a.click();
-                            }
-                        } else {
-                            window.location.href = downloadUrl;
-                        }
-
-                        setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
-                    }
-                }
-            };
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.setRequestHeader('X-CSRF-TOKEN', $('meta[name="csrf-token"]').attr('content'));
-            xhr.send($.param({
-                customer_id: customer_id,
-                notes: notes ? notes : '',
-                total_price: money,
-                coupon: coupon ? coupon : 0,
-                total_money: totalMoney,
-                customer_pay: customerPay ? customerPay : 0,
-                lack: lack,
-                status: sell_type,
-                order_detail: carts
-            }));
-        } else {
-            if(customer_value === '') {
-                $('#alert-cms-error').css('display', 'block');
-                $('#text-alert-error').text("Vui lòng nhập tên khách hàng");
-                setTimeout(function() {
-                    $('#alert-cms-error').css('display', 'none');
-                }, 2000)
-            } else if(cart.length < 0) {
-                $('#alert-cms-error').css('display', 'block');
-                $('#text-alert-error').text("Đơn hàng không được trống");
-                setTimeout(function() {
-                    $('#alert-cms-error').css('display', 'none');
-                }, 2000)
-            } else if(parseInt(customerPay) < parseInt(totalMoney)) {
-                $('#alert-cms-error').css('display', 'block');
-                $('#text-alert-error').text("Khách đưa phải lớn hơn tổng tiền");
-                setTimeout(function() {
-                    $('#alert-cms-error').css('display', 'none');
-                }, 2000)
-            }
-        }
-    })
-
     // create purchar orders
     let amountProduct2 = [];
     $(document).on('click', '#btn-save-purchase', function (e) {
@@ -479,7 +285,7 @@ jQuery(document).ready(function ($) {
                 total_price: money,
                 pur_order_detail: carts
             }).done(response => {
-                // window.location.reload();
+                window.location.reload();
                 $('#alert-cms-success').css('display', 'block');
                 $('#text-alert-success').text("Tạo đơn mua hàng thành công");
                 setTimeout(function() {
@@ -508,6 +314,104 @@ jQuery(document).ready(function ($) {
                 }, 2000)
             }
         }
+    })
+
+    // delete purchase order
+    $(document).on("click", "#btn-delete-pur-order", function (e) {
+        e.preventDefault();
+        let id = $(this).data('id');
+        let urlResource = '/admin/forms/' + id + '/purchase-order/';
+        callAjax(urlResource, 'DELETE')
+            .done(response => {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                }).then((result) => {
+                    if (result.value) {
+                        $("#purchase-order_" + id).remove();
+                        window.location.reload();
+                        $('#alert-cms-success').css('display', 'block');
+                        $('#text-alert-success').text("Xóa thành công");
+                        setTimeout(function () {
+                            $('#alert-cms-success').css('display', 'none');
+                        }, 2000)
+                    }
+                })
+            })
+            .fail(error => {
+                console.log(error)
+            })
+    });
+
+    // delete Multi record
+    $(document).on("click", "#delete-multi-pur-order", function (e) {
+        e.preventDefault();
+        let ids = [];
+        $('#pur_order_ids:checked').each(function (i) {
+            ids.push($(this).attr('data-ids'));
+        });
+        if (ids.length == 0) {
+            Swal.fire(
+                'Cant Delete!',
+                'Chọn bản ghi cần xóa.',
+                'error'
+            );
+        } else {
+            let urlResouce = '/admin/forms/' + ids + '/purchase-order/';
+            callAjax(urlResouce, 'DELETE')
+                .done(response => {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!',
+                    }).then((result) => {
+                        if (result.value) {
+                            $.each(ids, function (key, value) {
+                                $("#purchase-order_" + value).remove();
+                            });
+                            window.location.reload();
+                            $('#alert-cms-success').css('display', 'block');
+                            $('#text-alert-success').text("Xóa sản phẩm thành công");
+                            setTimeout(function () {
+                                $('#alert-cms-success').css('display', 'none');
+                            }, 2000)
+                        }
+                    })
+                })
+                .fail(error => {
+                    console.log(error);
+                })
+        }
+    });
+
+    // search purchase order
+    $(document).on('click', '#btn-search-pur-order', function (e) {
+        e.preventDefault();
+        let orderCode = $('#pur-order-search-code').val();
+        let orderFromDate = $("#datepicker1").val();
+        let orderToDate = $("#datepicker2").val();
+        let urlResource = '/admin/forms/search/purchase-order/'
+        callAjax(urlResource, 'GET',
+            {
+                order_code: orderCode.toLowerCase(),
+                order_date_from: orderFromDate,
+                order_date_to: orderToDate
+            })
+            .done(response => {
+                $('#list-purchase-orders').html(response);
+            })
+            .fail(error => {
+                console.log(error);
+            })
     })
 
     $(document).on('change', '#search-pur-order', function(e) {
@@ -606,7 +510,7 @@ jQuery(document).ready(function ($) {
                   total_price: money,
                   import_detail: carts
               }).done(response => {
-                  // window.location.reload();
+                  window.location.reload();
                   $('#alert-cms-success').css('display', 'block');
                   $('#text-alert-success').text("Tạo phiếu nhập thành công");
                   setTimeout(function() {
@@ -643,7 +547,105 @@ jQuery(document).ready(function ($) {
           }
       })
 
-      $(document).on('change', '#search-input-war', function(e) {
+    // delete input
+    $(document).on("click", "#btn-delete-input", function (e) {
+        e.preventDefault();
+        let id = $(this).data('id');
+        let urlResource = '/admin/forms/' + id + '/input/';
+        callAjax(urlResource, 'DELETE')
+            .done(response => {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                }).then((result) => {
+                    if (result.value) {
+                        $("#input_" + id).remove();
+                        window.location.reload();
+                        $('#alert-cms-success').css('display', 'block');
+                        $('#text-alert-success').text("Xóa thành công");
+                        setTimeout(function () {
+                            $('#alert-cms-success').css('display', 'none');
+                        }, 2000)
+                    }
+                })
+            })
+            .fail(error => {
+                console.log(error)
+            })
+    });
+
+    // delete Multi record
+    $(document).on("click", "#delete-multi-input", function (e) {
+        e.preventDefault();
+        let ids = [];
+        $('#input_ids:checked').each(function (i) {
+            ids.push($(this).attr('data-ids'));
+        });
+        if (ids.length == 0) {
+            Swal.fire(
+                'Cant Delete!',
+                'Chọn bản ghi cần xóa.',
+                'error'
+            );
+        } else {
+            let urlResouce = '/admin/forms/' + ids + '/input/';
+            callAjax(urlResouce, 'DELETE')
+                .done(response => {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!',
+                    }).then((result) => {
+                        if (result.value) {
+                            $.each(ids, function (key, value) {
+                                $("#input_" + value).remove();
+                            });
+                            window.location.reload();
+                            $('#alert-cms-success').css('display', 'block');
+                            $('#text-alert-success').text("Xóa thành công");
+                            setTimeout(function () {
+                                $('#alert-cms-success').css('display', 'none');
+                            }, 2000)
+                        }
+                    })
+                })
+                .fail(error => {
+                    console.log(error);
+                })
+        }
+    });
+
+    // search input
+    $(document).on('click', '#btn-search-input', function (e) {
+        e.preventDefault();
+        let orderCode = $('#input-search-code').val();
+        let orderFromDate = $("#datepicker1").val();
+        let orderToDate = $("#datepicker2").val();
+        let urlResource = '/admin/forms/search/input/'
+        callAjax(urlResource, 'GET',
+            {
+                order_code: orderCode.toLowerCase(),
+                order_date_from: orderFromDate,
+                order_date_to: orderToDate
+            })
+            .done(response => {
+                $('#list-inputs').html(response);
+            })
+            .fail(error => {
+                console.log(error);
+            })
+    })
+
+    $(document).on('change', '#search-input-war', function(e) {
         e.preventDefault();
         let inputId = $(this).val();
 
@@ -753,5 +755,115 @@ jQuery(document).ready(function ($) {
                 }, 2000)
             }
         }
+    })
+
+    // delete bill order
+    $(document).on("click", "#btn-delete-bill-order", function (e) {
+        e.preventDefault();
+        let id = $(this).data('id');
+        let urlResource = '/admin/forms/' + id + '/bill-order/';
+        callAjax(urlResource, 'DELETE')
+            .done(response => {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                }).then((result) => {
+                    if (result.value) {
+                        $("#bill-order_" + id).remove();
+                        window.location.reload();
+                        $('#alert-cms-success').css('display', 'block');
+                        $('#text-alert-success').text("Xóa thành công");
+                        setTimeout(function () {
+                            $('#alert-cms-success').css('display', 'none');
+                        }, 2000)
+                    }
+                })
+            })
+            .fail(error => {
+                console.log(error)
+            })
+    });
+
+    // delete Multi record
+    $(document).on("click", "#delete-multi-bill-order", function (e) {
+        e.preventDefault();
+        let ids = [];
+        $('#bill_order_ids:checked').each(function (i) {
+            ids.push($(this).attr('data-ids'));
+        });
+        if (ids.length == 0) {
+            Swal.fire(
+                'Cant Delete!',
+                'Chọn bản ghi cần xóa.',
+                'error'
+            );
+        } else {
+            let urlResouce = '/admin/forms/' + ids + '/bill-order/';
+            callAjax(urlResouce, 'DELETE')
+                .done(response => {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!',
+                    }).then((result) => {
+                        if (result.value) {
+                            $.each(ids, function (key, value) {
+                                $("#bill-order_" + value).remove();
+                            });
+                            window.location.reload();
+                            $('#alert-cms-success').css('display', 'block');
+                            $('#text-alert-success').text("Xóa thành công");
+                            setTimeout(function () {
+                                $('#alert-cms-success').css('display', 'none');
+                            }, 2000)
+                        }
+                    })
+                })
+                .fail(error => {
+                    console.log(error);
+                })
+        }
+    });
+
+    // search input
+    $(document).on('click', '#btn-search-bill-order', function (e) {
+        e.preventDefault();
+        let orderCode = $('#bill-order-search-code').val();
+        let orderFromDate = $("#datepicker1").val();
+        let orderToDate = $("#datepicker2").val();
+        let urlResource = '/admin/forms/search/bill-order/'
+        callAjax(urlResource, 'GET',
+            {
+                order_code: orderCode.toLowerCase(),
+                order_date_from: orderFromDate,
+                order_date_to: orderToDate
+            })
+            .done(response => {
+                $('#list-bill-orders').html(response);
+            })
+            .fail(error => {
+                console.log(error);
+            })
+    })
+
+    $(document).on('change', '#search-input-ord', function (e) {
+        e.preventDefault();
+        let orderId = $(this).val();
+
+        let urlResource = '/admin/forms/show-product-by-order/' + orderId;
+        callAjax(urlResource, 'GET').done(response => {
+            $('#exchange').html(response);
+        }).fail(error => {
+            console.log(error);
+        })
     })
 });

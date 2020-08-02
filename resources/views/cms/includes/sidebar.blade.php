@@ -8,7 +8,7 @@
         <li id="product"><a href="{{ route('products.index') }}"><i class="fa fa-barcode"></i>Sản phẩm</a></li>
         <li id="customer"><a href="{{ route('customers.index') }}"><i class="fa fa-users"></i>Khách hàng</a></li>
         <li id="supplier"><a href="{{ route('suppliers.index') }}"><i class="fa fa-users"></i>Nhà cung cấp</a></li>
-        <li id="notification"><a href="{{ route('notifications.index') }}"><i class="fa fa-bell-o"></i>Thông báo</a></li>
+        <li id="notification"><a href="{{ route('product-defectives.index') }}"><i class="fa fa-bell-o"></i>Hàng bị lỗi</a></li>
         <li id="import"><a href="{{ route('forms.listPurchaseOrders') }}"><i class="fa fa-truck"></i>Đơn mua hàng</a></li>
         <li id="import"><a href="{{ route('forms.listInputs') }}"><i class="fa fa-truck"></i>Phiếu nhập kho</a></li>
         <li id="import"><a href="{{ route('forms.listBillOrders') }}"><i class="fa fa-truck"></i>Hóa đơn mua</a></li>

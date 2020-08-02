@@ -25,22 +25,22 @@
     <div class="orders-content">
         <div class="product-sear panel-sear">
             <div class="form-group col-md-4 padd-0">
-                <input type="text" class="form-control" id="order-search"
+                <input type="text" class="form-control" id="order-search-code"
                        placeholder="Nhập mã đơn hàng để tìm kiếm">
             </div>
             <div class="form-group col-md-8 padd-0" style="padding-left: 5px;">
                 <div class="col-md-9 padd-0">
                     <div class="col-md-7 padd-0" style="padding-left: 5px;">
                         <div class="input-daterange input-group">
-                            <input id="datepicker1" type="text" class="input-sm form-control" id="search-date-from" placeholder="Từ ngày"
+                            <input id="datepicker1" type="text" class="input-sm form-control" placeholder="Từ ngày"
                                    name="start"/>
                             <span class="input-group-addon">to</span>
-                            <input id="datepicker2" type="text" class="input-sm form-control" id="search-date-to" placeholder="Đến ngày"
+                            <input id="datepicker2" type="text" class="input-sm form-control" placeholder="Đến ngày"
                                    name="end"/>
                         </div>
                     </div>
                     <div class="col-md-5 padd-0" style="padding-left: 5px;">
-                        <button style="box-shadow: none;" type="button" class="btn btn-primary btn-large"><i class="fa fa-search"></i> Tìm kiếm
+                        <button style="box-shadow: none;" type="button" class="btn btn-primary btn-large" id="btn-search-order"><i class="fa fa-search"></i> Tìm kiếm
                         </button>
                     </div>
                 </div>
@@ -57,15 +57,8 @@
             <button type="button" id="delete-multi-order" class="btn btn-danger btn-large btn-ssup"><i
                     class="fa fa-trash-o"></i> Xóa nhiều
             </button>
-            <div class="col-md-3 padd-0" style="margin-right: 10px;">
-                <select id="search-option-1" class="form-control">
-                    <option value="0">Đơn hàng</option>
-                    <option value="1">Đơn hàng đã xóa</option>
-                    <option value="2">Đơn hàng còn nợ</option>
-                </select>
-            </div>
         </div>
-        <div class="orders-main-body">
+        <div class="orders-main-body" id="list-orders">
             @include('cms.modules.orders.list-orders')
         </div>
     </div>

@@ -20,7 +20,7 @@
     <tbody>
     @if(!empty($listPurchaseOrders) && count($listPurchaseOrders) > 0)
         @foreach($listPurchaseOrders as $key => $value)
-            <tr>
+            <tr id="purchase-order_{{ $value->id }}">
                 <td style="text-align: center;">
                     <i style="color: #478fca!important;" title="Chi tiết đơn hàng"
                        class="fa fa-plus-circle i-detail-order-{{ $value->id }}"
@@ -44,10 +44,14 @@
                         <i title="In"
                         class="fa fa-print blue"
                         style="margin-right: 5px;"></i>
+                    </a>
+                    <a href="javascript:void(0)" id="btn-delete-pur-order" data-id="{{ $value->id }}">
                         <i class="fa fa-trash-o" style="color: darkred;"></i>
                     </a>
                 </td>
                 <td class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
+                                                                                          id="pur_order_ids"
+                                                                                          data-ids="{{ $value->id }}"
                                                                                           value=""
                                                                                           class="checkbox chk"><span
                             style="width: 15px; height: 15px;"></span></label>

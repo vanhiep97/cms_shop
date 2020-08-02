@@ -87,7 +87,7 @@ class OrderController extends Controller
 
     public function printOrder($id)
     {
-        $orders = Order::findOrFail($id);
+        $orders = Order::with('customer')->findOrFail($id);
         PDF::setOptions(['dpi' => 150, 'defaultFont' => 'DejaVu Sans']);
         $pdf = PDF::loadView('cms.modules.orders.invoice',  compact('orders'))->setPaper('a4', 'portrait');
         $orders->update([
@@ -111,5 +111,22 @@ class OrderController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function search(Request $request)
+    {
+        $orderCode = $request->order_code;
+        $orderDateFrom = $request->order_date_from;
+        $orderDateTo = $request->order_date_to;
+
+        $orders = Order::with('customer');
+        if($request->has('order_code') && $orderCode) {
+            $orders->where('order_code', 'LIKE', $orderCode.'%');
+        }
+        if($request->has('order_date_from') && $request->has('order_date_to') && $orderDateFrom && $orderDateTo) {
+            $orders->whereBetween('sell_date', [$orderDateFrom, $orderDateTo]);
+        }
+        $orders = $orders->paginate(5);
+        return view('cms.modules.orders.list-orders', compact('orders'));
     }
 }

@@ -1,113 +1,117 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-    <title>Shop Fashion</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+
+    <title>Document</title>
     <style>
-         body { font-family: DejaVu Sans, sans-serif; }
+      body {
+        font-family: DejaVu Sans, sans-serif;
+      }
     </style>
 </head>
 <body>
-<div class="container">
-    <header>
-        <div class="header-top">
-            <div class="logo">
-                <span>Tên shop: </span>SHOP FASHION
-            </div>
-            <div class="phone">
-                <span>Số điện thoại: </span>0985940019
-            </div>
-            <div class="email">
-                <span>Email: </span>nguyentranhiep96@gmail.com
-            </div>
-            <div class="address">
-                <span>Địa chỉ: </span>Cao Tho - Van Ninh - Gia Binh - Bắc Ninh
-            </div>
-        </div>
-        <div class="header-top1" style="display: flex; justify-content: center;">
-            <h1 style="font-weight: 600;"><p>HÓA ĐƠN BÁN HÀNG</p></h1>
-            <br>
-            <span>Mã hóa đơn: </span>{{ $orders->order_code }}
-        </div>
-        <div class="header-main">
-            <div class="sell_date">
-                <span>Ngày bán: </span>{{ $orders->created_at }}
-            </div>
-            <div class="customer">
-                <span>Khách hàng: </span>Nguyễn Văn Hiệp
-            </div>
-            <div class="customer-email">
-                <span>Email: </span>customer@gmail.com
-            </div>
-            <div class="customer-phone">
-                <span>Số điện thoại: </span>0985940019
-            </div>
-        </div>
-    </header>
-    <div class="main">
-        <table class="table">
-            <thead>
-            <tr>
-                <th>STT</th>
-                <th>Tên sản phẩm</th>
-                <th>Đơn giá</th>
-                <th>Số lượng</th>
-                <th>Thành tiền</th>
-                <th>Tổng tiền</th>
-            </tr>
-            </thead>
-            <tbody>
-                @php
-                   $orderDetail = json_decode($orders->order_detail);
-                @endphp
-               @if(!empty($orderDetail) && count($orderDetail) > 0)
-                    @foreach($orderDetail as $key => $value)
-                        <tr>
-                            <td class="text-center width-5 hidden-320 ">
-                                {{ $key + 1 }}
-                            </td>
-                            <td class="text-left hidden-768">
-                                {{ $value->product_code ? $value->product_code : '' }}
-                            </td>
-                            <td class="text-left ">
-                                {{ $value->product_name ? $value->product_name : '' }}
-                            </td>
-                            <td class="text-center ">
-                                {{ $value->product_sell_amount ? $value->product_sell_amount : 0 }}
-                            </td>
-                            <td class="text-center">
-                                {{ $value->product_sell_price ? number_format($value->product_sell_price) : 0 }}
-                            </td>
-                            <td class="text-center">
-                                {{ number_format($value->product_sell_price * $value->product_sell_amount) }}
-                            </td>
-                        </tr>
-                    @endforeach
-                @endif
-            </tbody>
-        </table>
+    <div class="Thongtinkhachang">
+    <div class="shop-info">
+      <p>SHOP FASHION</p>
+      <p>Số điện thoại: 0985940019</p>
+      <p>Email: nguyentranhiep96@gmail.com</p>
+      <p>Địa chỉ: Vạn Ninh - Gia Bình - Bắc Ninh</p>
     </div>
+    <div class="donhang">HÓA ĐƠN BÁN HÀNG</div>
+    <p>Mã hóa đơn: {{ $orders->order_code }}</p>
+    <p>Ngày bán: {{ $orders->created_at }}</p>
+    <p>Tên khách hàng: {{ $orders->customer->customer_name }}</p>
+    <p>Email: {{ $orders->customer->customer_email }}</p>
+    <p>Điện thoại: {{ $orders->customer->customer_phone }}</p>
+    <p>Địa chỉ: {{ $orders->customer->customer_address }} </p>
+    <p>Hình thức: {{ $orders->sell_type === 0 ? 'Trực tiếp' : 'Giao hàng' }}</p>
+    <p>Trạng thái: {{ $orders->order_status === 1 ? 'Đã thanh toán' : 'Chưa thanh toán' }}</p>
 
-    <div class="footer">
-        <div class="total">
-            <p><span>Tổng tiền hàng: </span>{{ $orders->total_price ? number_format($orders->total_price) : 0 }}</p>
-            <p><span>Giảm giá: </span>{{ $orders->coupon ? number_format($orders->coupon) : 0 }}</p>
-            <p><span>Tổng thanh toán: </span>{{ $orders->total_money ? number_format($orders->total_money) : 0 }}</p>
-            <p><span>Khách hàng đã thanh toán: </span>{{ $orders->customer_pay ? number_format($orders->customer_pay) : 0 }}</p>
-            <p><span>Tiền trả lại khách: </span>{{ $orders->lack ? number_format($orders->lack) : 0 }}</p>
-        </div>
-        <div class="sell-user">
-            <h3><p>NGƯỜI BÁN HÀNG</p></h3>
-            <p>
-                {{ $orders->user_practise }}
-            </p>
-        </div>
-    </div>
 </div>
+
+<table>
+    <tr>
+      <td>STT</td>
+      <td>Tên hàng</td>
+      <td>ĐVT</td>
+      <td>Số lượng </td>
+      <td>Đơn giá </td>
+      <td>Thành tiền </td>
+    </tr>
+    @php
+    $orderDetail = json_decode($orders->order_detail);
+    @endphp
+    @if (!empty($orderDetail) && count($orderDetail))
+    @foreach ($orderDetail ?? '' as $key => $value)
+    <tr>
+      <td>{{ $key + 1 }}</td>
+      <td>{{ $value->product_name }}</td>
+      <td>cái</td>
+      <td>{{ $value->product_sell_amount }}</td>
+      <td>{{ number_format($value->product_origin_price) }}</td>
+      <td>{{ number_format($value->product_origin_price * $value->product_sell_amount) }}</td>
+    </tr>
+    @endforeach
+    @endif
+    <tr class="tongtien">
+      <td colspan="5">Tổng tiền: <span> {{ number_format($orders->total_price) }}</span> </td>
+      <td colspan="1"></td>
+    </tr>
+  </table>
+
+  <div class="pair shop-info">
+    <p>Tổng tiền hàng: {{ $orders->total_price ? number_format($orders->total_price) : 0 }}</p>
+    <p>Giảm giá: {{ $orders->coupon ? number_format($orders->coupon) : 0 }}</p>
+    <p>Tổng thanh toán: </span>{{ $orders->total_money ? number_format($orders->total_money) : 0 }}</p>
+    <p>Khách hàng đã thanh toán: {{ $orders->customer_pay ? number_format($orders->customer_pay) : 0 }}</p>
+    <p>Tiền trả lại khách: {{ $orders->lack ? number_format($orders->lack) : 0 }}</p>
+  </div>
+
+  <div class="nguoilap">Người lập</div>
+  <style>
+     body {
+        width: 100%;
+        margin: 0 auto;
+        }
+
+   p:nth-child(2),p:nth-child(3){
+       text-align: center;
+   }
+
+   .donhang{
+       text-align: center;
+       padding-bottom: 8px;
+   }
+
+th {
+  height: 50px;
+}
+
+table, td, th {
+  border: 1px solid black;
+  margin-top: 20px;
+  border-collapse: collapse;
+  width: 100%;
+}
+td {
+
+  text-align: center;
+}
+span {
+    float: right;
+}
+.nguoilap{
+    float: right;
+    margin-top: 10px;
+}
+.pair {
+  float: left;
+}
+.shop-info p {
+  text-align: left;
+}
+  </style>
+
 </body>
 </html>

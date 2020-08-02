@@ -12,6 +12,7 @@ use App\Models\Receipt;
 use App\Models\BillOrder;
 use PDF;
 use Illuminate\Support\Facades\DB;
+use App\Models\Order;
 
 class FormController extends Controller
 {
@@ -80,6 +81,40 @@ class FormController extends Controller
         PDF::setOptions(['dpi' => 150, 'defaultFont' => 'DejaVu Sans']);
         $pdf = PDF::loadView('cms.modules.forms.purchase-orders.invoice', compact('purchaseOrder'))->setPaper('a4', 'portrait');
         return $pdf->stream('invoice.pdf', array("Attachment" => false));
+    }
+
+    public function destroyPurchaseOrder($id)
+    {
+        try {
+            $ids = explode(",", $id);
+            PurchaseOrder::destroy($ids);
+            return response()->json([
+                'isSuccess' => true,
+                'message' => 'Delete success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'isSuccess' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function searchPurchaseOrder(Request $request)
+    {
+        $orderCode = $request->order_code;
+        $orderDateFrom = $request->order_date_from;
+        $orderDateTo = $request->order_date_to;
+
+        $listPurchaseOrders = PurchaseOrder::with('supplier');
+        if($request->has('order_code') && $orderCode) {
+            $listPurchaseOrders->where('pur_order_code', 'LIKE', $orderCode.'%');
+        }
+        if($request->has('order_date_from') && $request->has('order_date_to') && $orderDateFrom && $orderDateTo) {
+            $listPurchaseOrders->whereBetween('pur_order_date', [$orderDateFrom, $orderDateTo]);
+        }
+        $listPurchaseOrders = $listPurchaseOrders->paginate(5);
+        return view('cms.modules.forms.purchase-orders.list-purorder', compact('listPurchaseOrders'));
     }
 
     public function listInputs()
@@ -156,6 +191,40 @@ class FormController extends Controller
         return $pdf->stream('invoice.pdf', array("Attachment" => false));
     }
 
+    public function destroyInput($id)
+    {
+        try {
+            $ids = explode(",", $id);
+            Input::destroy($ids);
+            return response()->json([
+                'isSuccess' => true,
+                'message' => 'Delete success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'isSuccess' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function searchInput(Request $request)
+    {
+        $orderCode = $request->order_code;
+        $orderDateFrom = $request->order_date_from;
+        $orderDateTo = $request->order_date_to;
+
+        $listInputs = Input::with('supplier');
+        if($request->has('order_code') && $orderCode) {
+            $listInputs->where('input_code', 'LIKE', $orderCode.'%');
+        }
+        if($request->has('order_date_from') && $request->has('order_date_to') && $orderDateFrom && $orderDateTo) {
+            $listInputs->whereBetween('input_date', [$orderDateFrom, $orderDateTo]);
+        }
+        $listInputs = $listInputs->paginate(5);
+        return view('cms.modules.forms.inputs.list-input', compact('listInputs'));
+    }
+
     public function listBillOrders()
     {
         $listBillOrders = BillOrder::with('input')->paginate(5);
@@ -206,5 +275,52 @@ class FormController extends Controller
             'message' => 'Create Bill Order',
             'receipt' => $billOrders
         ], 200);
+    }
+
+
+    public function destroyBillOrder($id)
+    {
+        try {
+            $ids = explode(",", $id);
+            BillOrder::destroy($ids);
+            return response()->json([
+                'isSuccess' => true,
+                'message' => 'Delete success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'isSuccess' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function searchBillOrder(Request $request)
+    {
+        $orderCode = $request->order_code;
+        $orderDateFrom = $request->order_date_from;
+        $orderDateTo = $request->order_date_to;
+
+        $listBillOrders = BillOrder::with('input');
+        if($request->has('order_code') && $orderCode) {
+            $listBillOrders->where('bill_code', 'LIKE', $orderCode.'%');
+        }
+        if($request->has('order_date_from') && $request->has('order_date_to') && $orderDateFrom && $orderDateTo) {
+            $listBillOrders->whereBetween('bill_date', [$orderDateFrom, $orderDateTo]);
+        }
+        $listBillOrders = $listBillOrders->paginate(5);
+        return view('cms.modules.forms.bill-orders.list_imports', compact('listBillOrders'));
+    }
+
+    public function createBillExchange()
+    {
+        $listOrders = Order::select('id', 'order_code')->get();
+        return view('cms.modules.forms.bill-exchanges.create-bill', compact('listOrders'));
+    }
+
+    public function showProductOnOrder(Request $request, $id)
+    {
+        $productByOrder = Order::where('id',$id)->with('customer')->first();
+        return view('cms.modules.forms.bill-exchanges.show-bill-order', compact('productByOrder'));
     }
 }

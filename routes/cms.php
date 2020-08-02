@@ -74,6 +74,7 @@ Route::namespace('Cms')->group(function () {
             Route::post('/save-order', 'OrderController@saveOrder')->name('orders.save-order');
             Route::get('/print-order/{id}','OrderController@printOrder')->name('orders.print-order');
             Route::delete('/{id}', 'OrderController@destroy')->name('orders.destroy');
+            Route::get('/search', 'OrderController@search')->name('orders.search');
         });
 
         Route::prefix('customers')->group(function () {
@@ -122,25 +123,33 @@ Route::namespace('Cms')->group(function () {
             Route::get('/create-purchase-order', 'FormController@createPurchaseOrder')->name('forms.createPurchaseOrder');
             Route::post('/store-purchase-order', 'FormController@storePurchaseOrder')->name('forms.storePurchaseOrder');
             Route::get('/print-purchase-order/{id}', 'FormController@printPurchaseOrder')->name('form.printPurchaseOrder');
+            Route::delete('/{id}/purchase-order', 'FormController@destroyPurchaseOrder')->name('forms.destroyPurchaseOrder');
+            Route::get('/search/purchase-order', 'FormController@searchPurchaseOrder')->name('forms.searchPurchaseOrder');
             Route::get('/inputs', 'FormController@listInputs')->name('forms.listInputs');
             Route::get('/create-input', 'FormController@createInput')->name('forms.createInput');
             Route::post('/store-input', 'FormController@storeInput')->name('forms.storeInput');
             Route::get('/print-input/{id}', 'FormController@printInput')->name('form.printInput');
             Route::get('/show-product-by-purchase-order/{id}', 'FormController@showProductOnPurOrder')->name('forms.showProductOnPurOrder');
+            Route::delete('/{id}/input', 'FormController@destroyInput')->name('forms.destroyInput');
+            Route::get('/search/input', 'FormController@searchInput')->name('forms.searchInput');
             Route::get('/bill-orders', 'FormController@listBillOrders')->name('forms.listBillOrders');
             Route::get('/create-bill-order', 'FormController@createBillOrder')->name('forms.createBillOrder');
             Route::post('/store-bill-order', 'FormController@storeBillOrder')->name('forms.storeBillOrder');
             Route::get('/show-product-by-input/{id}', 'FormController@showProductOnInput')->name('forms.showProductOnInput');
+            Route::delete('/{id}/bill-order', 'FormController@destroyBillOrder')->name('forms.destroyBillOrder');
+            Route::get('/search/bill-order', 'FormController@searchBillOrder')->name('forms.searchBillOrder');
+            Route::get('/bill-exchanges', 'FormController@listBillExchanges')->name('forms.listBillExchanges');
+            Route::get('/create-bill-exchange', 'FormController@createBillExchange')->name('forms.createBillExchange');
+            Route::post('/store-bill-exchange', 'FormController@storeBillExchange')->name('forms.storeBillExchange');
+            Route::get('/show-product-by-order/{id}', 'FormController@showProductOnOrder')->name('forms.showProductOnOrder');
         });
 
         Route::prefix('barcode')->group(function () {
             Route::get('/', 'BarcodeController@barcode')->name('barcode.index');
         });
 
-        Route::prefix('notifications')->group(function () {
-            Route::post('save-device-token', 'NotificationController@saveToken')->name('save-device-token');
-            Route::post('send-push', 'NotificationController@sendPush')->name('send-push');
-            Route::get('/', 'NotificationController@index')->name('notifications.index');
+        Route::prefix('product_defectives')->group(function() {
+            Route::get('/', 'ProductDefectiveController@index')->name('product-defectives.index');
         });
     });
 });

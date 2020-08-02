@@ -3,7 +3,7 @@ function cms_show_detail_order(id) {
     $('.i-detail-order-' + id).toggle();
 }
 jQuery(document).ready(function ($) {
-    // delete product
+    // delete order
     $(document).on("click", "#btn-delete-order", function (e) {
         e.preventDefault();
         let id = $(this).data('id');
@@ -79,4 +79,25 @@ jQuery(document).ready(function ($) {
                 })
         }
     });
+
+    // search order
+    $(document).on('click', '#btn-search-order', function(e) {
+        e.preventDefault();
+        let orderCode = $('#order-search-code').val();
+        let orderFromDate = $("#datepicker1").val();
+        let orderToDate = $("#datepicker2").val();
+        let urlResource = '/admin/orders/search/'
+        callAjax(urlResource, 'GET',
+        {
+            order_code: orderCode.toLowerCase(),
+            order_date_from: orderFromDate,
+            order_date_to: orderToDate
+        })
+            .done(response => {
+                $('#list-orders').html(response);
+            })
+            .fail(error => {
+                console.log(error);
+            })
+    })
 });

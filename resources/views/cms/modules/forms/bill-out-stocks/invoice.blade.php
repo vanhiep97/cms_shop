@@ -51,23 +51,23 @@
   </table>
 
   <div class="nguoilap">Người lập</div>
-   <style>
+  <style>
      body {
         width: 100%;
         margin: 0 auto;
         }
 
      p:nth-child(1) , p:nth-child(2),p:nth-child(3), p:nth-child(4),p:nth-child(5),p:nth-child(6){
-    border-bottom:1px solid gray;
-   }
+
+    }
    p:nth-child(2),p:nth-child(3){
        text-align: center;
    }
 
    .donhang{
+       margin-top: 50px;
        text-align: center;
-       border-bottom: 1px solid gray;
-       padding-bottom: 8px;
+       padding-bottom: -10px;
    }
 
 th {
@@ -89,10 +89,13 @@ span {
 }
 .nguoilap{
     float: right;
+    margin-right: 100px;
     margin-top: 10px;
 }
+p {
+    margin-bottom: 0px;
+}
   </style>
-
 
 </body>
 </html>

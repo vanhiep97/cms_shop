@@ -12,7 +12,6 @@
                     <th class="text-center">Số lượng nhận</th>
                     <th class="text-center">Đơn giá</th>
                     <th class="text-center">Thành tiền</th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody id="pro_on_pur_order">
@@ -27,9 +26,6 @@
                                 <td><input type="number" value="{{ $item->product_sell_amount }}" id="amount-input" data-amount-input="{{ $item->product_sell_amount }}" style="width: 50px"/></td>
                                 <td id="origin-price" data-price={{ $item->product_origin_price }}>{{ $item->product_origin_price ? number_format($item->product_origin_price) : 0 }}</td>
                                 <td id="total-money-input" data-money-input="{{ $item->product_origin_price *  $item->product_sell_amount}}">{{ $item->product_origin_price *  $item->product_sell_amount}}</td>
-                                <td class="text-center">
-                                    <i class="fa fa-trash-o" style="color: darkred;" id="delete-product-pos" data-id="" title="Xóa"></i>
-                                </td>
                             </tr>
                         @endforeach
                     @endif
@@ -127,14 +123,8 @@
             </div>
             <div class="col-md-12">
                 <div class="btn-groups pull-right" style="margin-bottom: 50px;">
-                    <button type="button" class="btn btn-primary hidden">
-                        <i class="fa fa-floppy-o"></i> Lưu tạm
-                    </button>
-                    <button type="button" class="btn btn-primary"><i
+                    <button type="button" id="btn-save-input" class="btn btn-primary"><i
                             class="fa fa-check"></i> Lưu
-                    </button>
-                    <button type="button" class="btn btn-primary"><i
-                            class="fa fa-print"></i> Lưu và in
                     </button>
                     <button type="button" class="btn btn-default btn-back"><i
                             class="fa fa-arrow-left"></i> Hủy
