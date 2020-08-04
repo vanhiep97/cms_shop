@@ -14,9 +14,6 @@
                         <button type="button" id="btn-save-bill" class="btn btn-primary"><i
                                 class="fa fa-check"></i> Lưu
                         </button>
-                        <button type="button" class="btn btn-primary"><i
-                                class="fa fa-print"></i> Lưu và in
-                        </button>
                         <button type="button" class="btn btn-default"><i
                                 class="fa fa-arrow-left"></i> Hủy
                         </button>
@@ -195,14 +192,8 @@
                 </div>
                 <div class="col-md-12">
                     <div class="btn-groups pull-right" style="margin-bottom: 50px;">
-                        <button type="button" class="btn btn-primary hidden">
-                            <i class="fa fa-floppy-o"></i> Lưu tạm
-                        </button>
-                        <button type="button" class="btn btn-primary"><i
+                        <button type="button" id="btn-save-bill" class="btn btn-primary"><i
                                 class="fa fa-check"></i> Lưu
-                        </button>
-                        <button type="button" class="btn btn-primary"><i
-                                class="fa fa-print"></i> Lưu và in
                         </button>
                         <button type="button" class="btn btn-default btn-back"><i
                                 class="fa fa-arrow-left"></i> Hủy

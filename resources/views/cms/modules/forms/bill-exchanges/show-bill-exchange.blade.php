@@ -54,6 +54,7 @@
                                 <div class="col-md-11 padd-0" style="position: relative;">
                                     <input id="search-box-customer" class="form-control"
                                             type="text"
+                                            value="{{ $productByOrder->customer->customer_name }}" data-id="{{ $productByOrder->customer->id }}"
                                             autocomplete="off"
                                             placeholder="Tìm khách hàng (F4)"
                                             style="border-radius: 3px 0 0 3px !important;"><span
@@ -83,7 +84,7 @@
                         </div>
                         <div class="form-group marg-bot-10 clearfix">
                             <div style="padding:0px" class="col-md-4">
-                                <label>Ghi chú</label>
+                                <label>Lý do đổi trả</label>
                             </div>
                             <div class="col-md-8">
             <textarea id="note-order" cols="" class="form-control" rows="3"

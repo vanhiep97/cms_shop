@@ -22,4 +22,9 @@ class PurchaseOrder extends Model
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
+
+    public function input()
+    {
+        return $this->hasOne(Input::class, 'pur_order_id');
+    }
 }

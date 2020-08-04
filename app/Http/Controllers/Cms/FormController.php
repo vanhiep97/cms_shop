@@ -185,7 +185,7 @@ class FormController extends Controller
 
     public function printInput($id)
     {
-        $input = Input::with('supplier')->find($id);
+        $input = Input::with('supplier', 'purchaseOrder')->find($id);
         PDF::setOptions(['dpi' => 150, 'defaultFont' => 'DejaVu Sans']);
         $pdf = PDF::loadView('cms.modules.forms.inputs.invoice', compact('input'))->setPaper('a4', 'portrait');
         return $pdf->stream('invoice.pdf', array("Attachment" => false));
@@ -277,6 +277,13 @@ class FormController extends Controller
         ], 200);
     }
 
+    public function printBillOrder($id)
+    {
+        $billOrder = BillOrder::with('input')->find($id);
+        PDF::setOptions(['dpi' => 150, 'defaultFont' => 'DejaVu Sans']);
+        $pdf = PDF::loadView('cms.modules.forms.bill-orders.invoice', compact('billOrder'))->setPaper('a4', 'portrait');
+        return $pdf->stream('invoice.pdf', array("Attachment" => false));
+    }
 
     public function destroyBillOrder($id)
     {
@@ -321,6 +328,6 @@ class FormController extends Controller
     public function showProductOnOrder(Request $request, $id)
     {
         $productByOrder = Order::where('id',$id)->with('customer')->first();
-        return view('cms.modules.forms.bill-exchanges.show-bill-order', compact('productByOrder'));
+        return view('cms.modules.forms.bill-exchanges.show-bill-exchange', compact('productByOrder'));
     }
 }

@@ -27,4 +27,9 @@ class Input extends Model
     {
         return $this->hasOne(BillOrder::class, 'input_id');
     }
+
+    public function purchaseOrder()
+    {
+        return $this->belongsTo(PurchaseOrder::class, 'pur_order_id');
+    }
 }

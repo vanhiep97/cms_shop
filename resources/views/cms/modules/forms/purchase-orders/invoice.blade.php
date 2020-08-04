@@ -45,8 +45,7 @@
         @endforeach
     @endif
      <tr class="tongtien">
-        <td colspan = "5">Tổng tiền: <span> {{ number_format($purchaseOrder->total_price) }}</span>   </td>
-        <td colspan = "1"></td>
+        <td colspan="8">Tổng tiền: <span> {{ number_format($purchaseOrder->total_price) }}</span></td>
      </tr>
   </table>
 

@@ -128,13 +128,14 @@ Route::namespace('Cms')->group(function () {
             Route::get('/inputs', 'FormController@listInputs')->name('forms.listInputs');
             Route::get('/create-input', 'FormController@createInput')->name('forms.createInput');
             Route::post('/store-input', 'FormController@storeInput')->name('forms.storeInput');
-            Route::get('/print-input/{id}', 'FormController@printInput')->name('form.printInput');
+            Route::get('/print-input/{id}', 'FormController@printInput')->name('forms.printInput');
             Route::get('/show-product-by-purchase-order/{id}', 'FormController@showProductOnPurOrder')->name('forms.showProductOnPurOrder');
             Route::delete('/{id}/input', 'FormController@destroyInput')->name('forms.destroyInput');
             Route::get('/search/input', 'FormController@searchInput')->name('forms.searchInput');
             Route::get('/bill-orders', 'FormController@listBillOrders')->name('forms.listBillOrders');
             Route::get('/create-bill-order', 'FormController@createBillOrder')->name('forms.createBillOrder');
             Route::post('/store-bill-order', 'FormController@storeBillOrder')->name('forms.storeBillOrder');
+            Route::get('/print-bill-order/{id}', 'FormController@printBillOrder')->name('forms.printBillOrder');
             Route::get('/show-product-by-input/{id}', 'FormController@showProductOnInput')->name('forms.showProductOnInput');
             Route::delete('/{id}/bill-order', 'FormController@destroyBillOrder')->name('forms.destroyBillOrder');
             Route::get('/search/bill-order', 'FormController@searchBillOrder')->name('forms.searchBillOrder');

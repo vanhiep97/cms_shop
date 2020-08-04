@@ -43,9 +43,11 @@
                 style="background-color: #F2F2F2;">{{ $value->total_money }}</td>
             <td class="text-center" style="background: #fff;">{{ $value->lack }}</td>
             <td class="text-center" style="background: #fff;">
-                <i title="In"
-                class="fa fa-print blue"
-                style="margin-right: 5px;"></i>
+                <a href="{{ route('forms.printBillOrder', ['id' => $value->id]) }}" target="blank">
+                    <i title="In"
+                    class="fa fa-print blue"
+                    style="margin-right: 5px;"></i>
+                </a>
                 <a href="javascript:void(0)">
                     <i class="fa fa-trash-o" data-id="{{ $value->id }}" id="btn-delete-bill-order" style="color: darkred;" title=""></i>
                 </a>
