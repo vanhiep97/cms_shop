@@ -31,4 +31,8 @@ class Supplier extends Model
     public function BillOrders() {
         return $this->hasMany(BillOrder::class, 'supplier_id');
     }
+
+    public function BillOutStock() {
+        return $this->hasMany(OutStockBill::class, 'supplier_id');
+    }
 }

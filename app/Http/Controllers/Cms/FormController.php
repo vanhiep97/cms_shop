@@ -10,6 +10,7 @@ use App\Models\Input;
 use App\Models\PurchaseOrder;
 use App\Models\Receipt;
 use App\Models\BillOrder;
+use App\Models\OutStockBill;
 use PDF;
 use Illuminate\Support\Facades\DB;
 use App\Models\Order;
@@ -329,5 +330,97 @@ class FormController extends Controller
     {
         $productByOrder = Order::where('id',$id)->with('customer')->first();
         return view('cms.modules.forms.bill-exchanges.show-bill-exchange', compact('productByOrder'));
+    }
+
+    public function listBillOutStocks()
+    {
+        $listBillOutStocks = OutStockBill::with('supplier')->paginate(5);
+        return view('cms.modules.forms.bill-out-stocks.index', compact('listBillOutStocks'));
+    }
+
+    public function createBillOutStock()
+    {
+        return view('cms.modules.forms.bill-out-stocks.create-bill-out-stock');
+    }
+
+    public function storeBillOutStock(Request $request)
+    {
+        $min = 0000000001;
+        $max = 9999999999;
+        $billOutStockCode = 'PXK-'.random_int ($min , $max);
+        $billOutStockDetails = $request->out_stock_detail;
+        $billOutStockDetail = json_encode($request->out_stock_detail);
+        DB::beginTransaction();
+            try {
+                $billOutStocks = OutStockBill::create([
+                    'bill_out_stock_code' => $billOutStockCode,
+                    'bill_out_stock_date' => $request->out_stock_date,
+                    'user_practise' => auth()->user()->name,
+                    'supplier_id' => $request->supplier_id,
+                    'bill_out_stock_reason' => $request->notes,
+                    'total_price' => $request->total_price,
+                    'bill_out_stock_detail' => $billOutStockDetail,
+                    'pur_order_status' => 0
+                ]);
+                $exportProduct = json_decode($billOutStocks->bill_out_stock_detail);
+                foreach($exportProduct as $value) {
+                    $productCode = $value->product_code;
+                    $product = Product::where('product_code', $productCode)->first();
+                    $product->update([
+                        'product_amount' => $product->product_amount - $value->product_sell_amount
+                    ]);
+                }
+                DB::commit();
+                return response()->json([
+                    'isSuccess' => true,
+                    'message' => 'Create Bill Out Stock',
+                    'purOrder' => $billOutStocks
+                ], 200);
+            } catch (Exception $e) {
+                DB::rollBack();
+                throw new Exception($e->getMessage());
+            }
+    }
+
+    public function printBillOutStock($id)
+    {
+        $billOutStock = OutStockBill::with('supplier')->find($id);
+        PDF::setOptions(['dpi' => 150, 'defaultFont' => 'DejaVu Sans']);
+        $pdf = PDF::loadView('cms.modules.forms.bill-out-stocks.invoice', compact('billOutStock'))->setPaper('a4', 'portrait');
+        return $pdf->stream('invoice.pdf', array("Attachment" => false));
+    }
+
+    public function destroyBillOutStock($id)
+    {
+         try {
+            $ids = explode(",", $id);
+            OutStockBill::destroy($ids);
+            return response()->json([
+                'isSuccess' => true,
+                'message' => 'Delete success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'isSuccess' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function searchBillOutStock(Request $request)
+    {
+        $billOutStockCode = $request->bill_out_stock_code;
+        $billOutStockDateFrom = $request->bill_out_stock_date_from;
+        $billOutStockDateTo = $request->bill_out_stock_date_to;
+
+        $listBillOutStocks = OutStockBill::with('supplier');
+        if($request->has('bill_out_stock_code') && $billOutStockCode) {
+            $listBillOutStocks->where('bill_out_stock_code', 'LIKE', $billOutStockCode.'%');
+        }
+        if($request->has('bill_out_stock_date_from') && $request->has('bill_out_stock_date_to') && $billOutStockDateFrom && $billOutStockDateTo) {
+            $listBillOutStocks->whereBetween('bill_out_stock_date', [$billOutStockDateFrom, $billOutStockDateTo]);
+        }
+        $listBillOutStocks = $listBillOutStocks->paginate(5);
+        return view('cms.modules.forms.bill-out-stocks.list-bill_out_stock', compact('listBillOutStocks'));
     }
 }

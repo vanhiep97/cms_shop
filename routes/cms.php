@@ -122,7 +122,7 @@ Route::namespace('Cms')->group(function () {
             Route::get('/purchase-orders', 'FormController@listPurchaseOrders')->name('forms.listPurchaseOrders');
             Route::get('/create-purchase-order', 'FormController@createPurchaseOrder')->name('forms.createPurchaseOrder');
             Route::post('/store-purchase-order', 'FormController@storePurchaseOrder')->name('forms.storePurchaseOrder');
-            Route::get('/print-purchase-order/{id}', 'FormController@printPurchaseOrder')->name('form.printPurchaseOrder');
+            Route::get('/print-purchase-order/{id}', 'FormController@printPurchaseOrder')->name('forms.printPurchaseOrder');
             Route::delete('/{id}/purchase-order', 'FormController@destroyPurchaseOrder')->name('forms.destroyPurchaseOrder');
             Route::get('/search/purchase-order', 'FormController@searchPurchaseOrder')->name('forms.searchPurchaseOrder');
             Route::get('/inputs', 'FormController@listInputs')->name('forms.listInputs');
@@ -132,6 +132,12 @@ Route::namespace('Cms')->group(function () {
             Route::get('/show-product-by-purchase-order/{id}', 'FormController@showProductOnPurOrder')->name('forms.showProductOnPurOrder');
             Route::delete('/{id}/input', 'FormController@destroyInput')->name('forms.destroyInput');
             Route::get('/search/input', 'FormController@searchInput')->name('forms.searchInput');
+            Route::get('/bill-out-stocks', 'FormController@listBillOutStocks')->name('forms.listBillOutStocks');
+            Route::get('/create-bill-out-stock', 'FormController@createBillOutStock')->name('forms.createBillOutStock');
+            Route::post('/store-bill-out-stock', 'FormController@storeBillOutStock')->name('forms.storeBillOutStock');
+            Route::get('/print-bill-out-stock/{id}', 'FormController@printBillOutStock')->name('forms.printBillOutStock');
+            Route::delete('/{id}/bill-out-stock', 'FormController@destroyBillOutStock')->name('forms.destroyBillOutStock');
+            Route::get('/search/bill-out-stock', 'FormController@searchBillOutStock')->name('forms.searchBillOutStock');
             Route::get('/bill-orders', 'FormController@listBillOrders')->name('forms.listBillOrders');
             Route::get('/create-bill-order', 'FormController@createBillOrder')->name('forms.createBillOrder');
             Route::post('/store-bill-order', 'FormController@storeBillOrder')->name('forms.storeBillOrder');
@@ -143,6 +149,7 @@ Route::namespace('Cms')->group(function () {
             Route::get('/create-bill-exchange', 'FormController@createBillExchange')->name('forms.createBillExchange');
             Route::post('/store-bill-exchange', 'FormController@storeBillExchange')->name('forms.storeBillExchange');
             Route::get('/show-product-by-order/{id}', 'FormController@showProductOnOrder')->name('forms.showProductOnOrder');
+
         });
 
         Route::prefix('barcode')->group(function () {

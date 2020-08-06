@@ -152,6 +152,9 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div id="container"></div>
+        </div>
     </div>
 </div>
 @endsection

@@ -5,17 +5,14 @@
         <div class="orders-act">
             <div class="col-md-4 col-md-offset-2">
                 <div class="left-action text-left clearfix">
-                    <h2>Tạo phiếu yêu cầu nhập hàng &raquo;</h2>
+                    <h2>Tạo phiếu xuất kho &raquo;</h2>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="right-action text-right">
                     <div class="btn-groups">
-                        <button type="button" id="btn-save-purchase" class="btn btn-primary"><i
+                        <button type="button" id="btn-save-out-stock" class="btn btn-primary"><i
                                 class="fa fa-check"></i> Lưu
-                        </button>
-                        <button type="button" class="btn btn-primary"><i
-                                class="fa fa-print"></i> Lưu và in
                         </button>
                         <button type="button" class="btn btn-default"><i
                                 class="fa fa-arrow-left"></i> Hủy
@@ -66,7 +63,7 @@
                         <div class="tab-contents" style="padding: 8px 6px;">
                             <div class="form-group marg-bot-10 clearfix">
                                 <div style="padding:0px" class="col-md-4">
-                                    <label>Nhà cung cấp</label>
+                                    <label>Bên nhận</label>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="col-md-12 padd-0" style="position: relative;">
@@ -103,7 +100,7 @@
                             </div>
                             <div class="form-group marg-bot-10 clearfix">
                                 <div style="padding:0px" class="col-md-4">
-                                    <label>Ghi chú</label>
+                                    <label>Lý do</label>
                                 </div>
                                 <div class="col-md-8">
  <textarea id="note-import" cols="" class="form-control" rows="3"
@@ -116,7 +113,7 @@
                 <div class="col-md-12">
                     <h4 class="lighter" style="margin-top: 0;">
                         <i class="fa fa-info-circle blue"></i>
-                        Thông tin phiếu yêu cầu
+                        Thông tin phiếu xuất kho
                     </h4>
 
                     <div class="morder-info" style="padding: 4px;">
@@ -146,14 +143,8 @@
                 </div>
                 <div class="col-md-12">
                     <div class="btn-groups pull-right" style="margin-bottom: 50px;">
-                        <button type="button" class="btn btn-primary hidden">
-                            <i class="fa fa-floppy-o"></i> Lưu tạm
-                        </button>
-                        <button type="button" class="btn btn-primary"><i
+                        <button type="button" id="btn-save-out-stock" class="btn btn-primary"><i
                                 class="fa fa-check"></i> Lưu
-                        </button>
-                        <button type="button" class="btn btn-primary"><i
-                                class="fa fa-print"></i> Lưu và in
                         </button>
                         <button type="button" class="btn btn-default btn-back"><i
                                 class="fa fa-arrow-left"></i> Hủy

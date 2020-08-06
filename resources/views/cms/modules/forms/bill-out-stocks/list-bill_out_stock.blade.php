@@ -2,7 +2,7 @@
     <thead>
     <tr>
         <th></th>
-        <th class="text-center">Mã đơn mua hàng</th>
+        <th class="text-center">Mã phiếu xuất kho</th>
         <th class="text-center">Ngày lập</th>
         <th class="text-center">Người lập</th>
         <th class="text-center" style="padding: 0px;">
@@ -18,9 +18,9 @@
     </tr>
     </thead>
     <tbody>
-    @if(!empty($listPurchaseOrders) && count($listPurchaseOrders) > 0)
-        @foreach($listPurchaseOrders as $key => $value)
-            <tr>
+    @if(!empty($listBillOutStocks) && count($listBillOutStocks) > 0)
+        @foreach($listBillOutStocks as $key => $value)
+            <tr id="bill_out_stock_{{ $value->id }}">
                 <td style="text-align: center;">
                     <i style="color: #478fca!important;" title="Chi tiết đơn hàng"
                        class="fa fa-plus-circle i-detail-order-{{ $value->id }}"
@@ -32,22 +32,26 @@
                     </i>
                 </td>
                 <td class="text-center"
-                    style="color: #2a6496; cursor: pointer;">{{ $value->pur_order_code ? $value->pur_order_code : '' }}</td>
-                <td class="text-center">{{ $value->pur_order_date ? $value->pur_order_date : '' }}</td>
+                    style="color: #2a6496; cursor: pointer;">{{ $value->bill_out_stock_code ? $value->bill_out_stock_code : '' }}</td>
+                <td class="text-center">{{ $value->bill_out_stock_date ? $value->bill_out_stock_date : '' }}</td>
                 <td class="text-center">{{ $value->user_practise ? $value->user_practise : '' }}</td>
                 <td class="text-center">{{ $value->supplier_id ? $value->supplier->supplier_name : '' }}</td>
-                <td class="text-center">{{ $value->pur_order_status == 0 ? 'Chưa gửi NCC' : 'Đã gửi NCC' }}</td>
+                <td class="text-center">{{ $value->bill_out_stock_status == 0 ? 'Chưa gửi bên nhận' : 'Đã gửi bên nhận' }}</td>
                 <td class="text-center"
                     style="background-color: #F2F2F2;">{{ $value->total_price ? number_format($value->total_price) : 0 }}</td>
                 <td class="text-center" style="background: #fff;">
-                    <a href="{{ route('form.printPurchaseOrder', ['id' => $value->id]) }}">
+                    <a href="{{ route('forms.printBillOutStock', ['id' => $value->id]) }}" target="blank">
                         <i title="In"
                         class="fa fa-print blue"
                         style="margin-right: 5px;"></i>
+                    </a>
+                    <a href="javascript:void(0)" id="btn-delete-bill-out-stock" data-id="{{ $value->id }}">
                         <i class="fa fa-trash-o" style="color: darkred;"></i>
                     </a>
                 </td>
                 <td class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
+                                                                                          id="bill_out_stock_ids"
+                                                                                          data-ids="{{ $value->id }}"
                                                                                           value=""
                                                                                           class="checkbox chk"><span
                             style="width: 15px; height: 15px;"></span></label>
@@ -59,7 +63,7 @@
                             <li class="active">
                                 <a data-toggle="tab">
                                     <i class="green icon-reorder bigger-110"></i>
-                                    Chi tiết đơn hàng
+                                    Chi tiết phiếu xuất kho
                                 </a>
                             </li>
                         </ul>
@@ -70,9 +74,9 @@
                                         <i class="fa fa-cart-arrow-down">
                                         </i>
                                         @php
-                                            $purOrderDetail = json_decode($value->pur_order_detail ? $value->pur_order_detail : []);
+                                            $billOutStockDetail = json_decode($value->bill_out_stock_detail ? $value->bill_out_stock_detail : []);
                                             $countProduct = 0;
-                                            foreach ($purOrderDetail as $key => $prd) {
+                                            foreach ($billOutStockDetail as $key => $prd) {
                                                 $countProduct += $prd->product_sell_amount;
                                             }
                                         @endphp
@@ -114,10 +118,10 @@
                                     </thead>
                                     <tbody>
                                     @php
-                                        $purOrderDetail = json_decode($value->pur_order_detail ? $value->pur_order_detail : []);
+                                        $billOutStockDetail = json_decode($value->bill_out_stock_detail ? $value->bill_out_stock_detail : []);
                                     @endphp
-                                    @if(!empty($purOrderDetail) && count($purOrderDetail) > 0)
-                                        @foreach($purOrderDetail as $key => $value)
+                                    @if(!empty($billOutStockDetail) && count($billOutStockDetail) > 0)
+                                        @foreach($billOutStockDetail as $key => $value)
                                             <tr>
                                                 <td class="text-center width-5 hidden-320 ">
                                                     {{ $key + 1 }}
@@ -153,21 +157,21 @@
 </table>
 <div class="alert alert-info summany-info clearfix" role="alert">
     @php
-       if(!empty($listPurchaseOrders) && count($listPurchaseOrders) > 0) {
+       if(!empty($listBillOutStocks) && count($listBillOutStocks) > 0) {
            $totalMoney = 0;
-           foreach ($listPurchaseOrders as $key => $value) {
+           foreach ($listBillOutStocks as $key => $value) {
                $totalMoney += $value->total_money;
            }
        }
     @endphp
-    @if(!empty($listPurchaseOrders) && count($listPurchaseOrders) > 0)
+    @if(!empty($listBillOutStocks) && count($listBillOutStocks) > 0)
     <div class="sm-info pull-left padd-0">
-        Tổng số hóa đơn: <span>{{ count($listPurchaseOrders) }}</span>
+        Tổng số hóa đơn: <span>{{ count($listBillOutStocks) }}</span>
         Tổng tiền:
         <span>{{ $totalMoney ? number_format($totalMoney) : 0 }}</span>
     </div>
     <div class="pull-right ajax-pagination">
-        {{ $listPurchaseOrders->links() }}
+        {{ $listBillOutStocks->links() }}
     </div>
     @endif
 </div>

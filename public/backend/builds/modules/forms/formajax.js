@@ -834,7 +834,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    // search input
+    // search bill order
     $(document).on('click', '#btn-search-bill-order', function (e) {
         e.preventDefault();
         let orderCode = $('#bill-order-search-code').val();
@@ -855,6 +855,169 @@ jQuery(document).ready(function ($) {
             })
     })
 
+    // bill out stock
+    let amountProduct5 = [];
+    $(document).on('click', '#btn-save-out-stock', function (e) {
+        e.preventDefault();
+        let supplier_value = $('#search-box-mas').val();
+        let supplier_id = $('#search-box-mas').data('id');
+        let out_stock_date = $('#input-date').val();
+        let notes = $('#note-import').val();
+        let money = $('#money').attr('data-money');
+        $('tbody#pro_search_append tr').each(function (key, value) {
+            let amount = $(this).find('td input#amount-order').val();
+            amountProduct5.push(amount);
+            cart.forEach(function (value, key) {
+                amountProduct5.forEach(function (value, key) {
+                    cart[key]['product_sell_amount'] = value
+                })
+            })
+        });
+
+        let carts = cart;
+
+        let urlResource = '/admin/forms/store-bill-out-stock';
+
+        if (supplier_value !== '' && cart.length > 0) {
+            callAjax(urlResource, 'POST', {
+                supplier_id: supplier_id,
+                out_stock_date: out_stock_date,
+                notes: notes ? notes : '',
+                total_price: money,
+                out_stock_detail: carts
+            }).done(response => {
+                window.location.reload();
+                $('#alert-cms-success').css('display', 'block');
+                $('#text-alert-success').text("Tạo đơn mua hàng thành công");
+                setTimeout(function () {
+                    $('#alert-cms-success').css('display', 'none');
+                }, 2000)
+                amountProduct5 = [];
+            }).fail(error => {
+                $('#alert-cms-error').css('display', 'block');
+                $('#text-alert-error').text("Tạo đơn mua hàng thất bại");
+                setTimeout(function () {
+                    $('#alert-cms-error').css('display', 'none');
+                }, 2000)
+            })
+        } else {
+            if (supplier_value === '') {
+                $('#alert-cms-error').css('display', 'block');
+                $('#text-alert-error').text("Vui lòng nhập tên nhà cung cấp");
+                setTimeout(function () {
+                    $('#alert-cms-error').css('display', 'none');
+                }, 2000)
+            } else if (cart.length < 0) {
+                $('#alert-cms-error').css('display', 'block');
+                $('#text-alert-error').text("Sản phẩm cần nhập không được trống");
+                setTimeout(function () {
+                    $('#alert-cms-error').css('display', 'none');
+                }, 2000)
+            }
+        }
+    })
+
+    // delete bill out stock
+    $(document).on("click", "#btn-delete-bill-out-stock", function (e) {
+        e.preventDefault();
+        let id = $(this).data('id');
+        let urlResource = '/admin/forms/' + id + '/bill-out-stock/';
+        callAjax(urlResource, 'DELETE')
+            .done(response => {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                }).then((result) => {
+                    if (result.value) {
+                        $("#bill_out_stock_" + id).remove();
+                        window.location.reload();
+                        $('#alert-cms-success').css('display', 'block');
+                        $('#text-alert-success').text("Xóa thành công");
+                        setTimeout(function () {
+                            $('#alert-cms-success').css('display', 'none');
+                        }, 2000)
+                    }
+                })
+            })
+            .fail(error => {
+                console.log(error)
+            })
+    });
+
+    // delete Multi record
+    $(document).on("click", "#delete-multi-out-stock", function (e) {
+        e.preventDefault();
+        let ids = [];
+        $('#bill_out_stock_ids:checked').each(function (i) {
+            ids.push($(this).attr('data-ids'));
+        });
+        if (ids.length == 0) {
+            Swal.fire(
+                'Cant Delete!',
+                'Chọn bản ghi cần xóa.',
+                'error'
+            );
+        } else {
+            let urlResouce = '/admin/forms/' + ids + '/bill-out-stock/';
+            callAjax(urlResouce, 'DELETE')
+                .done(response => {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!',
+                    }).then((result) => {
+                        if (result.value) {
+                            $.each(ids, function (key, value) {
+                                $("#bill_out_stock_" + value).remove();
+                            });
+                            window.location.reload();
+                            $('#alert-cms-success').css('display', 'block');
+                            $('#text-alert-success').text("Xóa sản phẩm thành công");
+                            setTimeout(function () {
+                                $('#alert-cms-success').css('display', 'none');
+                            }, 2000)
+                        }
+                    })
+                })
+                .fail(error => {
+                    console.log(error);
+                })
+        }
+    });
+
+    // search bill out stock
+    $(document).on('click', '#btn-search-bill-out-stock', function (e) {
+        e.preventDefault();
+        let orderCode = $('#bill-out-stock-search-code').val();
+        let orderFromDate = $("#datepicker1").val();
+        let orderToDate = $("#datepicker2").val();
+        let urlResource = '/admin/forms/search/bill-out-stock/'
+        callAjax(urlResource, 'GET',
+            {
+                bill_out_stock_code: orderCode.toLowerCase(),
+                bill_out_stock_date_from: orderFromDate,
+                bill_out_stock_date_to: orderToDate
+            })
+            .done(response => {
+                $('#list-bill-out-stocks').html(response);
+            })
+            .fail(error => {
+                console.log(error);
+            })
+    })
+    // end
+
+
+    // search order on bill exchange
     $(document).on('change', '#search-input-ord', function (e) {
         e.preventDefault();
         let orderId = $(this).val();
