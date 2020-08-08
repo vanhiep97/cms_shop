@@ -1,20 +1,87 @@
+
+@php
+    $user = auth()->user()->level;
+@endphp
 <div class="sidebar sidebar-fixed hidden-xs hidden-sm hidden-md" id="sidebar">
     <ul class="nav nav-pills nav-list nav-stacked">
-        <li id="dashboard"><a href="{{ route('pos.index') }}" style="    color: white;background-color: #ffb752!important;"><i class="fa fa-tachometer"></i>Pos bán hàng</a></li>
-        <li id="dashboard"><a href="{{ route('home.index') }}"><i class="fa fa-tachometer"></i>Tổng quan</a></li>
-        <li id="orders"><a href="{{ route('orders.index') }}"><i class="fa fa-shopping-cart"></i>Đơn hàng</a></li>
-        <li id="orders"><a href="{{ route('group-products.index') }}"><i class="fa fa-shopping-cart"></i>Danh mục</a></li>
-        <li id="orders"><a href="{{ route('manufactures.index') }}"><i class="fa fa-shopping-cart"></i>Nhà sản xuất</a></li>
-        <li id="product"><a href="{{ route('products.index') }}"><i class="fa fa-barcode"></i>Sản phẩm</a></li>
-        <li id="customer"><a href="{{ route('customers.index') }}"><i class="fa fa-users"></i>Khách hàng</a></li>
-        <li id="supplier"><a href="{{ route('suppliers.index') }}"><i class="fa fa-users"></i>Nhà cung cấp</a></li>
-        <li id="notification"><a href="{{ route('product-defectives.index') }}"><i class="fa fa-bell-o"></i>Hàng bị lỗi</a></li>
-        <li id="import"><a href="{{ route('forms.listPurchaseOrders') }}"><i class="fa fa-truck"></i>Đơn mua hàng</a></li>
-        <li id="import"><a href="{{ route('forms.listInputs') }}"><i class="fa fa-truck"></i>Phiếu nhập kho</a></li>
-        <li id="import"><a href="{{ route('forms.listBillOrders') }}"><i class="fa fa-truck"></i>Hóa đơn mua</a></li>
-        <li id="inventory"><a href="{{ route('inventories.index') }}"><i class="fa fa-list-alt"></i>Tồn kho</a></li>
-        <li id="revenue"><a href="{{ route('revenues.index') }}"><i class="fa fa-signal"></i>Doanh số</a></li>
-        <li id="profit"><a href="{{ route('profits.index') }}"><i class="fa fa-usd"></i>Lợi nhuận</a></li>
-        <li id="config"><a href="{{ route('settings.index') }}"><i class="fa fa-cogs"></i>Thiết lập</a></li>
+        @if($user === 4 || $user === 0)
+            <li>
+                <a href="{{ route('pos.index') }}" style="color: white;background-color: #ffb752!important;">
+                    <i class="fa fa-balance-scale" aria-hidden="true"></i>Pos bán hàng
+                </a>
+            </li>
+        @endif
+
+        @if($user === 4 || $user === 0)
+            <li>
+                <a href="{{ route('home.index') }}">
+                    <i class="fa fa-tachometer"></i>Tổng quan
+                </a>
+            </li>
+        @endif
+
+        @if($user === 4 || $user === 0)
+            <li>
+                <a href="{{ route('orders.index') }}">
+                    <i class="fa fa-shopping-cart"></i>Đơn hàng
+                </a>
+            </li>
+        @endif
+
+        @if($user === 4 || $user === 0)
+            <li class="sidebar-dropdown">
+                <a id="parent" href="javascript:void(0)">
+                        <i class="fa fa-suitcase" aria-hidden="true"></i>Sản phẩm
+                </a>
+                <div class="sidebar-submenu">
+                    <ul>
+                        <li>
+                            <a href="{{ route('products.index') }}">Danh sách sản phẩm</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('product-defectives.index') }}">Hàng hóa đổi trả</a>
+                        </li>
+                        @if($user === 4 || $user === 0)
+                            <li id="orders"><a href="{{ route('group-products.index') }}"></i>Danh mục</a></li>
+                        @endif
+
+                        @if($user === 4 || $user === 0)
+                            <li id="orders"><a href="{{ route('manufactures.index') }}"></i>Nhà sản xuất</a></li>
+                        @endif
+                    </ul>
+                </div>
+            </li>
+        @endif
+
+        @if($user === 4 || $user === 0)
+            <li><a href="{{ route('customers.index') }}"><i class="fa fa-users"></i>Khách hàng</a></li>
+        @endif
+
+        @if($user === 4 || $user === 0)
+            <li><a href="{{ route('suppliers.index') }}"><i class="fa fa-recycle" aria-hidden="true"></i>Nhà cung cấp</a></li>
+        @endif
+
+        @if($user === 4 || $user === 0)
+            <li class="sidebar-dropdown">
+                <a id="parent" href="javascript:void(0)">
+                    <i class="fa fa-sitemap" aria-hidden="true"></i>Mẫu biểu
+                </a>
+                <div class="sidebar-submenu">
+                    <ul>
+                        <li><a href="{{ route('forms.listPurchaseOrders') }}">Đơn mua hàng</a></li>
+                        <li><a href="{{ route('forms.listInputs') }}">Phiếu nhập kho</a></li>
+                        <li><a href="{{ route('forms.listBillOutStocks') }}">Phiếu xuất kho</a></li>
+                        <li><a href="{{ route('forms.listBillOrders') }}">Hóa đơn mua</a></li>
+                        <li><a href="{{ route('forms.listBillExchanges') }}">Phiếu đổi trả</a></li>
+                    </ul>
+                </div>
+            </li>
+        @endif
+
+        <li><a href="{{ route('inventories.index') }}"><i class="fa fa-list-alt"></i>Tồn kho</a></li>
+        <li><a href="{{ route('revenues.all') }}"><i class="fa fa-signal"></i>Doanh số</a></li>
+        <li><a href="{{ route('profits.all') }}"><i class="fa fa-usd"></i>Lợi nhuận</a></li>
+        <li><a href="{{ route('settings.index') }}"><i class="fa fa-cogs"></i>Thiết lập</a></li>
+
     </ul>
 </div>

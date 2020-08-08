@@ -10,7 +10,6 @@
                     <th class="text-center">Số lượng</th>
                     <th class="text-center">Giá nhập</th>
                     <th class="text-center">Thành tiền</th>
-                    <th>Trạng thái</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -24,10 +23,6 @@
                                 <td><input type="number" value="{{ $item->product_sell_amount }}" id="amount-bill" data-amount-bill="{{ $item->product_sell_amount }}" style="width: 50px"/></td>
                                 <td id="origin-price" data-price={{ $item->product_sell_price }}>{{ $item->product_sell_price ? number_format($item->product_sell_price) : 0 }}</td>
                                 <td id="total-money-bill" data-money-bill="{{ $item->product_sell_price *  $item->product_sell_amount}}">{{ $item->product_sell_price *  $item->product_sell_amount}}</td>
-                                <td>
-                                    Đổi <input type="radio" id="exchange_status" name="gender" value="1" checked>
-                                    Trả <input type="radio" id="exchange_status" name="gender" value="2">
-                                </td>
                                 <td class="text-center">
                                     <i class="fa fa-trash-o" style="color: darkred;" id="delete-product-pos" data-id="" title="Xóa"></i>
                                 </td>
@@ -54,7 +49,8 @@
                                 <div class="col-md-11 padd-0" style="position: relative;">
                                     <input id="search-box-customer" class="form-control"
                                             type="text"
-                                            value="{{ $productByOrder->customer->customer_name }}" data-id="{{ $productByOrder->customer->id }}"
+                                            value="{{ $productByOrder->customer->customer_name }}"
+                                            data-id="{{ $productByOrder->customer->id }}"
                                             autocomplete="off"
                                             placeholder="Tìm khách hàng (F4)"
                                             style="border-radius: 3px 0 0 3px !important;"><span
@@ -97,64 +93,19 @@
             <div class="col-md-12">
                 <h4 class="lighter" style="margin-top: 0;">
                     <i class="fa fa-info-circle blue"></i>
-                    Hình thức bán hàng
+                    Thông tin đổi trả
                 </h4>
 
                 <div class="morder-info" style="padding: 4px;">
                     <div class="tab-contents" style="padding: 8px 6px;">
                         <div class="form-group marg-bot-10 clearfix">
                             <div class="col-md-4">
-                                <label>Hình thức</label>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input type="radio" id="sell_type" class="payment-method"
-                                            name="method-pay" value="0" checked>
-                                    Trực tiếp &nbsp;
-                                    <input type="radio" id="sell_type" class="payment-method"
-                                            name="method-pay" value="1"> Giao hàng
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="form-group marg-bot-10 clearfix">
-                            <div class="col-md-4">
                                 <label>Tiền hàng</label>
                             </div>
                             <div class="col-md-8">
-                                <div class="total-money" id="money">
-                                    0
+                                <div class="total-money" id="money" data-money="{{ $productByOrder->total_price }}">
+                                    {{ $productByOrder->total_price ? number_format($productByOrder->total_price) : 0 }}
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form-group marg-bot-10 clearfix">
-                            <div class="col-md-4">
-                                <label>Giảm giá (F7)</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text"
-                                        class="form-control text-right txtMoney discount-order" id="discount-order"
-                                        placeholder="0" style="border-radius: 0 !important;">
-                            </div>
-                        </div>
-                        <div class="form-group marg-bot-10 clearfix">
-                            <div class="col-md-4">
-                                <label>Tổng cộng</label>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="total-after-discount">
-                                    0
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group marg-bot-10 clearfix">
-                            <div class="col-md-4 padd-right-0">
-                                <label>Khách đưa (F8)</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text"
-                                        class="form-control text-right txtMoney customer-pay"
-                                        placeholder="0" style="border-radius: 0 !important;">
                             </div>
                         </div>
                         <div class="form-group marg-bot-10 clearfix">
@@ -162,7 +113,9 @@
                                 <label class="debt">Hoàn trả khách</label>
                             </div>
                             <div class="col-md-8">
-                                <div class="debt" id="lack">0</div>
+                                <div class="debt" id="lack">
+                                    {{ $productByOrder->total_price ? number_format($productByOrder->total_price) : 0 }}
+                                </div>
                             </div>
                         </div>
                     </div>

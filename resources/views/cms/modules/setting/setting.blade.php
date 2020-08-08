@@ -46,13 +46,13 @@
                                                 @elseif($value->level == 2)
                                                     <span class="badge badge-success">{{ 'Nhân viên kho' }}</span>
                                                 @elseif($value->level == 3)
+                                                    <span class="badge badge-success">{{ 'Nhân viên thu chi' }}</span>
+                                                @elseif($value->level == 4)
                                                     <span class="badge badge-success">{{ 'Nhân viên bán hàng' }}</span>
-                                                @else
-                                                    <span class="badge badge-success">{{ 'Quản trị viên' }}</span>
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                {!! $value->status == 0 ? '<span class="badge badge-success">Actived</span>' : '<span class="badge badge-danger">Locked</span>' !!}
+                                                {!! $value->status == 1 ? '<span class="badge badge-success">Actived</span>' : '<span class="badge badge-danger">Locked</span>' !!}
                                             </td>
                                             <td class="text-center"><i class="fa fa-pencil-square-o edit-item"
                                                                        title="Sửa" id="edit-user" data-id="{{ $value->id }}"
@@ -194,8 +194,8 @@
                                             <select name="level" id="level" class="form-control">
                                                 <option value="0">-- Nhóm người dùng</option>
                                                 <option value="1">Quản lý cửa hàng</option>
-                                                <option value="2">Quản lý BP hàng hóa</option>
-                                                <option value="3">Quản lý BP thu chi</option>
+                                                <option value="2">Nhân viên kho</option>
+                                                <option value="3">Nhân viên thu chi</option>
                                                 <option value="4">Nhân viên bán hàng</option>
                                             </select>
                                         </div>
@@ -212,8 +212,8 @@
                                     <div class="group-user">
                                         <div class="group-selbox">
                                             <select name="status" id="status" class="form-control">
-                                                <option value="0">Actived</option>
-                                                <option value="1">Locked</option>
+                                                <option value="1">Actived</option>
+                                                <option value="0">Locked</option>
                                             </select>
                                         </div>
                                         <span style="color: red; font-style: italic;" class="error error-group"></span>

@@ -110,7 +110,7 @@
                             </div>
                             <div class="form-group marg-bot-10 clearfix">
                                 <div style="padding:0px" class="col-md-4">
-                                    <label>Ghi chú</label>
+                                    <label>Lý do đổi trả</label>
                                 </div>
                                 <div class="col-md-8">
                 <textarea id="note-order" cols="" class="form-control" rows="3"
@@ -123,26 +123,11 @@
                 <div class="col-md-12">
                     <h4 class="lighter" style="margin-top: 0;">
                         <i class="fa fa-info-circle blue"></i>
-                        Hình thức bán hàng
+                        Thông tin đổi trả
                     </h4>
 
                     <div class="morder-info" style="padding: 4px;">
                         <div class="tab-contents" style="padding: 8px 6px;">
-                            <div class="form-group marg-bot-10 clearfix">
-                                <div class="col-md-4">
-                                    <label>Hình thức</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="input-group">
-                                        <input type="radio" id="sell_type" class="payment-method"
-                                                name="method-pay" value="0" checked>
-                                        Trực tiếp &nbsp;
-                                        <input type="radio" id="sell_type" class="payment-method"
-                                                name="method-pay" value="1"> Giao hàng
-                                    </div>
-
-                                </div>
-                            </div>
                             <div class="form-group marg-bot-10 clearfix">
                                 <div class="col-md-4">
                                     <label>Tiền hàng</label>
@@ -151,36 +136,6 @@
                                     <div class="total-money" id="money">
                                         0
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-group marg-bot-10 clearfix">
-                                <div class="col-md-4">
-                                    <label>Giảm giá (F7)</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text"
-                                            class="form-control text-right txtMoney discount-order" id="discount-order"
-                                            placeholder="0" style="border-radius: 0 !important;">
-                                </div>
-                            </div>
-                            <div class="form-group marg-bot-10 clearfix">
-                                <div class="col-md-4">
-                                    <label>Tổng cộng</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="total-after-discount">
-                                        0
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group marg-bot-10 clearfix">
-                                <div class="col-md-4 padd-right-0">
-                                    <label>Khách đưa (F8)</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text"
-                                            class="form-control text-right txtMoney customer-pay"
-                                            placeholder="0" style="border-radius: 0 !important;">
                                 </div>
                             </div>
                             <div class="form-group marg-bot-10 clearfix">

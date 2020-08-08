@@ -361,7 +361,7 @@ jQuery(document).ready(function ($) {
                 customer_id: customer_id,
                 notes: notes ? notes : '',
                 total_price: money,
-                coupon: coupon ? coupon : 0,
+                coupon: coupon ? (money * coupon / 100) : 0,
                 total_money: totalMoney,
                 customer_pay: customerPay ? customerPay : 0,
                 lack: lack,

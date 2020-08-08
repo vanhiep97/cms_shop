@@ -38,6 +38,39 @@
             .btn-groups {
                 margin-right: 15px;
             }
+
+            .sidebar-submenu {
+                background-color: #fff;
+            }
+
+            .sidebar-submenu ul {
+                padding-left: 0;
+            }
+
+            .sidebar-submenu ul li {
+                border-bottom: none !important;
+                padding: 0 10px 0 25px;
+            }
+
+            .sidebar-submenu ul li a {
+                border: none !important;
+                background: none !important;
+            }
+
+            .sidebar-dropdown a#parent::before {
+                content: "\f107";
+                display: inline-block;
+                font: normal normal normal 15px/1 FontAwesome;
+                font-size: inherit;
+                text-rendering: auto;
+                -webkit-font-smoothing: antialiased;
+                margin-top: 6px;
+                float: right;
+            }
+
+            .sidebar-submenu ul li a:hover {
+                border: none !important;
+            }
         </style>
     </head>
     <body>
@@ -92,6 +125,7 @@
     <script src="backend/builds/modules/suppliers/supplierajax.js"></script>
     <script src="backend/builds/modules/forms/formajax.js"></script>
     <script src="backend/builds/modules/revenue/revenueajax.js"></script>
+    <script src="backend/builds/modules/profit/profitajax.js"></script>
     <script>
         $(document).ready(function () {
             $('#lfm').filemanager('image');
@@ -102,6 +136,30 @@
             $('#datepicker1').datetimepicker();
             $('#datepicker2').datetimepicker();
         });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $(".sidebar-submenu").css('display', 'none');
+            $(".sidebar-dropdown > a").click(function() {
+                $(".sidebar-submenu").slideUp(500);
+                if ($(this)
+                    .parent()
+                    .hasClass("active")) {
+                    $(".sidebar-dropdown").removeClass("active");
+                    $(this)
+                    .parent()
+                    .removeClass("active");
+                } else {
+                    $(".sidebar-dropdown").removeClass("active");
+                    $(this)
+                    .next(".sidebar-submenu")
+                    .slideDown(500);
+                    $(this)
+                    .parent()
+                    .addClass("active");
+                }
+            });
+        })
     </script>
     </body>
 </html>

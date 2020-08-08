@@ -132,7 +132,7 @@ jQuery(document).ready(function ($) {
     });
 
     // delete Multi record
-    $(document).on("click", "#btn-delete-multi", function (e) {
+    $(document).on("click", "#btn-delete-multi-pro-group", function (e) {
         e.preventDefault();
         let ids = [];
         $('#pro-group:checked').each(function (i) {

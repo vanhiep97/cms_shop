@@ -72,7 +72,7 @@
                 <div class="product-sear panel-sear">
                     <div class="">
                         <div class="col-md-4">
-                            <a href="javascript:void(0)" id="btn-delete-multi" class="btn btn-danger" style="margin-left: 0">Xóa nhiều</a>
+                            <a href="javascript:void(0)" id="btn-delete-multi-pro-group" class="btn btn-danger" style="margin-left: 0">Xóa nhiều</a>
                         </div>
                         <div class="form-group col-md-6 padd-0">
                             <input type="text" class="form-control" placeholder="Nhập vào tên danh mục"

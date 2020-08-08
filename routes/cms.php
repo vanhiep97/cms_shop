@@ -31,7 +31,7 @@ Route::namespace('Cms')->group(function () {
         Route::patch('/profile/{user}', 'AuthController@updateProfile')->name('profile.update');
         Route::patch('/change-password/{user}', 'AuthController@changePassword')->name('user.changePassword');
 
-        Route::prefix('pos')->group(function () {
+        Route::prefix('pos')->middleware('permission:0,4')->group(function () {
             Route::get('/', 'PosController@index')->name('pos.index');
             Route::get('/search/products', 'PosController@searchProductOnPos')->name('pos.searchProductOnPos');
             Route::get('/search/customers', 'PosController@searchCustomerOnPos')->name('pos.searchCustomerOnPos');
@@ -104,11 +104,19 @@ Route::namespace('Cms')->group(function () {
         });
 
         Route::prefix('profits')->group(function () {
-            Route::get('/', 'ProfitController@index')->name('profits.index');
+            Route::get('/all', 'ProfitController@all')->name('profits.all');
+            Route::get('/customer', 'ProfitController@customer')->name('profits.customer');
+            Route::get('/product', 'ProfitController@product')->name('profits.product');
+            Route::get('/sale', 'ProfitController@sale')->name('profits.sale');
+            Route::get('/user', 'ProfitController@user')->name('profits.user');
         });
 
         Route::prefix('revenues')->group(function () {
-            Route::get('/', 'RevenueController@index')->name('revenues.index');
+            Route::get('/all', 'RevenueController@all')->name('revenues.all');
+            Route::get('/customer', 'RevenueController@customer')->name('revenues.customer');
+            Route::get('/product', 'RevenueController@product')->name('revenues.product');
+            Route::get('/sale', 'RevenueController@sale')->name('revenues.sale');
+            Route::get('/user', 'RevenueController@user')->name('revenues.user');
         });
 
         Route::prefix('inventories')->group(function () {
@@ -162,5 +170,7 @@ Route::namespace('Cms')->group(function () {
     });
 });
 
-
+Route::get('/page/403', function() {
+    return view('cms.layouts.403');
+})->name('page-403');
 

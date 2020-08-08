@@ -40,7 +40,7 @@
                 <td class="text-center"
                     style="background-color: #F2F2F2;">{{ $value->total_price ? number_format($value->total_price) : 0 }}</td>
                 <td class="text-center" style="background: #fff;">
-                    <a href="{{ route('form.printPurchaseOrder', ['id' => $value->id]) }}" target="blank">
+                    <a href="{{ route('forms.printPurchaseOrder', ['id' => $value->id]) }}" target="blank">
                         <i title="In"
                         class="fa fa-print blue"
                         style="margin-right: 5px;"></i>

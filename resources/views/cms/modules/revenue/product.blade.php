@@ -1,105 +1,196 @@
-<div class="quick-info report row" style="margin-bottom: 15px;">
-    <div class="col-md-12 padd-0">
-        <div class="col-md-3 padd-right-0">
-            <div class="report-box" style="border: 1px dotted #ddd; border-radius: 0">
-                <div class="infobox-icon">
-                    <i class="fa fa-clock-o cgreen" style="font-size: 45px;" aria-hidden="true"></i>
-                </div>
-                <div class="infobox-data">
-                     @php
-                    if(!empty($orders) && count($orders) > 0) {
-                        $totalProductOnOrder = 0;
-                        $totalCoupon = 0;
-                        $totalMoney = 0;
-                        $totalLack = 0;
-                        foreach ($orders as $key => $value) {
-                            $totalProductOnOrder += $value->total_quantity;
-                            $totalCoupon += $value->coupon;
-                            $totalMoney += $value->total_money;
-                            $totalLack += $value->lack;
-                        }
-                    }
-                    @endphp
-                    <h3 class="infobox-title cgreen"
-                        style="font-size: 25px;">{{ ($orders ? count($orders) : 0). '/' .($totalProductOnOrder ? $totalProductOnOrder : 0)}}</h3>
-                    <span class="infobox-data-number text-center" style="font-size: 14px; color: #555;">Đơn hàng / Số lượng SP</span>
+@extends('cms.layouts.app')
+@section('content')
+    <div class="orders">
+        <div class="breadcrumbs-fixed col-md-offset-2 panel-action padding-left-10">
+            <h5 style="float: left;">
+                <label style="color: #428bca;font-size: 23px;">Báo cáo doanh thu</label>
+                <label style="color: #307ecc; padding-left: 10px;">
+                    <input type="radio" name="revenue" id="revenue-all" value="1">
+                    <span class="lbl">Báo cáo tổng hợp</span>
+                </label>
+                <label style="color: #307ecc;">
+                    <input type="radio" name="revenue" id="revenue-customer" value="2">
+                    <span class="lbl">Theo khách hàng</span>
+                </label>
+                <label style="color: #307ecc;">
+                    <input type="radio" name="revenue" id="revenue-sale" value="3">
+                    <span class="lbl">Theo thu ngân</span>
+                </label>
+                <label style="color: #307ecc;">
+                    <input type="radio" name="revenue" id="revenue-user" value="4">
+                    <span class="lbl">Theo NV bán hàng</span>
+                </label>
+                <label style="color: #307ecc;">
+                    <input type="radio" name="revenue" id="revenue-product" value="5" checked>
+                    <span class="lbl">Theo hàng hóa</span>
+                </label>
+            </h5>
+        </div>
+        <div class="main-space orders-space"></div>
+        <div class="orders-content">
+            <div class="product-sear panel-sear">
+                <div class="form-group col-md-12 padd-0" style="padding-left: 5px;">
+                    <div class="col-md-10 padd-0">
+                        <div class="col-md-9 padd-0">
+                            <div class="col-md-3 padd-0">
+                                <select id="search-option-1" class="form-control">
+                                    <option value="-1">-Khách Hàng-</option>
+                                    <option value="0">Không nhập</option>
+                                    <option
+                                        value="">aaa
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 padd-0">
+                                <select id="search-option-2" class="form-control">
+                                    <option value="-1">-Thu ngân-</option>
+                                    <option value="">aaa</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 padd-0">
+                                <select id="search-option-4" class="form-control">
+                                    <option value="-1">-NV bán hàng-</option>
+                                    <option value="0">Không nhập</option>
+                                    <option value="">aaa</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 padd-0">
+                                <select id="search-option-3" class="form-control">
+                                    <option value="-1">-Cửa hàng-</option>
+                                    <option
+                                        value="">aaa
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 padd-0" style="padding-left: 5px;">
+                            <div class="input-daterange input-group" id="datepicker">
+                                <input type="text" class="input-sm form-control" id="search-date-from"
+                                       placeholder="Từ ngày"
+                                       name="start"/>
+                                <span class="input-group-addon">to</span>
+                                <input type="text" class="input-sm form-control" id="search-date-to"
+                                       placeholder="Đến ngày"
+                                       name="end"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 padd-0">
+                        <div class="btn-group order-btn-calendar">
+                            <button type="button" class="btn btn-default">Tuần</button>
+                            <button type="button" class="btn btn-default">Tháng</button>
+                            <button type="button" class="btn btn-default">Quý</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-3 padd-right-0">
-            <div class="report-box" style="border: 1px dotted #ddd; border-radius: 0">
-                <div class="infobox-icon">
-                    <i class="fa fa-tag blue" style="font-size: 45px;" aria-hidden="true"></i>
+            <div class="revenue-main-body">
+                <div class="quick-info report row" style="margin-bottom: 15px;">
+                    <div class="col-md-12 padd-0">
+                        <div class="col-md-3 padd-right-0">
+                            <div class="report-box" style="border: 1px dotted #ddd; border-radius: 0">
+                                <div class="infobox-icon">
+                                    <i class="fa fa-clock-o cgreen" style="font-size: 45px;" aria-hidden="true"></i>
+                                </div>
+                                <div class="infobox-data">
+                                    @php
+                                    if(!empty($orders) && count($orders) > 0) {
+                                        $totalProductOnOrder = 0;
+                                        $totalCoupon = 0;
+                                        $totalMoney = 0;
+                                        $totalLack = 0;
+                                        foreach ($orders as $key => $value) {
+                                            $totalProductOnOrder += $value->total_quantity;
+                                            $totalCoupon += $value->coupon;
+                                            $totalMoney += $value->total_money;
+                                            $totalLack += $value->lack;
+                                        }
+                                    }
+                                    @endphp
+                                    <h3 class="infobox-title cgreen"
+                                        style="font-size: 25px;">{{ ($orders ? count($orders) : 0). '/' .($totalProductOnOrder ? $totalProductOnOrder : 0)}}</h3>
+                                    <span class="infobox-data-number text-center" style="font-size: 14px; color: #555;">Đơn hàng / Số lượng SP</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 padd-right-0">
+                            <div class="report-box" style="border: 1px dotted #ddd; border-radius: 0">
+                                <div class="infobox-icon">
+                                    <i class="fa fa-tag blue" style="font-size: 45px;" aria-hidden="true"></i>
+                                </div>
+                                <div class="infobox-data">
+                                    <h3 class="infobox-title blue"
+                                        style="font-size: 25px;">{{ $totalCoupon ? number_format($totalCoupon) : 0 }}</h3>
+                                    <span class="infobox-data-number text-center"
+                                        style="font-size: 14px; color: #555;">Chiếc khấu</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 padd-right-0">
+                            <div class="report-box " style="border: 1px dotted #ddd; border-radius: 0">
+                                <div class="infobox-icon">
+                                    <i class="fa fa-refresh orange" style="font-size: 45px;"></i>
+                                </div>
+                                <div class="infobox-data">
+                                    <h3 class="infobox-title orange"
+                                        style="font-size: 25px;">{{ $totalMoney ? number_format($totalMoney) : 0 }}</h3>
+                                    <span class="infobox-data-number text-center"
+                                        style="font-size: 14px; color: #555;">Doanh số</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 padd-right-0">
+                            <div class="report-box" style="border: 1px dotted #ddd; border-radius: 0">
+                                <div class="infobox-icon">
+                                    <i class="fa fa-clock-o cred" style="font-size: 45px;"></i>
+                                </div>
+                                <div class="infobox-data">
+                                    <h3 class="infobox-title cred"
+                                        style="font-size: 25px;">{{ $totalLack ? number_format($totalLack) : 0 }}</h3>
+                                    <span class="infobox-data-number text-center" style="font-size: 14px; color: #555;">Khách nợ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="infobox-data">
-                    <h3 class="infobox-title blue"
-                        style="font-size: 25px;">{{ $totalCoupon ? number_format($totalCoupon) : 0 }}</h3>
-                    <span class="infobox-data-number text-center"
-                          style="font-size: 14px; color: #555;">Chiếc khấu</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 padd-right-0">
-            <div class="report-box " style="border: 1px dotted #ddd; border-radius: 0">
-                <div class="infobox-icon">
-                    <i class="fa fa-refresh orange" style="font-size: 45px;"></i>
-                </div>
-                <div class="infobox-data">
-                    <h3 class="infobox-title orange"
-                        style="font-size: 25px;">{{ $totalMoney ? number_format($totalMoney) : 0 }}</h3>
-                    <span class="infobox-data-number text-center"
-                          style="font-size: 14px; color: #555;">Doanh số</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 padd-right-0">
-            <div class="report-box" style="border: 1px dotted #ddd; border-radius: 0">
-                <div class="infobox-icon">
-                    <i class="fa fa-clock-o cred" style="font-size: 45px;"></i>
-                </div>
-                <div class="infobox-data">
-                    <h3 class="infobox-title cred"
-                        style="font-size: 25px;">{{ $totalLack ? number_format($totalLack) : 0 }}</h3>
-                    <span class="infobox-data-number text-center" style="font-size: 14px; color: #555;">Khách nợ</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<table class="table table-bordered table-striped">
-    <thead>
-    <tr>
-        <th class="text-center">Mã sản phẩm</th>
-        <th class="text-center">Tên sản phẩm</th>
-        <th class="text-center">SL bán</th>
-        <th class="text-center">Chiếc khấu</th>
-        <th class="text-center">Tổng tiền</th>
-    </tr>
-    </thead>
-    <tbody>
-        @foreach($orders as $key => $value)
-        @php
-            $orderDetail = [];
-            foreach(json_decode($value->order_detail) as $order) {
-                $orderDetail['product_code'] = $order->product_code;
-            }
-            dd($value->order_detail);
-        @endphp
-        @foreach(json_decode($value->order_detail) as $order)
-        <tr>
-            <td class="text-center">{{ $order }}</td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-            <td class="text-center"></td>
-        </tr>
-        @endforeach
-        @endforeach
-    </tbody>
-</table>
-<div class="alert alert-info summany-info clearfix" role="alert">
-    <div class="pull-right ajax-pagination">
-       pagination
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Mã sản phẩm</th>
+                        <th class="text-center">Tên sản phẩm</th>
+                        <th class="text-center">SL bán</th>
+                        <th class="text-center">Chiếc khấu</th>
+                        <th class="text-center">Tổng tiền</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($orders as $key => $value)
+                        @php
+                            $orderDetail = [];
+                            foreach(json_decode($value->order_detail) as $order) {
+                                $orderDetail['product_code'] = $order->product_code;
+                            }
+                            // dd($value->order_detail);
+                        @endphp
+                        @foreach(json_decode($value->order_detail) as $order)
+                        <tr>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                        </tr>
+                        @endforeach
+                        @endforeach
+                    </tbody>
+                </table>
+                <div class="alert alert-info summany-info clearfix" role="alert">
+                    <div class="pull-right ajax-pagination">
+                    pagination
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+@endsection

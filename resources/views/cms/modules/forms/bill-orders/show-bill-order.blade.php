@@ -10,7 +10,6 @@
                     <th class="text-center">Số lượng</th>
                     <th class="text-center">Giá nhập</th>
                     <th class="text-center">Thành tiền</th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody id="pro_on_input">
@@ -22,10 +21,7 @@
                                 <td id="product-name" data-name="{{ $item->product_name }}">{{ $item->product_name ? $item->product_name : '' }}</td>
                                 <td><input type="number" value="{{ $item->product_sell_amount }}" id="amount-bill" disabled data-amount-bill="{{ $item->product_sell_amount }}" style="width: 50px"/></td>
                                 <td id="origin-price" data-price={{ $item->origin_price }}>{{ $item->origin_price ? number_format($item->origin_price) : 0 }}</td>
-                                <td id="total-money-bill" data-money-bill="{{ $item->origin_price *  $item->product_sell_amount}}">{{ $item->origin_price *  $item->product_sell_amount}}</td>
-                                <td class="text-center">
-                                    <i class="fa fa-trash-o" style="color: darkred;" id="delete-product-pos" data-id="" title="Xóa"></i>
-                                </td>
+                                <td id="total-money-bill" data-money-bill="{{ $item->origin_price *  $item->product_sell_amount}}">{{ number_format($item->origin_price *  $item->product_sell_amount) }}</td>
                             </tr>
                         @endforeach
                     @endif

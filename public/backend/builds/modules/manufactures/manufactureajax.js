@@ -131,7 +131,7 @@ jQuery(document).ready(function ($) {
     });
 
     // delete Multi record
-    $(document).on("click", "#btn-delete-multi", function (e) {
+    $(document).on("click", "#btn-delete-multi-manufacture", function (e) {
         e.preventDefault();
         let ids = [];
         $('#manufacture:checked').each(function (i) {
