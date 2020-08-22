@@ -50,6 +50,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        \Debugbar::disable();
+
         date_default_timezone_set(config('app.timezone'));
 
         Builder::macro('whereLike', function ($attributes, string $searchTerm) {

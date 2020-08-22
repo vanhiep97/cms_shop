@@ -14,9 +14,9 @@
                         <button type="button" id="btn-save-input" class="btn btn-primary"><i
                                 class="fa fa-check"></i> Lưu
                         </button>
-                        <button type="button" class="btn btn-default"><i
+                        <a href="{{ route('forms.listInputs') }}" class="btn btn-default"><i
                                 class="fa fa-arrow-left"></i> Hủy
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -61,9 +61,9 @@
 
                     </tbody>
                 </table>
-                <div class="alert alert-success" style="margin-top: 30px;" role="alert">Gõ mã hoặc tên sản phẩm vào hộp
-                    tìm kiếm để thêm hàng vào đơn hàng
-                </div>
+            </div>
+            <div class="alert alert-success" style="margin-top: 30px;" role="alert">Gõ mã hoặc tên sản phẩm vào hộp
+                tìm kiếm để thêm hàng vào đơn hàng
             </div>
         </div>
         <div class="col-md-4">
@@ -156,9 +156,9 @@
                         <button type="button" id="btn-save-input" class="btn btn-primary"><i
                                 class="fa fa-check"></i> Lưu
                         </button>
-                        <button type="button" class="btn btn-default btn-back"><i
+                        <a href="{{ route('forms.listInputs') }}" class="btn btn-default"><i
                                 class="fa fa-arrow-left"></i> Hủy
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

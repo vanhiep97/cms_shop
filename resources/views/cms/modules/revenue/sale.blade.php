@@ -14,14 +14,10 @@
                 </label>
                 <label style="color: #307ecc;">
                     <input type="radio" name="revenue" id="revenue-sale" value="3" checked>
-                    <span class="lbl">Theo thu ngân</span>
-                </label>
-                <label style="color: #307ecc;">
-                    <input type="radio" name="revenue" id="revenue-user" value="4">
                     <span class="lbl">Theo NV bán hàng</span>
                 </label>
                 <label style="color: #307ecc;">
-                    <input type="radio" name="revenue" id="revenue-product" value="5">
+                    <input type="radio" name="revenue" id="revenue-product" value="4">
                     <span class="lbl">Theo hàng hóa</span>
                 </label>
             </h5>
@@ -85,6 +81,7 @@
                 </div>
             </div>
             <div class="revenue-main-body">
+                @if(!empty($orders) && count($orders) > 0)
                 <div class="quick-info report row" style="margin-bottom: 15px;">
                     <div class="col-md-12 padd-0">
                         <div class="col-md-3 padd-right-0">
@@ -120,7 +117,7 @@
                                 </div>
                                 <div class="infobox-data">
                                     <h3 class="infobox-title blue"
-                                        style="font-size: 25px;"></h3>
+                                        style="font-size: 25px;">{{ $totalCoupon ? number_format($totalCoupon) : 0 }}</h3>
                                     <span class="infobox-data-number text-center"
                                         style="font-size: 14px; color: #555;">Chiếc khấu</span>
                                 </div>
@@ -133,7 +130,7 @@
                                 </div>
                                 <div class="infobox-data">
                                     <h3 class="infobox-title orange"
-                                        style="font-size: 25px;"></h3>
+                                        style="font-size: 25px;">{{ $totalMoney ? number_format($totalMoney) : 0 }}</h3>
                                     <span class="infobox-data-number text-center"
                                         style="font-size: 14px; color: #555;">Doanh số</span>
                                 </div>
@@ -146,13 +143,14 @@
                                 </div>
                                 <div class="infobox-data">
                                     <h3 class="infobox-title cred"
-                                        style="font-size: 25px;"></h3>
-                                    <span class="infobox-data-number text-center" style="font-size: 14px; color: #555;">Khách nợ</span>
+                                        style="font-size: 25px;">{{ $totalLack ? number_format($totalLack) : 0 }}</h3>
+                                    <span class="infobox-data-number text-center" style="font-size: 14px; color: #555;">Hoàn trả khách</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <table class="table table-bordered table-striped">
                     <thead>

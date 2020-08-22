@@ -4,7 +4,7 @@
         <th class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
                                                                                   class="checkbox chkAll"><span
                     style="width: 15px; height: 15px;"></span></label></th>
-        <th class="text-center">Tên nhà sản xuất</th>
+        <th class="text-center">Tên Thương hiệu</th>
         <th class="text-center">Slug</th>
         <th class="text-center">Mô tả</th>
         <th class="text-center">Trạng thái</th>
@@ -55,7 +55,7 @@
     </tbody>
 </table>
 <div class="alert alert-info summany-info clearfix" role="alert">
-    <div class="sm-info pull-left padd-0">SL nhà sản xuất hiển thị/SL nhà sản xuất:
+    <div class="sm-info pull-left padd-0">SL thương hiệu hiển thị/SL thương hiệu:
         <span>{{ count($manufactures) }}/{{ count($totalManufactures) }}</span></div>
     <div class="pull-right ajax-pagination">
         {{ $manufactures->links() }}

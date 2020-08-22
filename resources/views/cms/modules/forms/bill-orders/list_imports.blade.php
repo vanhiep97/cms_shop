@@ -1,3 +1,6 @@
+@php
+    $user = auth()->user()->level;
+@endphp
 <table class="table table-bordered table-striped">
     <thead>
     <tr>
@@ -7,12 +10,14 @@
         <th class="text-center">Ngày lập</th>
         <th class="text-center">Người lập</th>
         <th class="text-center">Nhà cung cấp</th>
+        <th class="text-center">Trạng thái</th>
         <th class="text-center" style="background-color: #fff;">Tổng tiền</th>
-        <th class="text-center"><i class="fa fa-clock-o"></i> Nợ</th>
         <th></th>
+        @if($user === 0 || $user === 1 || $user === 2)
         <th class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
                                                                                   class="checkbox chkAll"><span
                     style="width: 15px; height: 15px;"></span></label></th>
+        @endif
     </tr>
     </thead>
     <tbody>
@@ -38,26 +43,37 @@
             @php
                 $supplierName = App\Models\Supplier::select('supplier_name')->where('id', $value->input->supplier_id)->first();
             @endphp
+            <td class="text-center">
+                @if($value->bill_status == 1)
+                    <span class="badge badge-success" id="bag-bill-order">{{ 'Đã thanh toán' }}</span> <i id="update-status-bill-order" data-id="{{ $value->id }}" class="fa fa-edit"></i>
+                @elseif($value->bill_status == 0)
+                    <span class="badge badge-danger" id="bag-bill-order">{{ 'Chưa thanh toán' }}</span> <i id="update-status-bill-order" data-id="{{ $value->id }}" class="fa fa-edit"></i>
+                @endif
+            </td>
             <td class="text-center">{{ $supplierName->supplier_name }}</td>
             <td class="text-center"
                 style="background-color: #F2F2F2;">{{ $value->total_money }}</td>
-            <td class="text-center" style="background: #fff;">{{ $value->lack }}</td>
             <td class="text-center" style="background: #fff;">
                 <a href="{{ route('forms.printBillOrder', ['id' => $value->id]) }}" target="blank">
                     <i title="In"
                     class="fa fa-print blue"
                     style="margin-right: 5px;"></i>
                 </a>
+                @if($user === 0 || $user === 1 || $user === 2)
                 <a href="javascript:void(0)">
                     <i class="fa fa-trash-o" data-id="{{ $value->id }}" id="btn-delete-bill-order" style="color: darkred;" title=""></i>
                 </a>
+                @endif
             </td>
+            @if($user === 0 || $user === 1 || $user === 2)
             <td class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
                                                                                     id="bill_order_ids"
                                                                                     data-ids="{{ $value->id }}"
                                                                                     value=""
                                                                                     class="checkbox chk"><span
                         style="width: 15px; height: 15px;"></span></label>
+            </td>
+            @endif
         </tr>
         <tr class="tr-hide" id="tr-detail-order-{{ $value->id }}">
             <td colspan="15">
@@ -102,7 +118,7 @@
                                     <i class="fa fa-dollar">
                                     </i>
                                     <span
-                                        class="hidden-768">Giảm giá: {{ $value->counpon ? number_format($value->counpon) : 0 }}
+                                        class="hidden-768">Giảm giá: {{ $value->coupon ? number_format($value->coupon) : 0 }}
                                             </span>
                                     <label>
                                     </label>
@@ -111,7 +127,7 @@
                                     <i class="fa fa-dollar">
                                     </i>
                                     <span
-                                        class="hidden-768">Tổng tiền: {{ $value->totol_money ? number_format($value->total_money) : 0 }}
+                                        class="hidden-768">Tổng tiền: {{ $value->total_money ? number_format($value->total_money) : 0 }}
                                             </span>
                                     <label>
                                     </label>
@@ -178,23 +194,25 @@
      @php
        if(!empty($listBillOrders) && count($listBillOrders) > 0) {
            $totalMoney = 0;
+           $lack = 0;
            foreach ($listBillOrders as $key => $value) {
                $totalMoney += $value->total_price;
+               $lack += $value->lack;
            }
        }
     @endphp
     @if(!empty($listBillOrders) && count($listBillOrders) > 0)
     <div class="sm-info pull-left padd-0">
-        Tổng số phiếu nhập:
+        Tổng số hóa đơn mua:
         <span>{{ count($listBillOrders) }}</span>
         Tổng tiền:
         <span>{{ $totalMoney ? number_format($totalMoney) : 0 }}</span>
         Tổng nợ:
-        <span>{{ $value->lack ? number_format($value->lack) : 0 }}</span>
+        <span>{{ $lack ? number_format($lack) : 0 }}</span>
     </div>
+    @endif
     <div class="pull-right ajax-pagination">
         {{ $listBillOrders->links() }}
     </div>
-    @endif
 </div>
 

@@ -126,9 +126,9 @@
                     <button type="button" id="btn-save-input" class="btn btn-primary"><i
                             class="fa fa-check"></i> Lưu
                     </button>
-                    <button type="button" class="btn btn-default btn-back"><i
+                    <a href="{{ route('forms.listInputs') }}" class="btn btn-default"><i
                             class="fa fa-arrow-left"></i> Hủy
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

@@ -15,11 +15,16 @@ class CreateExchangeBillsTable extends Migration
     {
         Schema::create('exchange_bills', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('exchange_code');
+            $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('order_id');
             $table->datetime('exchange_date');
             $table->text('exchange_detail');
-            $table->bigInteger('exchange_ammount');
-            $table->bigInteger('exchange_price');
+            $table->bigInteger('exchange_ammount')->default(0);
+            $table->bigInteger('exchange_price')->default(0);
+            $table->bigInteger('exchange_refund')->default(0);
+            $table->text('exchange_reason')->nullable();
+            $table->string('user_practise');
             $table->timestamps();
         });
     }

@@ -14,23 +14,19 @@
                 </label>
                 <label style="color: #307ecc;">
                     <input type="radio" name="profit" id="profit-sale" value="3">
-                    <span class="lbl">Theo thu ngân</span>
-                </label>
-                <label style="color: #307ecc;">
-                    <input type="radio" name="profit" id="profit-user" value="4">
                     <span class="lbl">Theo NV bán hàng</span>
                 </label>
-                <label style="color: #307ecc;">
-                    <input type="radio" name="profit" id="profit-product" value="5">
+                {{-- <label style="color: #307ecc;">
+                    <input type="radio" name="profit" id="profit-product" value="4">
                     <span class="lbl">Theo hàng hóa</span>
-                </label>
+                </label> --}}
             </h5>
         </div>
         <div class="main-space orders-space"></div>
         <div class="orders-content">
             <div class="product-sear panel-sear">
                 <div class="form-group col-md-12 padd-0" style="padding-left: 5px;">
-                    <div class="col-md-10 padd-0">
+                    {{-- <div class="col-md-10 padd-0">
                         <div class="col-md-9 padd-0">
                             <div class="col-md-3 padd-0">
                                 <select id="search-option-1" class="form-control">
@@ -81,10 +77,11 @@
                             <button type="button" class="btn btn-default">Tháng</button>
                             <button type="button" class="btn btn-default">Quý</button>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="profit-main-body">
+                 @if(!empty($orders) && count($orders) > 0)
                 <div class="quick-info report row" style="margin-bottom: 15px;">
                     <div class="col-md-12 padd-0">
                         <div class="col-md-3 padd-right-0">
@@ -154,6 +151,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>

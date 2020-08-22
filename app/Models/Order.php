@@ -33,4 +33,9 @@ class Order extends Model
     {
         return $this->belongsTo(Customer::class, 'customer_id');
     }
+
+    public function exchangeBill()
+    {
+        return $this->hasOne(ExchangeBill::class, 'order_id');
+    }
 }

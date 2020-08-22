@@ -1,3 +1,6 @@
+@php
+    $user = auth()->user()->level;
+@endphp
 <table class="table table-bordered table-striped">
     <thead>
     <tr>
@@ -12,9 +15,11 @@
         <th class="text-center">Tình trạng</th>
         <th class="text-center" style="background-color: #fff;">Tổng tiền</th>
         <th></th>
+        @if($user === 0 || $user === 1 || $user === 2)
         <th class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
                                                                                   class="checkbox chkAll"><span
                     style="width: 15px; height: 15px;"></span></label></th>
+        @endif
     </tr>
     </thead>
     <tbody>
@@ -36,7 +41,13 @@
                 <td class="text-center">{{ $value->bill_out_stock_date ? $value->bill_out_stock_date : '' }}</td>
                 <td class="text-center">{{ $value->user_practise ? $value->user_practise : '' }}</td>
                 <td class="text-center">{{ $value->supplier_id ? $value->supplier->supplier_name : '' }}</td>
-                <td class="text-center">{{ $value->bill_out_stock_status == 0 ? 'Chưa gửi bên nhận' : 'Đã gửi bên nhận' }}</td>
+                <td class="text-center">
+                    <select id="bill-out-stock-status" data-id="{{ $value->id }}">
+                        <option value="0" {{ $value->bill_out_stock_status ==  0 ? 'selected' : ''}}>Chưa gửi bên nhận</option>
+                        <option value="1" {{ $value->bill_out_stock_status ==  1 ? 'selected' : ''}}>Đã gửi bên nhận</option>
+                        <option value="2" {{ $value->bill_out_stock_status ==  2 ? 'selected' : ''}}>Đã xuất kho</option>
+                    </select>
+                </td>
                 <td class="text-center"
                     style="background-color: #F2F2F2;">{{ $value->total_price ? number_format($value->total_price) : 0 }}</td>
                 <td class="text-center" style="background: #fff;">
@@ -45,16 +56,21 @@
                         class="fa fa-print blue"
                         style="margin-right: 5px;"></i>
                     </a>
+                    @if($user === 0 || $user === 1 || $user === 2)
                     <a href="javascript:void(0)" id="btn-delete-bill-out-stock" data-id="{{ $value->id }}">
                         <i class="fa fa-trash-o" style="color: darkred;"></i>
                     </a>
+                    @endif
                 </td>
+                @if($user === 0 || $user === 1 || $user === 2)
                 <td class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
                                                                                           id="bill_out_stock_ids"
                                                                                           data-ids="{{ $value->id }}"
                                                                                           value=""
                                                                                           class="checkbox chk"><span
                             style="width: 15px; height: 15px;"></span></label>
+                </td>
+                @endif
             </tr>
             <tr class="tr-hide" id="tr-detail-order-{{ $value->id }}">
                 <td colspan="15">
@@ -99,7 +115,7 @@
                                         <i class="fa fa-dollar">
                                         </i>
                                         <span
-                                            class="hidden-768">Tổng tiền: {{ $value->total_money ? number_format($value->total_money) : 0 }}
+                                            class="hidden-768">Tổng tiền: {{ $value->total_price ? number_format($value->total_price) : 0 }}
                                         </span>
                                         <label>
                                         </label>
@@ -160,7 +176,7 @@
        if(!empty($listBillOutStocks) && count($listBillOutStocks) > 0) {
            $totalMoney = 0;
            foreach ($listBillOutStocks as $key => $value) {
-               $totalMoney += $value->total_money;
+               $totalMoney += $value->total_price;
            }
        }
     @endphp
@@ -170,9 +186,9 @@
         Tổng tiền:
         <span>{{ $totalMoney ? number_format($totalMoney) : 0 }}</span>
     </div>
+    @endif
     <div class="pull-right ajax-pagination">
         {{ $listBillOutStocks->links() }}
     </div>
-    @endif
 </div>
 

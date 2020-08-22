@@ -21,7 +21,7 @@
                                 <td id="product-code" data-code="{{ $item->product_code }}">{{ $item->product_code ? $item->product_code : '' }}</td>
                                 <td id="product-name" data-name="{{ $item->product_name }}">{{ $item->product_name ? $item->product_name : '' }}</td>
                                 <td><input type="number" value="{{ $item->product_sell_amount }}" id="amount-bill" data-amount-bill="{{ $item->product_sell_amount }}" style="width: 50px"/></td>
-                                <td id="origin-price" data-price={{ $item->product_sell_price }}>{{ $item->product_sell_price ? number_format($item->product_sell_price) : 0 }}</td>
+                                <td id="sell-price" data-price={{ $item->product_sell_price }}>{{ $item->product_sell_price ? number_format($item->product_sell_price) : 0 }}</td>
                                 <td id="total-money-bill" data-money-bill="{{ $item->product_sell_price *  $item->product_sell_amount}}">{{ $item->product_sell_price *  $item->product_sell_amount}}</td>
                                 <td class="text-center">
                                     <i class="fa fa-trash-o" style="color: darkred;" id="delete-product-pos" data-id="" title="Xóa"></i>
@@ -70,6 +70,15 @@
                         </div>
                         <div class="form-group marg-bot-10 clearfix">
                             <div style="padding:0px" class="col-md-4">
+                                <label>Ngày lập</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input id="bill-exchange-date" class="form-control datepk" type="text" placeholder="YYYY/MM/DD"
+                                       style="border-radius: 0 !important;">
+                            </div>
+                        </div>
+                        <div class="form-group marg-bot-10 clearfix">
+                            <div style="padding:0px" class="col-md-4">
                                 <label>NV bán hàng</label>
                             </div>
                             <div class="col-md-8">
@@ -83,7 +92,7 @@
                                 <label>Lý do đổi trả</label>
                             </div>
                             <div class="col-md-8">
-            <textarea id="note-order" cols="" class="form-control" rows="3"
+            <textarea id="note-exchange" cols="" class="form-control" rows="3"
                         style="border-radius: 0;"></textarea>
                             </div>
                         </div>
@@ -113,7 +122,7 @@
                                 <label class="debt">Hoàn trả khách</label>
                             </div>
                             <div class="col-md-8">
-                                <div class="debt" id="lack">
+                                <div class="debt" id="money-refund" data-refund="{{ $productByOrder->total_price }}">
                                     {{ $productByOrder->total_price ? number_format($productByOrder->total_price) : 0 }}
                                 </div>
                             </div>
@@ -123,12 +132,10 @@
             </div>
             <div class="col-md-12">
                 <div class="btn-groups pull-right" style="margin-bottom: 50px;">
-                    <button type="button" class="btn btn-primary" id="btn-save-order"><i
-                            class="fa fa-check"></i> Lưu (F9)
+                    <button type="button" class="btn btn-primary" id="btn-save-bill-exchange"><i
+                            class="fa fa-check"></i> Lưu
                     </button>
-                    <button type="button" class="btn btn-primary" id="btn-save-print-order"><i class="fa fa-print"></i> In hóa đơn (F10)
-                    </button>
-                    <a href="{{ route('pos.index') }}" class="btn btn-default"><i
+                    <a href="{{ route('forms.listBillExchanges') }}" class="btn btn-default"><i
                             class="fa fa-arrow-left"></i> Hủy
                     </a>
                 </div>

@@ -1,3 +1,4 @@
+
 function cms_show_detail_order(id) {
     $('#tr-detail-order-' + id).toggle(200);
     $('.i-detail-order-' + id).toggle();
@@ -23,7 +24,7 @@ jQuery(document).ready(function ($) {
                         $("#order_" + id).remove();
                         window.location.reload();
                         $('#alert-cms-success').css('display', 'block');
-                        $('#text-alert-success').text("Xóa sản phẩm thành công");
+                        $('#text-alert-success').text("Xóa đơn hàng thành công");
                         setTimeout(function () {
                             $('#alert-cms-success').css('display', 'none');
                         }, 2000)
@@ -67,7 +68,7 @@ jQuery(document).ready(function ($) {
                             });
                             window.location.reload();
                             $('#alert-cms-success').css('display', 'block');
-                            $('#text-alert-success').text("Xóa sản phẩm thành công");
+                            $('#text-alert-success').text("Xóa đơn hàng thành công");
                             setTimeout(function () {
                                 $('#alert-cms-success').css('display', 'none');
                             }, 2000)
@@ -95,6 +96,20 @@ jQuery(document).ready(function ($) {
         })
             .done(response => {
                 $('#list-orders').html(response);
+            })
+            .fail(error => {
+                console.log(error);
+            })
+    });
+
+    // update status order
+    $(document).on('click', '#update-status-order', function (e) {
+        e.preventDefault();
+        let id = $(this).data('id');
+        let urlResource = '/admin/orders/' + id + '/update-status';
+        callAjax(urlResource, 'GET')
+            .done(response => {
+                window.location.reload();
             })
             .fail(error => {
                 console.log(error);

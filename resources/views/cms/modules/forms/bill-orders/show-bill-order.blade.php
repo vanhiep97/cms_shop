@@ -133,7 +133,7 @@
                                                      </div>
                                                      <div class="col-md-8">
                                                          <div class="total-after-discount">
-                                                             0
+                                                             {{ $productByInput->total_price ? $productByInput->total_price : 0 }}
                                                          </div>
                                                      </div>
                                                  </div>
@@ -163,9 +163,9 @@
                     <button type="button" id="btn-save-bill" class="btn btn-primary"><i
                             class="fa fa-check"></i> Lưu
                     </button>
-                    <button type="button" class="btn btn-default btn-back"><i
+                    <a href="{{ route('forms.listBillOrders') }}" class="btn btn-default"><i
                             class="fa fa-arrow-left"></i> Hủy
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

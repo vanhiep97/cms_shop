@@ -43,6 +43,7 @@
                 <div class="infobox-data">
                     <h3 class="infobox-title orange"
                         style="font-size: 25px;">{{ $totalOriginPrice ? number_format($totalOriginPrice) : 0 }}
+                    </h3>
                     <span class="infobox-data-number text-center"
                           style="font-size: 14px; color: #555;">Tổng vốn tồn kho</span>
                 </div>

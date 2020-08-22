@@ -19,19 +19,21 @@
                 </div>
                 <div class="infobox-data">
                     @php
-                        $totalInventory = 0;
+                        $totalProduct = 0;
                         $totalOriginPrice = 0;
                         $totalSellPrice = 0;
-                        foreach($inventories as $key => $value) {
-                            $totalInventory += $value->quantity;
-                            $totalOriginPrice += ($value->product->product_origin_price * $value->quantity);
-                            $totalSellPrice += ($value->product->product_sell_price * $value->quantity);
+                        if(!empty($productDefectives) && count($productDefectives) > 0) {
+                            foreach($productDefectives as $key => $value) {
+                                $totalProduct += $value->quantity;
+                                $totalOriginPrice += ($value->product->product_origin_price * $value->quantity);
+                                $totalSellPrice += ($value->product->product_sell_price * $value->quantity);
+                            }
                         }
                     @endphp
                     <h3 class="infobox-title blue"
-                        style="font-size: 25px;">{{ $totalInventory ? $totalInventory : 0 }}</h3>
+                        style="font-size: 25px;">{{ $totalProduct ? $totalProduct : 0 }}</h3>
                     <span class="infobox-data-number text-center"
-                          style="font-size: 14px; color: #555;">SL tồn kho</span>
+                          style="font-size: 14px; color: #555;">SL hàng lỗi</span>
                 </div>
             </div>
         </div>
@@ -43,8 +45,9 @@
                 <div class="infobox-data">
                     <h3 class="infobox-title orange"
                         style="font-size: 25px;">{{ $totalOriginPrice ? number_format($totalOriginPrice) : 0 }}
+                    </h3>
                     <span class="infobox-data-number text-center"
-                          style="font-size: 14px; color: #555;">Tổng vốn tồn kho</span>
+                          style="font-size: 14px; color: #555;">Tổng vốn</span>
                 </div>
             </div>
         </div>
@@ -56,7 +59,7 @@
                 <div class="infobox-data">
                     <h3 class="infobox-title cred"
                         style="font-size: 25px;">{{ $totalSellPrice ? number_format($totalSellPrice) : 0 }}</h3>
-                    <span class="infobox-data-number text-center" style="font-size: 14px; color: #555;">Tổng giá trị tồn kho</span>
+                    <span class="infobox-data-number text-center" style="font-size: 14px; color: #555;">Tổng giá trị</span>
                 </div>
             </div>
         </div>
@@ -69,13 +72,13 @@
         <th class="text-center">Mã hàng</th>
         <th class="text-center">Tên sản phẩm</th>
         <th class="text-center">SL</th>
-        <th class="text-center">Vốn tồn kho</th>
-        <th class="text-center">Giá trị tồn</th>
+        <th class="text-center">Vốn</th>
+        <th class="text-center">Giá trị</th>
     </tr>
     </thead>
     <tbody>
-        @if(!empty($inventories) && count($inventories) > 0)
-        @foreach($inventories as $key => $value)
+        @if(!empty($productDefectives) && count($productDefectives) > 0)
+        @foreach($productDefectives as $key => $value)
         <tr>
             <td class="text-center">{{ $key + 1 }}</td>
             <td
@@ -92,6 +95,6 @@
 <div class="alert alert-info summany-info clearfix" role="alert">
     <div class="sm-info pull-left padd-0"></div>
     <div class="pull-right ajax-pagination codefly.vn_pagination_link">
-        {{ $inventories->links() }}
+        {{ $productDefectives->links() }}
     </div>
 </div>

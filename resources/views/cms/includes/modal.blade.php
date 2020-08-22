@@ -138,15 +138,6 @@
                 <form class="form-horizontal" id="customer-form">
                     <div class="form-group">
                         <div class="col-sm-3">
-                            <label for="customer_name">Mã khách hàng</label>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" id="customer_code" name="customer_code" class="form-control" value=""
-                                   placeholder="Mã khách hàng(tự sinh nếu bỏ trống)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-3">
                             <label for="customer_name">Tên Khách hàng</label>
                         </div>
                         <div class="col-sm-9">

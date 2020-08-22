@@ -14,8 +14,4 @@ jQuery(document).ready(function ($) {
     $(document).on('click', '#revenue-product', function (e) {
         window.location.href = '/admin/revenues/product';
     });
-
-    $(document).on('click', '#revenue-user', function (e) {
-        window.location.href = '/admin/revenues/user';
-    });
 });

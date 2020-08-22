@@ -4,7 +4,7 @@
         <div class="inventory-content">
             <div class="product-sear panel-sear">
                 <div>
-                    <div class="form-group col-md-4 padd-0">
+                    {{-- <div class="form-group col-md-4 padd-0">
                         <input type="text" class="form-control txt-sinventory"
                                placeholder="Nhập tên hoặc mã sản phẩm để tìm kiếm">
                     </div>
@@ -51,13 +51,13 @@
                         </div>
                         <div class="col-md-1 padd-0" style="padding-left: 1px;">
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
             <div class="tonkho hien-thi-bang-ajax">
                 <div class="inventory-main-body-public_templates_js_ajax_js">
-                    @include('cms.modules.inventory.list-product');
+                    @include('cms.modules.product-defectives.list-product');
                 </div>
             </div><!-- end .tonkho -->
 

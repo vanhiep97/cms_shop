@@ -11,8 +11,8 @@
 </head>
 <body>
     <div class="Thongtinkhachang">
-    <p>Số đơn mua hàng: {{ $purchaseOrder->pur_order_code }}</p>
-    <div class="donhang">ĐƠN MUA HÀNG</div>
+    <p>Số phiếu yêu cầu: {{ $purchaseOrder->pur_order_code }}</p>
+    <div class="donhang">PHIẾU YÊU CẦU MUA HÀNG</div>
     <p>Ngày: {{ $purchaseOrder->pur_order_date }}</p>
     <p>Tên Nhà cung cấp: {{ $purchaseOrder->supplier->supplier_name }}</p>
     <p>Địa chỉ: {{ $purchaseOrder->supplier->address }}</p>

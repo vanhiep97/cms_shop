@@ -71,6 +71,16 @@
             .sidebar-submenu ul li a:hover {
                 border: none !important;
             }
+
+            .table-responsive {
+                overflow-x: inherit;
+            }
+
+            .product-results {
+                max-height: 500px;
+                overflow-y: scroll;
+                border: 2px solid #ddd;
+            }
         </style>
     </head>
     <body>

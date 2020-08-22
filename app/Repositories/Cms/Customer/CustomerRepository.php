@@ -20,7 +20,7 @@ class CustomerRepository extends BaseRepository
         $customerCode = 'KH-' . random_int($min, $max);
         return parent::save([
             'customer_name' => $data['customer_name'],
-            'customer_code' => $data['customer_code'] ? $data['customer_code'] : $customerCode,
+            'customer_code' => $customerCode,
             'customer_email' => $data['customer_email'],
             'customer_phone' => $data['customer_phone'],
             'customer_address' => $data['customer_address'],

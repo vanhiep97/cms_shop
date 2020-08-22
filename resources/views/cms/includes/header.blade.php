@@ -12,8 +12,8 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul style="color: #fff;font-size: 15px;position: absolute;top: 10px;">
-                <li>
-                   CMS Shop Fashion design by tranhiep
+                <li style="list-style: none;">
+                   {{-- CMS Shop Fashion design by tranhiep --}}
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" style="height: 50px; width: 400px;">

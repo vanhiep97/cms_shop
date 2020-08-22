@@ -1,24 +1,29 @@
+@php
+    $user = auth()->user()->level;
+@endphp
 <table class="table table-bordered table-striped">
     <thead>
     <tr>
         <th></th>
-        <th class="text-center">Mã hóa đơn</th>
-        <th class="text-center">Theo chứng từ</th>
+        <th class="text-center">Mã phiếu đổi trả</th>
+        <th class="text-center">Theo đơn hàng</th>
         <th class="text-center">Ngày lập</th>
         <th class="text-center">Người lập</th>
-        <th class="text-center">Nhà cung cấp</th>
+        <th class="text-center">Khách hàng</th>
         <th class="text-center" style="background-color: #fff;">Tổng tiền</th>
-        <th class="text-center"><i class="fa fa-clock-o"></i> Nợ</th>
+        <th class="text-center"><i class="fa fa-clock-o"></i> Hoàn trả lại</th>
         <th></th>
+        @if($user === 0 || $user === 1 || $user === 4)
         <th class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
                                                                                   class="checkbox chkAll"><span
                     style="width: 15px; height: 15px;"></span></label></th>
+        @endif
     </tr>
     </thead>
     <tbody>
-    @if(!empty($listBillOrders) && count($listBillOrders) > 0)
-    @foreach ($listBillOrders as $key => $value)
-        <tr>
+    @if(!empty($listBillExchanges) && count($listBillExchanges) > 0)
+    @foreach ($listBillExchanges as $key => $value)
+        <tr id="bill-exchange_{{ $value->id }}">
             <td style="text-align: center;">
                 <i style="color: #478fca!important;" title="Chi tiết đơn hàng"
                     class="fa fa-plus-circle i-detail-order-{{ $value->id }}"
@@ -30,27 +35,36 @@
                 </i>
             </td>
             <td class="text-center" style="color: #2a6496; cursor: pointer;">
-                {{ $value->bill_code }}
+                {{ $value->exchange_code }}
             </td>
-            <td class="text-center">{{ $value->input->input_code }}</td>
-            <td class="text-center">{{ $value->bill_date }}</td>
+            <td class="text-center">{{ $value->order->order_code }}</td>
+            <td class="text-center">{{ $value->exchange_date }}</td>
             <td class="text-center">{{ $value->user_practise }}</td>
-            @php
-                $supplierName = App\Models\Supplier::select('supplier_name')->where('id', $value->input->supplier_id)->first();
-            @endphp
-            <td class="text-center">{{ $supplierName->supplier_name }}</td>
+            <td class="text-center">{{ $value->customer->customer_name }}</td>
             <td class="text-center"
-                style="background-color: #F2F2F2;">{{ $value->total_money }}</td>
-            <td class="text-center" style="background: #fff;">{{ $value->lack }}</td>
+                style="background-color: #F2F2F2;">{{ number_format($value->exchange_price) }}</td>
+            <td class="text-center" style="background: #fff;">{{ number_format($value->exchange_refund) }}</td>
             <td class="text-center" style="background: #fff;">
-                <i title="In"
-                class="fa fa-print blue"
-                style="margin-right: 5px;"></i>
-                <i class="fa fa-trash-o" style="color: darkred;" title=""></i></td>
+                <a href="{{ route('forms.printBillExchange', ['id' => $value->id]) }}" target="blank">
+                    <i title="In"
+                    class="fa fa-print blue"
+                    style="margin-right: 5px;"></i>
+                </a>
+                @if($user === 0 || $user === 1 || $user === 4)
+                <a href="javascript:void(0)">
+                    <i class="fa fa-trash-o" data-id="{{ $value->id }}" id="btn-delete-bill-exchange" style="color: darkred;" title=""></i>
+                </a>
+                @endif
+            </td>
+            @if($user === 0 || $user === 1 || $user === 4)
             <td class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
+                                                                                    id="bill_exchange_ids"
+                                                                                    data-ids="{{ $value->id }}"
                                                                                     value=""
                                                                                     class="checkbox chk"><span
                         style="width: 15px; height: 15px;"></span></label>
+            </td>
+            @endif
         </tr>
         <tr class="tr-hide" id="tr-detail-order-{{ $value->id }}">
             <td colspan="15">
@@ -59,7 +73,7 @@
                         <li class="active">
                             <a data-toggle="tab">
                                 <i class="green icon-reorder bigger-110"></i>
-                                Chi tiết hóa đơn mua
+                                Chi tiết phiếu đổi trả
                             </a>
                         </li>
                     </ul>
@@ -70,9 +84,9 @@
                                     <i class="fa fa-cart-arrow-down">
                                     </i>
                                     @php
-                                        $billOrderDetail = json_decode($value->bill_detail ? $value->bill_detail : []);
+                                        $billExchangeDetail = json_decode($value->exchange_detail ? $value->exchange_detail : []);
                                         $countProduct = 0;
-                                        foreach ($billOrderDetail as $key => $prd) {
+                                        foreach ($billExchangeDetail as $key => $prd) {
                                             $countProduct += $prd->product_sell_amount;
                                         }
                                     @endphp
@@ -86,32 +100,14 @@
                                     <i class="fa fa-dollar">
                                     </i>
                                     <span
-                                        class="hidden-768">Tiền hàng: {{ $value->total_price ? number_format($value->total_price) : 0 }}
-                                            </span>
-                                    <label>
-                                    </label>
-                                </div>
-                                <div class="padding-left-10">
-                                    <i class="fa fa-dollar">
-                                    </i>
-                                    <span
-                                        class="hidden-768">Giảm giá: {{ $value->counpon ? number_format($value->counpon) : 0 }}
-                                            </span>
-                                    <label>
-                                    </label>
-                                </div>
-                                <div class="padding-left-10">
-                                    <i class="fa fa-dollar">
-                                    </i>
-                                    <span
-                                        class="hidden-768">Tổng tiền: {{ $value->totol_money ? number_format($value->total_money) : 0 }}
+                                        class="hidden-768">Tiền hàng: {{ $value->exchange_price ? number_format($value->exchange_price) : 0 }}
                                             </span>
                                     <label>
                                     </label>
                                 </div>
                                 <div class="padding-left-10">
                                     <i class="fa fa-clock-o"></i>
-                                    <span class="hidden-768">Còn nợ: {{ $value->lack ? number_format($value->lack) : 0 }}</span>
+                                    <span class="hidden-768">Hoàn trả lại: {{ $value->exchange_refund ? number_format($value->exchange_refund) : 0 }}</span>
                                     <label
                                     >
                                     </label>
@@ -130,10 +126,10 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                        $billOrderDetail = json_decode($value->bill_detail ? $value->bill_detail : []);
+                                        $billExchangeDetail = json_decode($value->exchange_detail ? $value->exchange_detail : []);
                                     @endphp
-                                    @if(!empty($billOrderDetail) && count($billOrderDetail) > 0)
-                                        @foreach($billOrderDetail as $key => $value)
+                                    @if(!empty($billExchangeDetail) && count($billExchangeDetail) > 0)
+                                        @foreach($billExchangeDetail as $key => $value)
                                             <tr>
                                                 <td class="text-center width-5 hidden-320 ">
                                                     {{ $key + 1 }}
@@ -169,23 +165,27 @@
 </table>
 <div class="alert alert-info summany-info clearfix" role="alert">
      @php
-       if(!empty($listBillOrders) && count($listBillOrders) > 0) {
+       if(!empty($listBillExchanges) && count($listBillExchanges) > 0) {
            $totalMoney = 0;
-           foreach ($listBillOrders as $key => $value) {
-               $totalMoney += $value->total_price;
+           $totalRefund = 0;
+           foreach ($listBillExchanges as $key => $value) {
+               $totalMoney += $value->exchange_price;
+               $totalRefund += $value->exchange_refund;
            }
        }
     @endphp
+    @if(!empty($listBillExchanges) && count($listBillExchanges) > 0)
     <div class="sm-info pull-left padd-0">
         Tổng số phiếu nhập:
-        <span>{{ count($listBillOrders) }}</span>
+        <span>{{ count($listBillExchanges) }}</span>
         Tổng tiền:
         <span>{{ $totalMoney ? number_format($totalMoney) : 0 }}</span>
-        Tổng nợ:
-        <span>{{ $value->lack ? number_format($value->lack) : 0 }}</span>
+        Tổng Hoàn trả lại:
+        <span>{{ $totalRefund ? number_format($totalRefund) : 0 }}</span>
     </div>
+    @endif
     <div class="pull-right ajax-pagination">
-        {{ $listBillOrders->links() }}
+        {{ $listBillExchanges->links() }}
     </div>
 </div>
 

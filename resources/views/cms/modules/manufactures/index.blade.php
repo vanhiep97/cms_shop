@@ -6,7 +6,7 @@
                 <div class="products-act">
                     <div class="col-md-4 col-md-offset-2">
                         <div class="left-action text-left clearfix">
-                            <h2>Nhà sản xuất</h2>
+                            <h2>Thương hiệu</h2>
                         </div>
                     </div>
                 </div>
@@ -18,7 +18,7 @@
             <div class="product-create" style="width: 40%;margin-right: 40px;background-color: #fff;margin-top: 10px;">
                 <div class="card">
                     <div class="card-header" style="background-color: #f2f2f2;padding: 8px 15px;margin-bottom: 20px;border: 1px solid #ddd;font-weight: 600;">
-                        Thêm nhà sản xuất
+                        Thêm Thương hiệu
                     </div>
                     <div class="card-body">
                         <div class="row form-horizontal">
@@ -26,7 +26,7 @@
                                 <form id="manufacture-form">
                                     <div class="form-group">
                                         <div class="col-md-4 text-right">
-                                            <label>Tên nhà sản xuất</label>
+                                            <label>Tên Thương hiệu</label>
                                         </div>
                                         <div class="col-md-8">
                                             <input type="text" name="manufacture_name" id="manufacture_name" class="form-control"
@@ -60,10 +60,10 @@
             <div class="product-main" style="width: 60%">
                 <div class="product-sear panel-sear">
                     <div class="">
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="margin-left: -15px; margin-bottom: 10px">
                             <a href="javascript:void(0)" id="btn-delete-multi-manufacture" class="btn btn-danger" style="margin-left: 0">Xóa nhiều</a>
                         </div>
-                        <div class="form-group col-md-4 padd-0">
+                        {{-- <div class="form-group col-md-4 padd-0">
                             <input type="text" class="form-control" placeholder="Nhập mã sản phẩm hoặc tên sản phẩm"
                                    id="product-search">
                         </div>
@@ -71,7 +71,7 @@
                             <button type="button" class="btn btn-primary btn-large btn-ssup"><i
                                     class="fa fa-search"></i> Tìm kiếm
                             </button>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="product-main-body" id="dataRaw">

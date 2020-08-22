@@ -5,21 +5,18 @@
         <div class="orders-act">
             <div class="col-md-4 col-md-offset-2">
                 <div class="left-action text-left clearfix">
-                    <h2>Tạo phiếu nhập &raquo;</h2>
+                    <h2>Tạo phiếu đổi trả &raquo;</h2>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="right-action text-right">
                     <div class="btn-groups">
-                        <button type="button" id="btn-save-bill" class="btn btn-primary"><i
+                        <button type="button" id="btn-save-bill-exchange" class="btn btn-primary"><i
                                 class="fa fa-check"></i> Lưu
                         </button>
-                        <button type="button" class="btn btn-primary"><i
-                                class="fa fa-print"></i> Lưu và in
-                        </button>
-                        <button type="button" class="btn btn-default"><i
+                        <a href="{{ route('forms.listBillExchanges') }}" class="btn btn-default"><i
                                 class="fa fa-arrow-left"></i> Hủy
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -33,7 +30,7 @@
     <div class="row">
         <div class="col-md-12">
             <select id="search-input-ord" class="form-control">
-                <option value="0">-- Theo phiếu nhập kho số</option>
+                <option value="0">-- Theo đơn hàng số</option>
                     @if(!empty($listOrders) && count($listOrders) > 0)
                         @foreach ($listOrders as $item)
                              <option value="{{ $item->id }}">{{ $item->order_code }}</option>
@@ -63,9 +60,9 @@
                     <tbody id="pro_search_append">
                     </tbody>
                 </table>
-                <div class="alert alert-success" style="margin-top: 30px;" role="alert">Gõ mã hoặc tên sản phẩm vào hộp
-                    tìm kiếm để thêm hàng vào đơn hàng
-                </div>
+            </div>
+            <div class="alert alert-success" style="margin-top: 30px;" role="alert">Gõ mã hoặc tên sản phẩm vào hộp
+                tìm kiếm để thêm hàng vào đơn hàng
             </div>
         </div>
        <div class="col-md-4">
@@ -96,6 +93,15 @@
                                             +
                                         </button>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="form-group marg-bot-10 clearfix">
+                                <div style="padding:0px" class="col-md-4">
+                                    <label>Ngày lập</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input id="bill-date" class="form-control datepk" type="text" placeholder="YYYY/MM/DD"
+                                        style="border-radius: 0 !important;">
                                 </div>
                             </div>
                             <div class="form-group marg-bot-10 clearfix">
@@ -151,12 +157,10 @@
                 </div>
                 <div class="col-md-12">
                     <div class="btn-groups pull-right" style="margin-bottom: 50px;">
-                        <button type="button" class="btn btn-primary" id="btn-save-order"><i
-                                class="fa fa-check"></i> Lưu (F9)
+                        <button type="button" class="btn btn-primary" id="btn-save-bill-exchange"><i
+                                class="fa fa-check"></i> Lưu
                         </button>
-                        <button type="button" class="btn btn-primary" id="btn-save-print-order"><i class="fa fa-print"></i> In hóa đơn (F10)
-                        </button>
-                        <a href="{{ route('pos.index') }}" class="btn btn-default"><i
+                        <a href="{{ route('forms.listBillExchanges') }}" class="btn btn-default"><i
                                 class="fa fa-arrow-left"></i> Hủy
                         </a>
                     </div>

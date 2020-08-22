@@ -11,6 +11,8 @@ use App\Models\PurchaseOrder;
 use App\Models\Receipt;
 use App\Models\BillOrder;
 use App\Models\OutStockBill;
+use App\Models\ExchangeBill;
+use App\Models\ProductDefective;
 use PDF;
 use Illuminate\Support\Facades\DB;
 use App\Models\Order;
@@ -118,15 +120,27 @@ class FormController extends Controller
         return view('cms.modules.forms.purchase-orders.list-purorder', compact('listPurchaseOrders'));
     }
 
+    public function UpdateStatusPurchaseOrder($id, Request $request)
+    {
+        $purchaseOrder = PurchaseOrder::find($id);
+        $purchaseOrder->update([
+            'pur_order_status' => $request->data
+        ]);
+        return response()->json([
+            'isSuccess' => true,
+            'message' => 'success'
+        ], 200);
+    }
+
     public function listInputs()
     {
-        $listInputs = Input::with('supplier')->paginate(5);
+        $listInputs = Input::with('supplier', 'purchaseOrder')->paginate(5);
         return view('cms.modules.forms.inputs.index', compact('listInputs'));
     }
 
     public function createInput()
     {
-        $listPurchaseOrders = PurchaseOrder::select('id', 'pur_order_code')->get();
+        $listPurchaseOrders = PurchaseOrder::select('id', 'pur_order_code')->where('pur_order_status','=', 1)->get();
         return view('cms.modules.forms.inputs.create-input', compact('listPurchaseOrders'));
     }
 
@@ -226,6 +240,18 @@ class FormController extends Controller
         return view('cms.modules.forms.inputs.list-input', compact('listInputs'));
     }
 
+    public function UpdateStatusInput($id, Request $request)
+    {
+        $input = Input::find($id);
+        $input->update([
+            'input_status' => $request->data
+        ]);
+        return response()->json([
+            'isSuccess' => true,
+            'message' => 'success'
+        ], 200);
+    }
+
     public function listBillOrders()
     {
         $listBillOrders = BillOrder::with('input')->paginate(5);
@@ -234,7 +260,7 @@ class FormController extends Controller
 
     public function createBillOrder()
     {
-        $listInputs = Input::select('id', 'input_code')->get();
+        $listInputs = Input::select('id', 'input_code')->where('input_status', 0)->get();
         return view('cms.modules.forms.bill-orders.import_bill', compact('listInputs'));
     }
 
@@ -264,7 +290,7 @@ class FormController extends Controller
             'notes' => $request->notes,
             'sell_type' => $request->sell_type,
             'total_price' => $request->total_price,
-            'counpon' => $request->discount,
+            'coupon' => $request->coupon,
             'total_money' => $request->total_money,
             'pair_pay' => $request->pair_pay,
             'lack' => $request->lack,
@@ -320,10 +346,18 @@ class FormController extends Controller
         return view('cms.modules.forms.bill-orders.list_imports', compact('listBillOrders'));
     }
 
-    public function createBillExchange()
+    public function updateStatusBillOrder($id)
     {
-        $listOrders = Order::select('id', 'order_code')->get();
-        return view('cms.modules.forms.bill-exchanges.create-bill', compact('listOrders'));
+        $billOrder = BillOrder::find($id);
+        if($billOrder->bill_status == 1) {
+            $billOrder->update([
+                'bill_status' => 0
+            ]);
+        } else {
+            $billOrder->update([
+                'bill_status' => 1
+            ]);
+        }
     }
 
     public function showProductOnOrder(Request $request, $id)
@@ -422,5 +456,135 @@ class FormController extends Controller
         }
         $listBillOutStocks = $listBillOutStocks->paginate(5);
         return view('cms.modules.forms.bill-out-stocks.list-bill_out_stock', compact('listBillOutStocks'));
+    }
+
+    public function UpdateStatusBillOutStock($id, Request $request)
+    {
+        $billOutStock = OutStockBill::find($id);
+        $billOutStock->update([
+            'bill_out_stock_status' => $request->data
+        ]);
+        return response()->json([
+            'isSuccess' => true,
+            'message' => 'success'
+        ], 200);
+    }
+
+    public function listBillExchanges()
+    {
+        $listBillExchanges = ExchangeBill::with('order', 'customer')->paginate(5);
+        return view('cms.modules.forms.bill-exchanges.index', compact('listBillExchanges'));
+    }
+
+    public function createBillExchange()
+    {
+        $listOrders = Order::select('id', 'order_code')->get();
+        return view('cms.modules.forms.bill-exchanges.create-bill', compact('listOrders'));
+    }
+
+    public function storeBillExchange(Request $request)
+    {
+        $min = 0000000001;
+        $max = 9999999999;
+        $exchangeCode = 'PDT-'.random_int ($min , $max);
+        $billExchangeDetails = $request->exchange_detail;
+        $totalOriginPrice = 0;
+        $exchangeAmount = 0;
+        foreach ($billExchangeDetails as $value) {
+            $totalOriginPrice += $value['product_origin_price'];
+            $exchangeAmount += $value['product_sell_amount'];
+        }
+        $billExchangeDetail = json_encode($billExchangeDetails);
+        DB::beginTransaction();
+            try {
+                $billExchanges = ExchangeBill::create([
+                    'exchange_code' => $exchangeCode,
+                    'order_id' => $request->order_id,
+                    'exchange_date' => $request->exchange_date,
+                    'user_practise' => auth()->user()->name,
+                    'customer_id' => $request->customer_id,
+                    'exchange_reason' => $request->exchange_reason,
+                    'exchange_ammount' => $exchangeAmount,
+                    'exchange_price' => $request->exchange_price,
+                    'exchange_refund' => $request->exchange_refund,
+                    'exchange_detail' => $billExchangeDetail,
+                ]);
+                foreach($billExchangeDetails as $key => $value) {
+                    $product = ProductDefective::where('product_id', $value['id'])->first();
+                    if($product) {
+                        $product->update([
+                            'quantity' => $product->quantity + $value['amount_bill'],
+                            'user_practise' => auth()->user()->name
+                        ]);
+                    } else {
+                        ProductDefective::create([
+                            'product_id' => $value['id'],
+                            'quantity' => $value['amount_bill'],
+                            'user_practise' => auth()->user()->name
+                        ]);
+                    }
+
+                    $products = Product::where('id', $value['id'])->first();
+                    if($products) {
+                        $products->update([
+                            'product_amount' => $products->product_amount + $value['amount_bill'],
+                            'product_amount_defective' => $products->product_amount_defective + $value['amount_bill']
+                        ]);
+                    }
+                }
+
+                DB::commit();
+                return response()->json([
+                    'isSuccess' => true,
+                    'message' => 'Create Bill Exchange',
+                    'purOrder' => $billExchanges
+                ], 200);
+            } catch (Exception $e) {
+                DB::rollBack();
+                throw new Exception($e->getMessage());
+            }
+    }
+
+    public function printBillExchange($id)
+    {
+        $billExchange = OutStockBill::with('order', 'customer')->find($id);
+        dd($billExchange);
+        PDF::setOptions(['dpi' => 150, 'defaultFont' => 'DejaVu Sans']);
+        $pdf = PDF::loadView('cms.modules.forms.bill-exchanges.invoice', compact('billExchange'))->setPaper('a4', 'portrait');
+        return $pdf->stream('invoice.pdf', array("Attachment" => false));
+    }
+
+    public function searchBillExchange(Request $request)
+    {
+        $billExchangeCode = $request->bill_exchange_code;
+        $billExchangeDateFrom = $request->bill_exchange_date_from;
+        $billExchangeDateTo = $request->bill_exchange_date_to;
+
+        $listBillExchanges = ExchangeBill::with('order', 'customer');
+        if($request->has('bill_exchange_code') && $billExchangeCode) {
+            $listBillExchanges->where('exchange_code', 'LIKE', $billExchangeCode.'%');
+        }
+        if($request->has('bill_exchange_code') && $request->has('bill_exchange_date_to') && $billExchangeDateFrom && $billExchangeDateTo) {
+            $listBillExchanges->whereBetween('exchange_date', [$billExchangeDateFrom, $billExchangeDateTo]);
+        }
+        $listBillExchanges = $listBillExchanges->paginate(5);
+        return view('cms.modules.forms.bill-exchanges.list_bill', compact('listBillExchanges'));
+    }
+
+    public function destroyBillExchange($id)
+    {
+         try {
+            $ids = explode(",", $id);
+            ExchangeBill::destroy($ids);
+            return response()->json([
+                'isSuccess' => true,
+                'message' => 'Delete success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'isSuccess' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

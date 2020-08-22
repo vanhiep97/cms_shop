@@ -287,14 +287,14 @@ jQuery(document).ready(function ($) {
             }).done(response => {
                 window.location.reload();
                 $('#alert-cms-success').css('display', 'block');
-                $('#text-alert-success').text("Tạo đơn mua hàng thành công");
+                $('#text-alert-success').text("Tạo phiếu yêu cầu nhập hàng thành công");
                 setTimeout(function() {
                     $('#alert-cms-success').css('display', 'none');
                 }, 2000)
                 amountProduct2 = [];
             }).fail(error => {
                 $('#alert-cms-error').css('display', 'block');
-                $('#text-alert-error').text("Tạo đơn mua hàng thất bại");
+                $('#text-alert-error').text("Tạo phiếu yêu cầu nhập hàng thất bại");
                 setTimeout(function() {
                     $('#alert-cms-error').css('display', 'none');
                 }, 2000)
@@ -380,7 +380,7 @@ jQuery(document).ready(function ($) {
                             });
                             window.location.reload();
                             $('#alert-cms-success').css('display', 'block');
-                            $('#text-alert-success').text("Xóa sản phẩm thành công");
+                            $('#text-alert-success').text("Xóa thành công");
                             setTimeout(function () {
                                 $('#alert-cms-success').css('display', 'none');
                             }, 2000)
@@ -414,6 +414,7 @@ jQuery(document).ready(function ($) {
             })
     })
 
+    // search purchase order
     $(document).on('change', '#search-pur-order', function(e) {
         e.preventDefault();
         let purOrderId = $(this).val();
@@ -426,12 +427,29 @@ jQuery(document).ready(function ($) {
         })
     })
 
+    // change status purchase order
+    $(document).on('click', '#purchase-status', function (e) {
+        e.preventDefault();
+        let purOrderId = $(this).data('id');
+        let data = $(this).val();
+
+        let urlResource = '/admin/forms/' + purOrderId + '/update-status-purchase-order';
+        callAjax(urlResource, 'PATCH', {
+            data: data
+        }).done(response => {
+            window.location.reload();
+        }).fail(error => {
+            console.log(error);
+        })
+    })
+
     $(document).on('change', '#amount-input', function (e) {
         $('tbody#pro_on_pur_order tr').each(function (key, value) {
             let amount_ship = $('#amount-ship').val();
             let amount = $(this).find('td input#amount-input').val();
             let price = $(this).find('td#origin-price').attr('data-price');
             let result = 0;
+            result = parseInt(amount) * parseInt(price);
             if (amount < 1) {
                 $(this).find('td input#amount-input').val(1);
                 result = price;
@@ -454,7 +472,7 @@ jQuery(document).ready(function ($) {
         });
     });
 
-      // save Cart to Order
+      // save input
       let amountProduct3 = [];
       $(document).on('click', '#btn-save-input', function (e) {
           e.preventDefault();
@@ -512,7 +530,7 @@ jQuery(document).ready(function ($) {
               }).done(response => {
                   window.location.reload();
                   $('#alert-cms-success').css('display', 'block');
-                  $('#text-alert-success').text("Tạo phiếu nhập thành công");
+                  $('#text-alert-success').text("Tạo phiếu nhập kho thành công");
                   setTimeout(function() {
                       $('#alert-cms-success').css('display', 'none');
                   }, 2000)
@@ -645,6 +663,22 @@ jQuery(document).ready(function ($) {
             })
     })
 
+    // update status input
+    $(document).on('click', '#input-status', function (e) {
+        e.preventDefault();
+        let inputId = $(this).data('id');
+        let data = $(this).val();
+
+        let urlResource = '/admin/forms/' + inputId + '/update-status-input';
+        callAjax(urlResource, 'PATCH', {
+            data: data
+        }).done(response => {
+            window.location.reload();
+        }).fail(error => {
+            console.log(error);
+        })
+    })
+
     $(document).on('change', '#search-input-war', function(e) {
         e.preventDefault();
         let inputId = $(this).val();
@@ -657,7 +691,7 @@ jQuery(document).ready(function ($) {
         })
     })
 
-    // save Cart to Order
+    // save Bill Purchase
     let amountProduct4 = [];
     $(document).on('click', '#btn-save-bill', function (e) {
         e.preventDefault();
@@ -720,16 +754,16 @@ jQuery(document).ready(function ($) {
                 lack: lack,
                 bill_detail: carts
             }).done(response => {
-                // window.location.reload();
+                window.location.reload();
                 $('#alert-cms-success').css('display', 'block');
-                $('#text-alert-success').text("Tạo phiếu nhập thành công");
+                $('#text-alert-success').text("Tạo hóa đơn mua thành công");
                 setTimeout(function() {
                     $('#alert-cms-success').css('display', 'none');
                 }, 2000)
                 amountProduct = [];
             }).fail(error => {
                 $('#alert-cms-error').css('display', 'block');
-                $('#text-alert-error').text("Tạo phiếu nhập kho thất bại");
+                $('#text-alert-error').text("Tạo hóa đơn mua kho thất bại");
                 setTimeout(function() {
                     $('#alert-cms-error').css('display', 'none');
                 }, 2000)
@@ -855,6 +889,20 @@ jQuery(document).ready(function ($) {
             })
     })
 
+    // update status bill order
+    $(document).on('click', '#update-status-bill-order', function (e) {
+        e.preventDefault();
+        let id = $(this).data('id');
+        let urlResource = '/admin/forms/' + id + '/update-status-bill-order';
+        callAjax(urlResource, 'GET')
+            .done(response => {
+                window.location.reload();
+            })
+            .fail(error => {
+                console.log(error);
+            })
+    })
+
     // bill out stock
     let amountProduct5 = [];
     $(document).on('click', '#btn-save-out-stock', function (e) {
@@ -888,14 +936,14 @@ jQuery(document).ready(function ($) {
             }).done(response => {
                 window.location.reload();
                 $('#alert-cms-success').css('display', 'block');
-                $('#text-alert-success').text("Tạo đơn mua hàng thành công");
+                $('#text-alert-success').text("Tạo phiếu xuất kho thành công");
                 setTimeout(function () {
                     $('#alert-cms-success').css('display', 'none');
                 }, 2000)
                 amountProduct5 = [];
             }).fail(error => {
                 $('#alert-cms-error').css('display', 'block');
-                $('#text-alert-error').text("Tạo đơn mua hàng thất bại");
+                $('#text-alert-error').text("Tạo phiếu xuất kho thất bại");
                 setTimeout(function () {
                     $('#alert-cms-error').css('display', 'none');
                 }, 2000)
@@ -981,7 +1029,7 @@ jQuery(document).ready(function ($) {
                             });
                             window.location.reload();
                             $('#alert-cms-success').css('display', 'block');
-                            $('#text-alert-success').text("Xóa sản phẩm thành công");
+                            $('#text-alert-success').text("Xóa thành công");
                             setTimeout(function () {
                                 $('#alert-cms-success').css('display', 'none');
                             }, 2000)
@@ -1016,6 +1064,22 @@ jQuery(document).ready(function ($) {
     })
     // end
 
+    // update status bill out stock
+    $(document).on('click', '#bill-out-stock-status', function (e) {
+        e.preventDefault();
+        let billOutStockId = $(this).data('id');
+        let data = $(this).val();
+
+        let urlResource = '/admin/forms/' + billOutStockId + '/update-status-bill-outstock';
+        callAjax(urlResource, 'PATCH', {
+            data: data
+        }).done(response => {
+            window.location.reload();
+        }).fail(error => {
+            console.log(error);
+        })
+    })
+
 
     // search order on bill exchange
     $(document).on('change', '#search-input-ord', function (e) {
@@ -1029,4 +1093,190 @@ jQuery(document).ready(function ($) {
             console.log(error);
         })
     })
+
+    // create bill exchange
+    let amountProduct6 = [];
+    $(document).on('click', '#btn-save-bill-exchange', function (e) {
+        e.preventDefault();
+        $('tbody#pro_on_input tr').each(function () {
+            let id = $(this).attr('data-id');
+            let product_code = $(this).find('td#product-code').attr('data-code');
+            let product_name = $(this).find('td#product-name').attr('data-name');
+            let amount_bill = $(this).find('input#amount-bill').val();
+            let product_origin_price = $(this).find('td#sell-price').attr('data-price');
+            let total_money_bill = $(this).find('td#total-money-bill').text();
+
+            let objCart = {
+                id: id,
+                product_code: product_code,
+                product_name: product_name,
+                amount_bill: amount_bill,
+                product_origin_price: product_origin_price,
+                total_money_bill: total_money_bill
+            }
+
+            cart.push(objCart)
+        });
+
+        let customer_value = $('#search-box-customer').val();
+        let customer_id = $('#search-box-customer').data('id');
+        let exchange_date = $('#bill-exchange-date').val();
+        let notes = $('#note-exchange').val();
+        let money = $('#money').attr('data-money');
+        let order_id = $('#search-input-ord').val();
+        let pairPay = $('#money-refund').attr('data-refund');
+
+        $('tbody#pro_on_input tr').each(function (key, value) {
+            let amount = $(this).find('td input#amount-bill').val();
+            amountProduct6.push(amount);
+            cart.forEach(function (value, key) {
+                amountProduct6.forEach(function (value, key) {
+                    cart[key]['product_sell_amount'] = value
+                })
+            })
+        });
+
+        let carts = cart;
+
+        let urlResource = '/admin/forms/store-bill-exchange';
+
+        if (cart.length > 0) {
+            callAjax(urlResource, 'POST', {
+                order_id: order_id,
+                customer_id: customer_id,
+                exchange_date: exchange_date,
+                exchange_reason: notes ? notes : '',
+                exchange_price: money,
+                exchange_refund: pairPay,
+                exchange_detail: carts
+            }).done(response => {
+                window.location.reload();
+                $('#alert-cms-success').css('display', 'block');
+                $('#text-alert-success').text("Tạo phiếu đổi trả thành công");
+                setTimeout(function () {
+                    $('#alert-cms-success').css('display', 'none');
+                }, 2000)
+                amountProduct6 = [];
+            }).fail(error => {
+                $('#alert-cms-error').css('display', 'block');
+                $('#text-alert-error').text("Tạo phiếu đổi trả thất bại");
+                setTimeout(function () {
+                    $('#alert-cms-error').css('display', 'none');
+                }, 2000)
+            })
+        } else {
+            if (customer_value === '') {
+                $('#alert-cms-error').css('display', 'block');
+                $('#text-alert-error').text("Vui lòng nhập tên nhà cung cấp");
+                setTimeout(function () {
+                    $('#alert-cms-error').css('display', 'none');
+                }, 2000)
+            } else if (cart.length < 0) {
+                $('#alert-cms-error').css('display', 'block');
+                $('#text-alert-error').text("Sản phẩm cần nhập không được trống");
+                setTimeout(function () {
+                    $('#alert-cms-error').css('display', 'none');
+                }, 2000)
+            }
+        }
+    });
+
+    // delete bill out stock
+    $(document).on("click", "#btn-delete-bill-exchange", function (e) {
+        e.preventDefault();
+        let id = $(this).data('id');
+        let urlResource = '/admin/forms/' + id + '/bill-exchange/';
+        callAjax(urlResource, 'DELETE')
+            .done(response => {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                }).then((result) => {
+                    if (result.value) {
+                        $("#bill_exchange_" + id).remove();
+                        window.location.reload();
+                        $('#alert-cms-success').css('display', 'block');
+                        $('#text-alert-success').text("Xóa thành công");
+                        setTimeout(function () {
+                            $('#alert-cms-success').css('display', 'none');
+                        }, 2000)
+                    }
+                })
+            })
+            .fail(error => {
+                console.log(error)
+            })
+    });
+
+    // delete Multi record
+    $(document).on("click", "#delete-multi-exchange", function (e) {
+        e.preventDefault();
+        let ids = [];
+        $('#bill_exchange_ids:checked').each(function (i) {
+            ids.push($(this).attr('data-ids'));
+        });
+        if (ids.length == 0) {
+            Swal.fire(
+                'Cant Delete!',
+                'Chọn bản ghi cần xóa.',
+                'error'
+            );
+        } else {
+            let urlResouce = '/admin/forms/' + ids + '/bill-exchange/';
+            callAjax(urlResouce, 'DELETE')
+                .done(response => {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!',
+                    }).then((result) => {
+                        if (result.value) {
+                            $.each(ids, function (key, value) {
+                                $("#bill_exchange_" + value).remove();
+                            });
+                            window.location.reload();
+                            $('#alert-cms-success').css('display', 'block');
+                            $('#text-alert-success').text("Xóa thành công");
+                            setTimeout(function () {
+                                $('#alert-cms-success').css('display', 'none');
+                            }, 2000)
+                        }
+                    })
+                })
+                .fail(error => {
+                    console.log(error);
+                })
+        }
+    });
+
+    // search bill exchange
+    $(document).on('click', '#btn-search-bill-exchange', function (e) {
+        e.preventDefault();
+        let orderCode = $('#bill-exchange-search-code').val();
+        let orderFromDate = $("#datepicker1").val();
+        let orderToDate = $("#datepicker2").val();
+        let urlResource = '/admin/forms/search/bill-exchange/'
+        callAjax(urlResource, 'GET',
+            {
+                bill_exchange_code: orderCode.toLowerCase(),
+                bill_exchange_date_from: orderFromDate,
+                bill_exchange_date_to: orderToDate
+            })
+            .done(response => {
+                $('#list-bill-exchanges').html(response);
+            })
+            .fail(error => {
+                console.log(error);
+            })
+    })
+    // end
 });

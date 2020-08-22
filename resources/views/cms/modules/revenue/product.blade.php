@@ -14,14 +14,10 @@
                 </label>
                 <label style="color: #307ecc;">
                     <input type="radio" name="revenue" id="revenue-sale" value="3">
-                    <span class="lbl">Theo thu ngân</span>
-                </label>
-                <label style="color: #307ecc;">
-                    <input type="radio" name="revenue" id="revenue-user" value="4">
                     <span class="lbl">Theo NV bán hàng</span>
                 </label>
                 <label style="color: #307ecc;">
-                    <input type="radio" name="revenue" id="revenue-product" value="5" checked>
+                    <input type="radio" name="revenue" id="revenue-product" value="4" checked>
                     <span class="lbl">Theo hàng hóa</span>
                 </label>
             </h5>
@@ -85,6 +81,7 @@
                 </div>
             </div>
             <div class="revenue-main-body">
+                 @if(!empty($orders) && count($orders) > 0)
                 <div class="quick-info report row" style="margin-bottom: 15px;">
                     <div class="col-md-12 padd-0">
                         <div class="col-md-3 padd-right-0">
@@ -147,39 +144,39 @@
                                 <div class="infobox-data">
                                     <h3 class="infobox-title cred"
                                         style="font-size: 25px;">{{ $totalLack ? number_format($totalLack) : 0 }}</h3>
-                                    <span class="infobox-data-number text-center" style="font-size: 14px; color: #555;">Khách nợ</span>
+                                    <span class="infobox-data-number text-center" style="font-size: 14px; color: #555;">Hoàn trả khách</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
+                        <th class="text-center">STT</th>
                         <th class="text-center">Mã sản phẩm</th>
                         <th class="text-center">Tên sản phẩm</th>
                         <th class="text-center">SL bán</th>
-                        <th class="text-center">Chiếc khấu</th>
                         <th class="text-center">Tổng tiền</th>
                     </tr>
                     </thead>
                     <tbody>
-                        @foreach($orders as $key => $value)
                         @php
                             $orderDetail = [];
-                            foreach(json_decode($value->order_detail) as $order) {
-                                $orderDetail['product_code'] = $order->product_code;
+                            foreach($orders as $key => $value) {
+                                array_push($orderDetail, json_decode($value->order_detail));
                             }
-                            // dd($value->order_detail);
                         @endphp
-                        @foreach(json_decode($value->order_detail) as $order)
+                        @foreach($orderDetail as $order)
+                        @foreach($order as $key => $item)
                         <tr>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
+                            <td class="text-center">{{ $key + 1 }}</td>
+                            <td class="text-center">{{ $item->product_code }}</td>
+                            <td class="text-center">{{ $item->product_name }}</td>
+                            <td class="text-center">{{ $item->product_amount }}</td>
+                            <td class="text-center">{{ number_format($item->product_amount * $item->product_sell_price) }}</td>
                         </tr>
                         @endforeach
                         @endforeach
@@ -187,7 +184,7 @@
                 </table>
                 <div class="alert alert-info summany-info clearfix" role="alert">
                     <div class="pull-right ajax-pagination">
-                    pagination
+                    {{ $orderByEmp->links() }}
                     </div>
                 </div>
             </div>

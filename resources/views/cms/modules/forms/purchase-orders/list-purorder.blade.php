@@ -1,8 +1,11 @@
+@php
+    $user = auth()->user()->level;
+@endphp
 <table class="table table-bordered table-striped">
     <thead>
     <tr>
         <th></th>
-        <th class="text-center">Mã đơn mua hàng</th>
+        <th class="text-center">Mã phiếu yêu cầu</th>
         <th class="text-center">Ngày lập</th>
         <th class="text-center">Người lập</th>
         <th class="text-center" style="padding: 0px;">
@@ -12,9 +15,11 @@
         <th class="text-center">Tình trạng</th>
         <th class="text-center" style="background-color: #fff;">Tổng tiền</th>
         <th></th>
+        @if($user === 0 || $user === 1 || $user === 2)
         <th class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
                                                                                   class="checkbox chkAll"><span
                     style="width: 15px; height: 15px;"></span></label></th>
+        @endif
     </tr>
     </thead>
     <tbody>
@@ -36,7 +41,13 @@
                 <td class="text-center">{{ $value->pur_order_date ? $value->pur_order_date : '' }}</td>
                 <td class="text-center">{{ $value->user_practise ? $value->user_practise : '' }}</td>
                 <td class="text-center">{{ $value->supplier_id ? $value->supplier->supplier_name : '' }}</td>
-                <td class="text-center">{{ $value->pur_order_status == 0 ? 'Chưa gửi NCC' : 'Đã gửi NCC' }}</td>
+                <td class="text-center">
+                    <select id="purchase-status" data-id="{{ $value->id }}">
+                        <option value="0" {{ $value->pur_order_status ==  0 ? 'selected' : ''}}>Chưa gửi NCC</option>
+                        <option value="1" {{ $value->pur_order_status ==  1 ? 'selected' : ''}}>Đã gửi NCC</option>
+                        <option value="2" {{ $value->pur_order_status ==  2 ? 'selected' : ''}}>Đã nhập kho</option>
+                    </select>
+                </td>
                 <td class="text-center"
                     style="background-color: #F2F2F2;">{{ $value->total_price ? number_format($value->total_price) : 0 }}</td>
                 <td class="text-center" style="background: #fff;">
@@ -45,16 +56,20 @@
                         class="fa fa-print blue"
                         style="margin-right: 5px;"></i>
                     </a>
+                    @if($user === 0 || $user === 1 || $user === 2)
                     <a href="javascript:void(0)" id="btn-delete-pur-order" data-id="{{ $value->id }}">
                         <i class="fa fa-trash-o" style="color: darkred;"></i>
                     </a>
+                    @endif
                 </td>
+                @if($user === 0 || $user === 1 || $user === 2)
                 <td class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
                                                                                           id="pur_order_ids"
                                                                                           data-ids="{{ $value->id }}"
                                                                                           value=""
                                                                                           class="checkbox chk"><span
-                            style="width: 15px; height: 15px;"></span></label>
+                            style="width: 15px; height: 15px;"></span></label></td>
+                @endif
             </tr>
             <tr class="tr-hide" id="tr-detail-order-{{ $value->id }}">
                 <td colspan="15">
@@ -63,7 +78,7 @@
                             <li class="active">
                                 <a data-toggle="tab">
                                     <i class="green icon-reorder bigger-110"></i>
-                                    Chi tiết đơn hàng
+                                    Chi tiết phiếu yêu cầu nhập hàng
                                 </a>
                             </li>
                         </ul>
@@ -99,7 +114,7 @@
                                         <i class="fa fa-dollar">
                                         </i>
                                         <span
-                                            class="hidden-768">Tổng tiền: {{ $value->total_money ? number_format($value->total_money) : 0 }}
+                                            class="hidden-768">Tổng tiền: {{ $value->total_price ? number_format($value->total_price) : 0 }}
                                         </span>
                                         <label>
                                         </label>
@@ -160,7 +175,7 @@
        if(!empty($listPurchaseOrders) && count($listPurchaseOrders) > 0) {
            $totalMoney = 0;
            foreach ($listPurchaseOrders as $key => $value) {
-               $totalMoney += $value->total_money;
+               $totalMoney += $value->total_price;
            }
        }
     @endphp
@@ -170,9 +185,9 @@
         Tổng tiền:
         <span>{{ $totalMoney ? number_format($totalMoney) : 0 }}</span>
     </div>
+    @endif
     <div class="pull-right ajax-pagination">
         {{ $listPurchaseOrders->links() }}
     </div>
-    @endif
 </div>
 

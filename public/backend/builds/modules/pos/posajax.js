@@ -7,6 +7,29 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    $(document).bind("keydown", function (ev) {
+        if (ev.keyCode == 113) {
+            $('#search-pro-box').focus();
+            $('#search-pro-box').val('SKU');
+        }
+        if (ev.keyCode == 115) {
+            $('#search-box-customer').focus();
+            $('#search-box-customer').val('KH');
+        }
+        if (ev.keyCode == 118) {
+            $('#discount-order').focus();
+        }
+        if (ev.ctrlKey && ev.keyCode == 119) {
+            $('.customer-pay').focus();
+        }
+        if (ev.keyCode == 120) {
+            $('#btn-save-order').click();
+        }
+        if (ev.keyCode == 121) {
+            $('#btn-save-print-order').click();
+        }
+    });
+
     // search customer
     $(document).on('keyup', '#search-box-customer', function (e) {
         e.preventDefault();
@@ -156,9 +179,6 @@ jQuery(document).ready(function ($) {
                             let product_amount_inventory = $(`#product_pos_${response.data.id} input#order-option`).attr('data-product-amount-inventory');
                             let product_inventory = $(`#product_pos_${response.data.id} input#order-option`).attr('data-product-inventory');
                             let product_allow_negative = $(`#product_pos_${response.data.id} input#order-option`).attr('data-product-allow_negative');
-                            console.log(product_amount_inventory);
-                            console.log(product_inventory);
-                            console.log(product_allow_negative);
                             if (parseInt(product_inventory) === 1 && parseInt(product_allow_negative) === 1 && parseInt(valueOrder) === parseInt(response.data.product_amount)) {
                                 $('#alert-cms-error').css('display', 'block');
                                 $('#text-alert-error').text(`Sản phẩm trong kho chỉ còn ${response.data.product_amount} sp`);
@@ -330,7 +350,6 @@ jQuery(document).ready(function ($) {
 
     // save Cart to Order
     let amountProduct = [];
-    let product_sell_amount = 0;
     $(document).on('click', '#btn-save-order', function (e) {
         e.preventDefault();
         let customer_value = $('#search-box-customer').val();
@@ -350,6 +369,7 @@ jQuery(document).ready(function ($) {
                     cart[key]['product_sell_amount'] = value
                 })
             })
+            console.log(cart);
         });
 
         let carts = cart;

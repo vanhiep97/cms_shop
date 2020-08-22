@@ -35,7 +35,7 @@ class ProductController extends Controller
     {
         $groups = $this->productGroupRepository->all();
         $manufactures = $this->manufactureRepository->all();
-        $products = $this->productRepository->paginateBy('*', 'product_status', 1, 10, 'DESC');
+        $products = $this->productRepository->paginateBy('*', 'product_status', 1, 8, 'DESC');
         $totalProducts = $this->productRepository->all();
         return view('cms.modules.products.index', compact('products', 'totalProducts', 'groups', 'manufactures'));
     }
@@ -44,13 +44,13 @@ class ProductController extends Controller
     {
         switch ($request->action) {
             case 1 :
-                $products = $this->productRepository->paginateBy('*', 'product_status', 1, 10, 'DESC');
+                $products = $this->productRepository->paginateBy('*', 'product_status', 1, 8, 'DESC');
                 break;
             case 2 :
-                $products = $this->productRepository->paginateBy('*', 'product_status', 0, 10, 'DESC');
+                $products = $this->productRepository->paginateBy('*', 'product_status', 0, 8, 'DESC');
                 break;
             case 3 :
-                $products = Product::onlyTrashed()->paginate(10);
+                $products = Product::onlyTrashed()->paginate(8);
                 $totalProducts = $this->productRepository->all();
                 return view('cms.modules.products.list-product-trash', compact('products', 'totalProducts'));
                 break;
@@ -175,8 +175,20 @@ class ProductController extends Controller
         if($request->has('manufacture_id') && $request->manufacture_id) {
             $products->where('product_manufacture_id', $request->manufacture_id);
         }
-        $products = $products->where('product_status', 1)->orderBy('id', 'DESC')->paginate(10);
+        $products = $products->where('product_status', 1)->orderBy('id', 'DESC')->paginate(8);
         $totalProducts = $this->productRepository->all();
         return view('cms.modules.products.list-product', compact('products', 'totalProducts'));
+    }
+
+    public function overProduct()
+    {
+        $products = $this->productRepository->query()->where('product_amount', '=', 0)->paginate(5);
+        return view('cms.modules.product-overs.index', compact('products'));
+    }
+
+    public function thresholdProduct()
+    {
+        $products = $this->productRepository->query()->whereBetween('product_amount', array(1, 10))->paginate(5);
+        return view('cms.modules.product-thresholds.index', compact('products'));
     }
 }

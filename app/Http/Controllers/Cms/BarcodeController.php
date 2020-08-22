@@ -12,6 +12,6 @@ class BarcodeController extends Controller
     {
         $d = new DNS1D();
         $d->setStorPath(__DIR__.'/cache/');
-        echo $d->getBarcodeHTML('9780691147727', 'EAN13');
+        echo $d->getBarcodeHTML('9119441918847', 'EAN13');
     }
 }

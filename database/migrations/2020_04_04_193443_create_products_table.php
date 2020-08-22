@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('product_name')->index()->unique();
             $table->integer('product_amount')->index()->default(0);
             $table->integer('product_amount_inventory')->index()->default(0);
+            $table->integer('product_amount_defective')->index()->default(0);
             $table->integer('product_origin_price')->index()->default(0);
             $table->integer('product_sell_price')->index()->default(0);
             $table->tinyInteger('product_inventory')->default(0);

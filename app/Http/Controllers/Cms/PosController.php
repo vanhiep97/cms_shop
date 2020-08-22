@@ -7,12 +7,14 @@ use App\Models\Customer;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use App\Models\Order;
 
 class PosController extends Controller
 {
     public function index()
     {
-        return view('cms.layouts.pos');
+        $orders = Order::select('id')->get();
+        return view('cms.layouts.pos', compact('orders'));
     }
 
     public function searchProductOnPos(Request $request)

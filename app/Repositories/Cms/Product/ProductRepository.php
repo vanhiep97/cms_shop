@@ -25,6 +25,7 @@ class ProductRepository extends BaseRepository
             'product_code' => $productCode,
             'product_amount' => $id ? $productAmount : 0,
             'product_amount_inventory' => isset($data['product_amount']) ? $data['product_amount'] : 0,
+            'product_amount_defective' => 0,
             'product_origin_price' => $data['product_origin_price'],
             'product_sell_price' => $data['product_sell_price'],
             'product_inventory' => isset($data['product_inventory']) ? $data['product_inventory'] : 0,

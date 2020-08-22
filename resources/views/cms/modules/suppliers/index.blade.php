@@ -15,9 +15,6 @@
                                 <button type="button" class="btn btn-primary" id="btn-create-supplier">
                                     <i class="fa fa-plus"></i>Tạo NCC
                                 </button>
-                                <button type="button" class="btn btn-success"><i class="fa fa-download"></i> Xuất
-                                    Excel
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -28,7 +25,7 @@
         <div>
             <div class="sup-sear panel-sear">
                 <div>
-                    <div class="form-group col-md-6 padd-0">
+                    {{-- <div class="form-group col-md-6 padd-0">
                         <input type="text" class="form-control txt-ssupplier"
                                placeholder="Nhập tên, mã hoặc SDT Nhà cung cấp">
                     </div>
@@ -43,7 +40,7 @@
                         <button type="button" class="btn btn-primary btn-large btn-ssup"><i
                                 class="fa fa-search"></i> Tìm kiếm
                         </button>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="sup-body">
@@ -60,16 +57,6 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal" id="frm-crsup">
-                            <div class="form-group">
-                                <div class="col-sm-3">
-                                    <label for="supplier_code">Mã NCC</label>
-                                </div>
-                                <div class="col-sm-9">
-                                    <input type="text" id="supplier_code" name="supplier_code" class="form-control" value=""
-                                           placeholder="Mã nhà cung cấp (Tự sinh nếu bỏ trống)">
-                                    <span style="color: red; font-style: italic;" class="error error-supplier_code"></span>
-                                </div>
-                            </div>
                             <div class="form-group">
                                 <div class="col-sm-3">
                                     <label for="supplier_name">Tên NCC</label>

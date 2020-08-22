@@ -71,10 +71,10 @@
             <div class="product-main" style="width: 60%">
                 <div class="product-sear panel-sear">
                     <div class="">
-                        <div class="col-md-4">
+                        <div class="col-md-4" style="margin-bottom: 10px; margin-left: -15px">
                             <a href="javascript:void(0)" id="btn-delete-multi-pro-group" class="btn btn-danger" style="margin-left: 0">Xóa nhiều</a>
                         </div>
-                        <div class="form-group col-md-6 padd-0">
+                        {{-- <div class="form-group col-md-6 padd-0">
                             <input type="text" class="form-control" placeholder="Nhập vào tên danh mục"
                                    id="product-search">
                         </div>
@@ -82,7 +82,7 @@
                             <button type="button" class="btn btn-primary btn-large btn-ssup"><i
                                     class="fa fa-search"></i> Tìm kiếm
                             </button>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="product-main-body" id="dataRaw">

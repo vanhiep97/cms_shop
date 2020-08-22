@@ -16,7 +16,7 @@
         <div>
             <div class="cus-sear panel-sear">
                 <div action="" class="">
-                    <div class="form-group col-md-6 padd-0">
+                    {{-- <div class="form-group col-md-6 padd-0">
                         <input type="text" class="form-control txt-scustomer"
                                placeholder="Nhập tên, mã hoặc SDT khách hàng">
                     </div>
@@ -32,10 +32,10 @@
                                 class="btn btn-primary btn-large btn-sCustomer"><i
                                 class="fa fa-search"></i> Tìm kiếm
                         </button>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
-            <button type="button" class="btn btn-danger" id="btn-send-notification">Send</button>
+            {{-- <button type="button" class="btn btn-danger" id="btn-send-notification">Send</button> --}}
             <div class="cus-body" id="data-customer">
                 @include('cms.modules.customers.list-customer')
             </div>

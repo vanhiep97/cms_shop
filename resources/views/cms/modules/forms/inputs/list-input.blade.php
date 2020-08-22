@@ -1,20 +1,27 @@
+@php
+    $user = auth()->user()->level;
+@endphp
 <table class="table table-bordered table-striped">
     <thead>
     <tr>
         <th></th>
         <th class="text-center">Mã phiếu nhập kho</th>
+        <th class="text-center">Theo chứng từ</th>
         <th class="text-center">Ngày lập</th>
         <th class="text-center">Người lập</th>
         <th class="text-center" style="padding: 0px;">
             <select style="text-align:center;" id="customer-id">
                 <option value="-1">Nhà cung cấp</option>
             </select></th>
+        <th>Trạng thái</th>
         <th class="text-center">Số lượng nhập</th>
         <th class="text-center" style="background-color: #fff;">Tổng tiền</th>
         <th></th>
+        @if($user === 0 || $user === 1 || $user === 2)
         <th class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
                                                                                   class="checkbox chkAll"><span
                     style="width: 15px; height: 15px;"></span></label></th>
+        @endif
     </tr>
     </thead>
     <tbody>
@@ -33,10 +40,17 @@
                 </td>
                 <td class="text-center"
                     style="color: #2a6496; cursor: pointer;">{{ $value->input_code ? $value->input_code : '' }}</td>
+                <td class="text-center">{{ $value->purchaseOrder ? $value->purchaseOrder->pur_order_code : '' }}</td>
                 <td class="text-center">{{ $value->input_date ? $value->input_date : '' }}</td>
                 <td class="text-center">{{ $value->user_practise ? $value->user_practise : '' }}</td>
                 <td class="text-center">{{ $value->supplier_id ? $value->supplier->supplier_name : '' }}</td>
-                <td class="text-center">{{ $value->input_status == 0 ? 'Chưa gửi NCC' : 'Đã gửi NCC' }}</td>
+                <td class="text-center">
+                    <select id="input-status" data-id="{{ $value->id }}">
+                        <option value="0" {{ $value->input_status ==  0 ? 'selected' : ''}}>Chưa lập hóa đơn</option>
+                        <option value="1" {{ $value->input_status ==  1 ? 'selected' : ''}}>Đã lập hóa đơn</option>
+                    </select>
+                </td>
+                <td class="text-center">{{ $value->total_quantity ? $value->total_quantity : 0 }}</td>
                 <td class="text-center"
                     style="background-color: #F2F2F2;">{{ $value->total_price ? number_format($value->total_price) : 0 }}</td>
                 <td class="text-center" style="background: #fff;">
@@ -45,16 +59,21 @@
                         class="fa fa-print blue"
                         style="margin-right: 5px;"></i>
                     </a>
+                    @if($user === 0 || $user === 1 || $user === 2)
                     <a href="javascript:void(0)" id="btn-delete-input" data-id="{{ $value->id }}">
                         <i class="fa fa-trash-o" style="color: darkred;"></i>
                     </a>
+                    @endif
                 </td>
+                @if($user === 0 || $user === 1 || $user === 2)
                 <td class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
                                                                                           id="input_ids"
                                                                                           data-ids="{{ $value->id }}"
                                                                                           value=""
                                                                                           class="checkbox chk"><span
                             style="width: 15px; height: 15px;"></span></label>
+                </td>
+                @endif
             </tr>
             <tr class="tr-hide" id="tr-detail-order-{{ $value->id }}">
                 <td colspan="15">
@@ -63,7 +82,7 @@
                             <li class="active">
                                 <a data-toggle="tab">
                                     <i class="green icon-reorder bigger-110"></i>
-                                    Chi tiết đơn hàng
+                                    Chi tiết phiếu nhập kho
                                 </a>
                             </li>
                         </ul>
@@ -170,9 +189,9 @@
         Tổng tiền:
         <span>{{ $totalMoney ? number_format($totalMoney) : 0 }}</span>
     </div>
+    @endif
     <div class="pull-right ajax-pagination">
         {{ $listInputs->links() }}
     </div>
-    @endif
 </div>
 

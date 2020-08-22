@@ -22,7 +22,7 @@ class OrderController extends Controller
         $endDayOfWeek = $date->endOfWeek();
 
         $lastDayofPreviousMonth = Carbon::now()->endOfMonth()->subMonth()->toDateString();
-        $orders = Order::with('customer')->paginate(5);
+        $orders = Order::with('customer')->paginate(10);
         return view('cms.modules.orders.index', compact('orders'));
     }
 
@@ -90,9 +90,11 @@ class OrderController extends Controller
         $orders = Order::with('customer')->findOrFail($id);
         PDF::setOptions(['dpi' => 150, 'defaultFont' => 'DejaVu Sans']);
         $pdf = PDF::loadView('cms.modules.orders.invoice',  compact('orders'))->setPaper('a4', 'portrait');
-        $orders->update([
-            'order_status' => 1
-        ]);
+        if($orders->sell_type === 0) {
+            $orders->update([
+                'order_status' => 1
+            ]);
+        }
         return $pdf->stream('invoice.pdf', array("Attachment" => false));
     }
 
@@ -126,7 +128,21 @@ class OrderController extends Controller
         if($request->has('order_date_from') && $request->has('order_date_to') && $orderDateFrom && $orderDateTo) {
             $orders->whereBetween('sell_date', [$orderDateFrom, $orderDateTo]);
         }
-        $orders = $orders->paginate(5);
+        $orders = $orders->paginate(10);
         return view('cms.modules.orders.list-orders', compact('orders'));
+    }
+
+    public function updateStatusOrder($id)
+    {
+        $order = Order::find($id);
+        if($order->order_status == 1) {
+            $order->update([
+                'order_status' => 0
+            ]);
+        } else {
+            $order->update([
+                'order_status' => 1
+            ]);
+        }
     }
 }

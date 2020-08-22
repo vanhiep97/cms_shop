@@ -14,14 +14,10 @@
                 </label>
                 <label style="color: #307ecc;">
                     <input type="radio" name="revenue" id="revenue-sale" value="3">
-                    <span class="lbl">Theo thu ngân</span>
-                </label>
-                <label style="color: #307ecc;">
-                    <input type="radio" name="revenue" id="revenue-user" value="4">
                     <span class="lbl">Theo NV bán hàng</span>
                 </label>
                 <label style="color: #307ecc;">
-                    <input type="radio" name="revenue" id="revenue-product" value="5">
+                    <input type="radio" name="revenue" id="revenue-product" value="4">
                     <span class="lbl">Theo hàng hóa</span>
                 </label>
             </h5>
@@ -85,6 +81,7 @@
                 </div>
             </div>
             <div class="revenue-main-body">
+                 @if(!empty($orders) && count($orders) > 0)
                 <div class="quick-info report row" style="margin-bottom: 15px;">
                     <div class="col-md-12 padd-0">
                         <div class="col-md-3 padd-right-0">
@@ -153,6 +150,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <table class="table table-bordered table-striped">
                     <thead>

@@ -12,7 +12,7 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $users = User::where('level', '<>', 0)->paginate(10);
+        $users = User::where('level', '<>', 0)->paginate(5);
         return view('cms.modules.setting.setting', compact('users'));
     }
     public function createUsers(CreateUserRequest $request)

@@ -20,6 +20,7 @@ class Product extends Model
         'product_name',
         'product_amount',
         'product_amount_inventory',
+        'product_amount_defective',
         'product_origin_price',
         'product_sell_price',
         'product_inventory',
@@ -42,13 +43,13 @@ class Product extends Model
         return $this->belongsTo(ProductGroup::class, 'product_group_id');
     }
 
-    public function store()
-    {
-        return $this->belongsToMany('App\Models\Store::class', 'product_store', 'product_id', 'store_id');
-    }
-
     public function inventories()
     {
         return $this->hasMany(Inventory::class, 'product_id');
+    }
+
+    public function productDefectives()
+    {
+        return $this->hasMany(productDefectives::class, 'product_id');
     }
 }

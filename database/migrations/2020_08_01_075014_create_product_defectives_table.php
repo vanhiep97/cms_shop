@@ -15,6 +15,9 @@ class CreateProductDefectivesTable extends Migration
     {
         Schema::create('product_defectives', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('product_id');
+            $table->bigInteger('quantity')->default(0);
+            $table->string('user_practise');
             $table->timestamps();
         });
     }

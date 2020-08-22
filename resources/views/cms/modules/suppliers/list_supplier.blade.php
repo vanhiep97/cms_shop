@@ -7,9 +7,6 @@
         <th class="text-center">Điện thoại</th>
         <th class="text-center">Địa chỉ</th>
         <th class="text-center">ATM</th>
-        <th class="text-center">Lần cuối nhập hàng</th>
-        <th class="text-center" style="background-color: #fff;">Tổng tiền hàng</th>
-        <th class="text-center">Nợ</th>
         <th></th>
     </tr>
     </thead>
@@ -25,12 +22,6 @@
                 <td class="text-left">{{ $value->supplier_phone ? $value->supplier_phone : '' }}</td>
                 <td class="text-center">{{ $value->address ? $value->address : '' }}</td>
                 <td class="text-center">{{ $value->ATM ? $value->ATM : '' }}</td>
-                <td class="text-center">{{ $value->last_input ? $value->last_input : '' }}</td>
-                <td class="text-right"
-                    style="font-weight: bold; background-color: #f9f9f9;">
-                    {{ $value->total_money_input ? $value->total_money_input : 0 }}
-                </td>
-                <td class="text-right">{{ $value->lack_input ? $value->lack_input : 0 }}</td>
                 <td class="text-center">
                     <i class="fa fa-edit" id="edit-supplier" data-id="{{ $value->id }}" style="cursor:pointer;"></i>
                     <i class="fa fa-trash-o" id="delete-supplier" data-id="{{ $value->id }}" style="cursor:pointer;"></i>

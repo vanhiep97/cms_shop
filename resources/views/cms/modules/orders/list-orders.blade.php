@@ -1,3 +1,6 @@
+@php
+    $user = auth()->user()->level;
+@endphp
 <table class="table table-bordered table-striped">
     <thead>
     <tr>
@@ -14,9 +17,11 @@
         <th class="text-center" style="background-color: #fff;">Tổng tiền</th>
         <th class="text-center"><i class="fa fa-clock-o"></i> Hoàn trả khách</th>
         <th></th>
+        @if($user === 0 || $user === 1 || $user === 4)
         <th class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
                                                                                   class="checkbox chkAll"><span
                     style="width: 15px; height: 15px;"></span></label></th>
+        @endif
     </tr>
     </thead>
     <tbody>
@@ -47,9 +52,9 @@
                 </td>
                 <td class="text-center">
                     @if($value->order_status == 1)
-                        <span class="badge badge-success">{{ 'Đã thanh toán' }}</span>
-                    @else
-                        <span class="badge badge-danger">{{ 'Chưa thanh toán' }}</span>
+                        <span class="badge badge-success" id="bag-order">{{ 'Đã thanh toán' }}</span> <i id="update-status-order" data-id="{{ $value->id }}" class="fa fa-edit"></i>
+                    @elseif($value->order_status == 0)
+                        <span class="badge badge-danger" id="bag-order">{{ 'Chưa thanh toán' }}</span> <i id="update-status-order" data-id="{{ $value->id }}" class="fa fa-edit"></i>
                     @endif
                 </td>
                 <td class="text-center"
@@ -62,16 +67,20 @@
                         class="fa fa-print blue"
                         style="margin-right: 5px;"></i>
                     </a>
+                    @if($user === 0 || $user === 1 || $user === 4)
                     <a href="javascript:void(0)" id="btn-delete-order" data-id="{{ $value->id }}">
                         <i class="fa fa-trash-o" style="color: darkred;"></i>
                     </a>
+                    @endif
                 </td>
+                @if($user === 0 || $user === 1 || $user === 4)
                 <td class="text-center"><label class="checkbox" style="margin: 0;"><input type="checkbox"
                                                                                           id="order_ids"
                                                                                           data-ids="{{ $value->id }}"
                                                                                           value=""
                                                                                           class="checkbox chk"><span
                             style="width: 15px; height: 15px;"></span></label>
+                @endif
             </tr>
             <tr class="tr-hide" id="tr-detail-order-{{ $value->id }}">
                 <td colspan="15">
