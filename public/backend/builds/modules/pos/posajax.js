@@ -429,6 +429,13 @@ jQuery(document).ready(function ($) {
     $(document).on('click', '#btn-save-print-order', function (e) {
         e.preventDefault();
         let orderId = localStorage.getItem('order_bill');
+        if (!orderId) {
+            $('#alert-cms-error').css('display', 'block');
+            $('#text-alert-error').text("Vui lòng lưu lại đơn hàng trước khi thực hiện in hóa đơn");
+            setTimeout(function() {
+                $('#alert-cms-error').css('display', 'none');
+            }, 2000)
+        }
         let urlResource = '/admin/orders/print-order/' + orderId;
         var xhr = new XMLHttpRequest();
         xhr.open('GET', urlResource, true);

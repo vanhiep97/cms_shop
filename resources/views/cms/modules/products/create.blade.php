@@ -142,7 +142,7 @@
                                 </small>
                                 <input type="hidden" name="product_image_url" id="thumbnail"/>
                                 <div id="avatar" style="border: 2px dashed #ccc;height: 255px;width: 100%;position: relative;">
-                                    <img src="https://sciences.ucf.edu/psychology/wp-content/uploads/sites/63/2019/09/No-Image-Available.png"/>
+                                    <img src="https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"/>
                                     <p style="margin-bottom: 5px;position: absolute;left: 47%;top: 34%;border: 2px solid #ccc;">
                                         <button id="lfm" data-input="thumbnail" data-preview="avatar" class="btn" style="background-color: #337ab7; "><i
                                                 class="fa fa-picture-o" style="font-size: 40px;color: #fff; "></i>
